@@ -1,6 +1,6 @@
-#BlogVi - Tailwind Static Blog with Search (No backend)
+# BlogVi - Tailwind Static Blog with Search (No backend)
 
-#👋 Reason for this Project
+# 👋 Reason for this Project
 
 I tried to setup a static blog for my company, but I quickly found out that it's really difficult to get a nice looking *free blog with search and comments* without:
 1. ❌ Paying a monthly Subscription for a SaaS commercial Blog
