@@ -15,6 +15,8 @@ The goal of this project is to be a free static blog:
 5.  ✅ Provides it's administrator with a simple workflow to create, approve and publish blog posts from other contributors
 6.  ✅ Provides me with a fun side project to contirbute to in my spare time
 
+See example here: www.docsie.io/blog/
+
 
 
 
