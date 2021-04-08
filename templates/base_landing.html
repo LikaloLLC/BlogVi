@@ -99,21 +99,15 @@
     <!--Nav-->
     <nav class="mt-0 w-full">
       <div class="container mx-auto flex items-center">
+
         <div class="flex w-1/2 pl-4 text-sm">
           <ul class="list-reset flex justify-between flex-1 md:flex-none items-center">
+            {% for category in head_blog.categories %}
             <li class="mr-2">
-              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
-                 href="index.html">category</a>
+              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm" href="#">{{ category
+                }}</a>
             </li>
-            <li class="mr-2">
-              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm" href="#">category</a>
-            </li>
-            <li class="mr-2">
-              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm" href="#">category</a>
-            </li>
-            <li class="mr-2">
-              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm" href="#">category</a>
-            </li>
+            {% endfor %}
           </ul>
         </div>
 
@@ -143,22 +137,21 @@
 
       <!--Lead Card-->
       <div class="flex h-full bg-white rounded overflow-hidden ">
-        <a href="index.html" class="flex flex-wrap no-underline hover:no-underline">
+        <a href="blogs/{{ head_blog.detail_url }}" class="flex flex-wrap no-underline hover:no-underline">
           <div class="w-full md:w-2/3 rounded-t">
-<!--            <img src="https://source.unsplash.com/collection/494263/800x600" class="h-full w-full shadow">-->
-            <img src="https://source.unsplash.com/collection/494263/800x600" class="h-full w-full shadow">
+            <!--            <img src="https://source.unsplash.com/collection/494263/800x600" class="h-full w-full shadow">-->
+            <img src="{{head_blog.author_image}}" class="h-full w-full shadow">
           </div>
 
           <div class="w-full md:w-1/3 flex flex-col flex-grow flex-shrink">
             <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">
               <p class="w-full text-gray-600 text-xs md:text-sm pt-6 px-6">GETTING STARTED</p>
-              <div class="w-full font-bold text-xl text-gray-900 px-6">
-                👋 Welcome fellow Tailwind CSS and Ghost fan
+              <div class="w-full font-bold text-xl text-gray-900 px-6">{{head_blog.author_info}}
               </div>
               <p class="text-gray-800 font-serif text-base px-6 mb-5">
-<!--                This starter template is an attempt to replicate the default Ghost theme "Casper" using-->
-<!--                Tailwind CSS and vanilla Javascript.-->
-                {{ blog.summary }}
+                <!--                This starter template is an attempt to replicate the default Ghost theme "Casper" using Tailwind CSS and-->
+                <!--                vanilla Javascript.-->
+                {{ head_blog.summary }}
                 <br><br>
                 <script async type="text/javascript"
                         src="//cdn.carbonads.com/carbon.js?serve=CK7D52JJ&placement=wwwtailwindtoolboxcom"
@@ -182,119 +175,230 @@
 
       <!--Posts Container-->
       <div class="flex flex-wrap justify-between pt-12 -mx-6">
-        {% for template in templates %}
-        {% include template %}
-        {% endfor %}
-      </div>
-
-
-      <!--Subscribe-->
-      <div class="container font-sans bg-white rounded mt-8 p-4 md:p-24 text-center mb-10">
-        <h2 class="font-bold break-normal text-2xl md:text-4xl">Subscribe to Ghostwind CSS</h2>
-        <h3 class="font-bold break-normal font-normal text-gray-600 text-base md:text-xl">Get the latest posts
-          delivered right to your inbox</h3>
-        <div class="w-full text-center pt-4">
-          <form action="#">
-            <div class="max-w-xl mx-auto p-1 pr-0 flex flex-wrap items-center">
-              <input type="email" placeholder="youremail@example.com"
-                     class="flex-1 appearance-none rounded shadow p-3 text-gray-600 mr-2 focus:outline-none">
-              <button type="submit"
-                      class="flex-1 mt-4 md:mt-0 block md:inline-block appearance-none bg-green-500 text-white text-base font-semibold tracking-wider uppercase py-4 rounded shadow hover:bg-green-400">
-                Subscribe
-              </button>
+        {% for blog in blogs %}
+        <!--1/3 col -->
+        <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
+          <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">
+            <a href="blogs/{{ blog.detail_url }}" class="flex flex-wrap no-underline hover:no-underline">
+              <!--              <img src="https://source.unsplash.com/collection/225/800x600" class="h-64 w-full rounded-t pb-6">-->
+              <img src="{{ blog.author_image }}" class="h-64 w-full rounded-t pb-6">
+              <p class="w-full text-gray-600 text-xs md:text-sm px-6">GETTING STARTED</p>
+              <div class="w-full font-bold text-xl text-gray-900 px-6">{{blog.author_info}}</div>
+              <p class="text-gray-800 font-serif text-base px-6 mb-5">
+                <!--                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit-->
+                <!--                amet ligula.-->
+                {{ blog.summary }}
+              </p>
+            </a>
+          </div>
+          <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">
+            <div class="flex items-center justify-between">
+              <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="Author Name"
+                   src="http://i.pravatar.cc/300" alt="Avatar of Author">
+              <p class="text-gray-600 text-xs md:text-sm">1 MIN READ</p>
             </div>
-          </form>
+          </div>
+        </div>
+
+        {% endfor %}
+
+        <!--        &lt;!&ndash;1/2 col &ndash;&gt;-->
+        <!--        <div class="w-full md:w-1/2 p-6 flex flex-col flex-grow flex-shrink">-->
+        <!--          <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">-->
+        <!--            <a href="#" class="flex flex-wrap no-underline hover:no-underline">-->
+        <!--              <img src="https://source.unsplash.com/collection/3657445/800x600" class="h-full w-full rounded-t pb-6">-->
+        <!--              <p class="w-full text-gray-600 text-xs md:text-sm px-6">GETTING STARTED</p>-->
+        <!--              <div class="w-full font-bold text-xl text-gray-900 px-6">Lorem ipsum dolor sit amet.</div>-->
+        <!--              <p class="text-gray-800 font-serif text-base px-6 mb-5">-->
+        <!--                Lorem ipsum eu nunc commodo posuere et sit amet ligula.-->
+        <!--              </p>-->
+        <!--            </a>-->
+        <!--          </div>-->
+        <!--          <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">-->
+        <!--            <div class="flex items-center justify-between">-->
+        <!--              <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="Author Name"-->
+        <!--                   src="http://i.pravatar.cc/300" alt="Avatar of Author">-->
+        <!--              <p class="text-gray-600 text-xs md:text-sm">1 MIN READ</p>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+
+        <!--        &lt;!&ndash;1/2 col &ndash;&gt;-->
+        <!--        <div class="w-full md:w-1/2 p-6 flex flex-col flex-grow flex-shrink">-->
+        <!--          <div class="flex-1 flex-row bg-white rounded-t rounded-b-none overflow-hidden ">-->
+        <!--            <a href="#" class="flex flex-wrap no-underline hover:no-underline">-->
+        <!--              <img src="https://source.unsplash.com/collection/764827/800x600" class="h-full w-full rounded-t pb-6">-->
+        <!--              <p class="w-full text-gray-600 text-xs md:text-sm px-6">GETTING STARTED</p>-->
+        <!--              <div class="w-full font-bold text-xl text-gray-900 px-6">Lorem ipsum dolor sit amet.</div>-->
+        <!--              <p class="text-gray-800 font-serif text-base px-6 mb-5">-->
+        <!--                Lorem ipsum eu nunc commodo posuere et sit amet ligula.-->
+        <!--              </p>-->
+        <!--            </a>-->
+        <!--          </div>-->
+        <!--          <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">-->
+        <!--            <div class="flex items-center justify-between">-->
+        <!--              <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="Author Name"-->
+        <!--                   src="http://i.pravatar.cc/300" alt="Avatar of Author">-->
+        <!--              <p class="text-gray-600 text-xs md:text-sm">1 MIN READ</p>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+
+
+        <!--        &lt;!&ndash;2/3 col &ndash;&gt;-->
+        <!--        <div class="w-full md:w-2/3 p-6 flex flex-col flex-grow flex-shrink">-->
+        <!--          <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">-->
+        <!--            <a href="#" class="flex flex-wrap no-underline hover:no-underline">-->
+        <!--              <img src="https://source.unsplash.com/collection/325867/800x600" class="h-full w-full rounded-t pb-6">-->
+        <!--              <p class="w-full text-gray-600 text-xs md:text-sm px-6">GETTING STARTED</p>-->
+        <!--              <div class="w-full font-bold text-xl text-gray-900 px-6">Lorem ipsum dolor sit amet.</div>-->
+        <!--              <p class="text-gray-800 font-serif text-base px-6 mb-5">-->
+        <!--                Lorem ipsum eu nunc commodo posuere et sit amet ligula.-->
+        <!--              </p>-->
+        <!--            </a>-->
+        <!--          </div>-->
+        <!--          <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">-->
+        <!--            <div class="flex items-center justify-between">-->
+        <!--              <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="Author Name"-->
+        <!--                   src="http://i.pravatar.cc/300" alt="Avatar of Author">-->
+        <!--              <p class="text-gray-600 text-xs md:text-sm">1 MIN READ</p>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+
+        <!--        &lt;!&ndash;1/3 col &ndash;&gt;-->
+        <!--        <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">-->
+        <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">
+          <a href="#" class="flex flex-wrap no-underline hover:no-underline">
+            <img src="https://source.unsplash.com/collection/1118905/800x600" class="h-full w-full rounded-t pb-6">
+            <p class="w-full text-gray-600 text-xs md:text-sm px-6">GETTING STARTED</p>
+            <div class="w-full font-bold text-xl text-gray-900 px-6">Lorem ipsum dolor sit amet.</div>
+            <p class="text-gray-800 font-serif text-base px-6 mb-5">
+              Lorem ipsum eu nunc commodo posuere et sit amet ligula.
+            </p>
+          </a>
+        </div>
+        <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">
+          <div class="flex items-center justify-between">
+            <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="Author Name"
+                 src="http://i.pravatar.cc/300" alt="Avatar of Author">
+            <p class="text-gray-600 text-xs md:text-sm">1 MIN READ</p>
+          </div>
         </div>
       </div>
-      <!-- /Subscribe-->
 
     </div>
-
+    <!--/ Post Content-->
 
   </div>
 
 
-  <footer class="bg-gray-900">
-    <div class="container max-w-6xl mx-auto flex items-center px-2 py-8">
-
-      <div class="w-full mx-auto flex flex-wrap items-center">
-        <div class="flex w-full md:w-1/2 justify-center md:justify-start text-white font-extrabold">
-          <a class="text-gray-900 no-underline hover:text-gray-900 hover:no-underline" href="#">
-            👻 <span class="text-base text-gray-200"> Ghostwind CSS</span>
-          </a>
+  <!--Subscribe-->
+  <div class="container font-sans bg-white rounded mt-8 p-4 md:p-24 text-center mb-10">
+    <h2 class="font-bold break-normal text-2xl md:text-4xl">Subscribe to Ghostwind CSS</h2>
+    <h3 class="font-bold break-normal font-normal text-gray-600 text-base md:text-xl">Get the latest posts delivered
+      right to your inbox</h3>
+    <div class="w-full text-center pt-4">
+      <form action="#">
+        <div class="max-w-xl mx-auto p-1 pr-0 flex flex-wrap items-center">
+          <input type="email" placeholder="youremail@example.com"
+                 class="flex-1 appearance-none rounded shadow p-3 text-gray-600 mr-2 focus:outline-none">
+          <button type="submit"
+                  class="flex-1 mt-4 md:mt-0 block md:inline-block appearance-none bg-green-500 text-white text-base font-semibold tracking-wider uppercase py-4 rounded shadow hover:bg-green-400">
+            Subscribe
+          </button>
         </div>
-        <div class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
-          <ul class="list-reset flex justify-center flex-1 md:flex-none items-center">
-            <li>
-              <a class="inline-block py-2 px-3 text-white no-underline" href="#">Active</a>
-            </li>
-            <li>
-              <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-                 href="#">link</a>
-            </li>
-            <li>
-              <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-                 href="#">link</a>
-            </li>
-            <li>
-              <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-                 href="#">link</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-
+      </form>
     </div>
-  </footer>
+  </div>
+  <!-- /Subscribe-->
 
-  <script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
-  <script src="https://unpkg.com/tippy.js@4"></script>
-  <script>        /* Progress bar */
-  //Source: https://alligator.io/js/progress-bar-javascript-css-variables/
-  var h = document.documentElement,
-    b = document.body,
-    st = 'scrollTop',
-    sh = 'scrollHeight',
-    progress = document.querySelector('#progress'),
-    scroll;
-  var scrollpos = window.scrollY;
-  var header = document.getElementById("header");
-  var navcontent = document.getElementById("nav-content");
-
-  document.addEventListener('scroll', function () {
-
-    /*Refresh scroll % width*/
-    scroll = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
-    progress.style.setProperty('--scroll', scroll + '%');
-
-    /*Apply classes for slide in bar*/
-    scrollpos = window.scrollY;
-
-    if (scrollpos > 10) {
-      header.classList.add("bg-white");
-      header.classList.add("shadow");
-      navcontent.classList.remove("bg-gray-100");
-      navcontent.classList.add("bg-white");
-    } else {
-      header.classList.remove("bg-white");
-      header.classList.remove("shadow");
-      navcontent.classList.remove("bg-white");
-      navcontent.classList.add("bg-gray-100");
-
-    }
-
-  });
+</div>
 
 
-  //Javascript to toggle the menu
-  document.getElementById('nav-toggle').onclick = function () {
-    document.getElementById("nav-content").classList.toggle("hidden");
+</div>
+
+
+<footer class="bg-gray-900">
+  <div class="container max-w-6xl mx-auto flex items-center px-2 py-8">
+
+    <div class="w-full mx-auto flex flex-wrap items-center">
+      <div class="flex w-full md:w-1/2 justify-center md:justify-start text-white font-extrabold">
+        <a class="text-gray-900 no-underline hover:text-gray-900 hover:no-underline" href="#">
+          👻 <span class="text-base text-gray-200"> Ghostwind CSS</span>
+        </a>
+      </div>
+      <div class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
+        <ul class="list-reset flex justify-center flex-1 md:flex-none items-center">
+          <li>
+            <a class="inline-block py-2 px-3 text-white no-underline" href="#">Active</a>
+          </li>
+          <li>
+            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+               href="#">link</a>
+          </li>
+          <li>
+            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+               href="#">link</a>
+          </li>
+          <li>
+            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+               href="#">link</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+</footer>
+
+<script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/tippy.js@4"></script>
+<script>    /* Progress bar */
+//Source: https://alligator.io/js/progress-bar-javascript-css-variables/
+var h = document.documentElement,
+  b = document.body,
+  st = 'scrollTop',
+  sh = 'scrollHeight',
+  progress = document.querySelector('#progress'),
+  scroll;
+var scrollpos = window.scrollY;
+var header = document.getElementById("header");
+var navcontent = document.getElementById("nav-content");
+
+document.addEventListener('scroll', function () {
+
+  /*Refresh scroll % width*/
+  scroll = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
+  progress.style.setProperty('--scroll', scroll + '%');
+
+  /*Apply classes for slide in bar*/
+  scrollpos = window.scrollY;
+
+  if (scrollpos > 10) {
+    header.classList.add("bg-white");
+    header.classList.add("shadow");
+    navcontent.classList.remove("bg-gray-100");
+    navcontent.classList.add("bg-white");
+  } else {
+    header.classList.remove("bg-white");
+    header.classList.remove("shadow");
+    navcontent.classList.remove("bg-white");
+    navcontent.classList.add("bg-gray-100");
+
   }
-  //Init tooltips
-  tippy('.avatar')
-  </script>
 
+});
+
+
+//Javascript to toggle the menu
+document.getElementById('nav-toggle').onclick = function () {
+  document.getElementById("nav-content").classList.toggle("hidden");
+}
+//Init tooltips
+tippy('.avatar')
+</script>
 </body>
 
 </html>
