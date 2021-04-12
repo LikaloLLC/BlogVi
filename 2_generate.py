@@ -1,8 +1,6 @@
 import glob
-import os
 import random
 
-# import jinja_markdown
 import markdown
 from jinja2 import FileSystemLoader, Environment
 
@@ -17,8 +15,7 @@ from utils import get_data, get_md_file, ImgExtExtension, H1H2Extension
 blogs_list = []
 
 
-class Blog():
-
+class Blog:
   def __init__(self, timestamp=None, header_image=None, author_name=None, author_image=None, author_email=None,
                summary=None, categories=None, markdown=None, detail_url=None,
                author_info=None, author_social=None, status=None) -> None:
@@ -74,7 +71,7 @@ class Blog():
         f.write(ms)
         print("Succes")
     except Exception as e:
-      raise e
+      pass
 
   def generate_articles(self) -> None:
     md = markdown.Markdown(
@@ -88,7 +85,8 @@ class Blog():
     md.convertFile(md_file, f'{md_file[:len(md_file) - 3]}.html')
 
     for file in glob.glob('templates/articles/*.md'):
-      os.remove(file)
+      # os.remove(file)
+      pass
 
   def generate_rss(self):
     pass
@@ -101,7 +99,7 @@ class Blog():
     env = Environment(loader=directory_loader)
     tm = env.get_template('base_index.html')
 
-    ms = tm.render(blog=f'articles/{self.detail_url}')
+    ms = tm.render(blog=f'articles/{self.detail_url}', head_blog=self)
 
     with open(f'templates/blogs/{self.detail_url}', mode="w") as f:
       f.write(ms)

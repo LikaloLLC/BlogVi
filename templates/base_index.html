@@ -1,51 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Tailwind Starter Template - Ghostwind CSS Blog Index : Tailwind Toolbox</title>
-  <meta name="author" content="name">
-  <meta name="description" content="Free open source Tailwind CSS starter Ghost blog index template (Casper theme)">
-  <meta name="keywords"
-        content="tailwind,tailwindcss,tailwind css,css,starter template,free template,blog template, blog layout, ghost, casper, theme">
-
-  <link href="https://fonts.googleapis.com/css?family=Nunito:400,700,800" rel="stylesheet">
-  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-  <link rel="manifest" href="../site.webmanifest">
-  <link rel="mask-icon" href="../safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="msapplication-TileColor" content="#00aba9">
-  <meta name="theme-color" content="#3b7977">
-
-  <!-- Primary Meta Tags -->
-  <title>Tailwind Toolbox - Free Starter Templates and Components for Tailwind CSS</title>
-  <meta name="title" content="Tailwind Toolbox - Free Starter Templates and Components for Tailwind CSS">
-  <meta name="description"
-        content="Free open source Tailwind CSS starter Templates and Components to get you started quickly to creating websites in Tailwind CSS!">
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.tailwindtoolbox.com/">
-  <meta property="og:title" content="Tailwind Toolbox - Free Starter Templates and Components for Tailwind CSS">
-  <meta property="og:description"
-        content="Free open source Tailwind CSS starter Templates and Components to get you started quickly to creating websites in Tailwind CSS!">
-  <meta property="og:image" content="https://www.tailwindtoolbox.com/social.png">
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://www.tailwindtoolbox.com/">
-  <meta property="twitter:title" content="Tailwind Toolbox - Free Starter Templates and Components for Tailwind CSS">
-  <meta property="twitter:description"
-        content="Free open source Tailwind CSS starter Templates and Components to get you started quickly to creating websites in Tailwind CSS!">
-  <meta property="twitter:image" content="https://www.tailwindtoolbox.com/social.png">
-
-
-  <link href="../css/tailwind.min.css" rel="stylesheet">
-
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <title>Tailwind Starter Template - Minimal Blog: Tailwind Toolbox</title>
+  <meta name="author" content="name"/>
+  <meta name="description" content="description here"/>
+  <meta name="keywords" content="keywords,here"/>
+  <link
+    href="../css/tailwind.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="../css/typography.min.css"
+  />
+  <!--Replace with your tailwind.css once created-->
 </head>
+
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
@@ -92,82 +65,122 @@
 </nav>
 
 <!--Container-->
-<div class="container px-4 md:px-0 max-w-6xl mx-auto mt-24">
+<div class="container max-w-4xl mx-auto mt-32 px-8 md:px-0">
 
-  <div class="mx-0 sm:mx-6">
+  <!-- <img class="rounded" src="https://images.unsplash.com/photo-1556740758-90de374c12ad?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt=""> -->
+  <!-- <p class="text-base md:text-sm text-green-500 font-bold">&lt; <a href="/landing.html" class="text-base md:text-sm text-green-500 font-bold no-underline hover:underline">BACK TO BLOG</a></p> -->
+  <div class="prose prose lg:prose-xl mx-auto mt-32">
 
-
-    <div class="w-full text-xl md:text-2xl text-gray-800 leading-normal rounded-t">
-      <div class="flex flex-wrap justify-between pt-12 -mx-6" style="margin-left: 50px">
-        <div class="container">
-          {% include blog %}
+    <!--Title-->
+    <h1>Welcome to Minimal Blog</h1>
+    <p class="lead">Until now, trying to style an article, document, or blog post with Tailwind has been a tedious task
+      that required a keen eye for typography and a lot of complex custom CSS.</p>
+    <!--Author-->
+    <div class="flex items-center">
+      <img class="w-10 h-10 rounded-full mr-4" src="{{ head_blog.author_image }}" alt="Avatar of Author">
+      <div class="flex-1 px-2">
+        <div class="font-bold leading-none mb-2">{{ head_blog.author_name }}</div>
+        <div class="text-xs md:text-base">on {{ head_blog.timestamp }}· filed under <span
+          class="block md:inline mt-2 md:mt-0">
+						{% for category in head_blog.categories %}
+            <span class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm">{{ category }}</span>
+						{% endfor %}
+					</span>
         </div>
       </div>
+    </div>
+    <!--/Author-->
 
 
-      <!--Subscribe-->
-      <div class="container font-sans bg-white rounded mt-8 p-4 md:p-24 text-center mb-10">
-        <h2 class="font-bold break-normal text-2xl md:text-4xl">Subscribe to Ghostwind CSS</h2>
-        <h3 class="font-bold break-normal font-normal text-gray-600 text-base md:text-xl">Get the latest posts
-          delivered right to your inbox</h3>
-        <div class="w-full text-center pt-4">
-          <form action="#">
-            <div class="max-w-xl mx-auto p-1 pr-0 flex flex-wrap items-center">
-              <input type="email" placeholder="youremail@example.com"
-                     class="flex-1 appearance-none rounded shadow p-3 text-gray-600 mr-2 focus:outline-none">
-              <button type="submit"
-                      class="flex-1 mt-4 md:mt-0 block md:inline-block appearance-none bg-green-500 text-white text-base font-semibold tracking-wider uppercase py-4 rounded shadow hover:bg-green-400">
-                Subscribe
-              </button>
-            </div>
-          </form>
-        </div>
+    <!--Post Content-->
+
+
+    <!--Lead Para-->
+    {% include blog %}
+  </div>
+  <!--/ Post Content-->
+
+</div>
+
+<!--Divider-->
+<hr class="border-b-1 border-gray-400 mt-12 mb-8 mx-4">
+
+<!--Next & Prev Links-->
+<div class="font-sans flex justify-between content-center px-4 mb-4">
+  <div class="text-left">
+    <span class="text-xs md:text-sm font-normal text-gray-600">&lt; Previous Post</span><br>
+    <p><a href="#" class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">Blog
+      title</a></p>
+  </div>
+  <div class="text-right">
+    <span class="text-xs md:text-sm font-normal text-gray-600">Next Post &gt;</span><br>
+    <p><a href="#" class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">Blog
+      title</a></p>
+  </div>
+</div>
+
+
+<!--/Next & Prev Links-->
+
+
+<!--Subscribe-->
+<div class="container font-sans bg-white rounded mt-8 p-4 md:p-24 mb-10 text-center">
+  <h2 class="font-bold break-normal text-2xl md:text-4xl">Subscribe to Ghostwind CSS</h2>
+  <h3 class="font-bold break-normal font-normal text-gray-600 text-base md:text-xl">Get the latest posts delivered right
+    to your inbox</h3>
+  <div class="w-full text-center pt-4">
+    <form action="#">
+      <div class="max-w-xl mx-auto p-1 pr-0 flex flex-wrap items-center">
+        <input type="email" placeholder="youremail@example.com"
+               class="flex-1 appearance-none rounded shadow p-3 text-gray-600 mr-2 focus:outline-none">
+        <button type="submit"
+                class="flex-1 mt-4 md:mt-0 block md:inline-block appearance-none bg-green-500 text-white text-base font-semibold tracking-wider uppercase py-4 rounded shadow hover:bg-green-400">
+          Subscribe
+        </button>
       </div>
-      <!-- /Subscribe-->
+    </form>
+  </div>
+</div>
+<!-- /Subscribe-->
+</div>
+<!--/container-->
 
+<footer class="bg-gray-900">
+  <div class="container max-w-6xl mx-auto flex items-center px-2 py-8">
+
+    <div class="w-full mx-auto flex flex-wrap items-center">
+      <div class="flex w-full md:w-1/2 justify-center md:justify-start text-white font-extrabold">
+        <a class="text-gray-900 no-underline hover:text-gray-900 hover:no-underline" href="#">
+          👻 <span class="text-base text-gray-200"> Ghostwind CSS</span>
+        </a>
+      </div>
+      <div class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
+        <ul class="list-reset flex justify-center flex-1 md:flex-none items-center">
+          <li>
+            <a class="inline-block py-2 px-3 text-white no-underline" href="#">Active</a>
+          </li>
+          <li>
+            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+               href="#">link</a>
+          </li>
+          <li>
+            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+               href="#">link</a>
+          </li>
+          <li>
+            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+               href="#">link</a>
+          </li>
+        </ul>
+      </div>
     </div>
 
 
   </div>
+</footer>
 
-
-  <footer class="bg-gray-900">
-    <div class="container max-w-6xl mx-auto flex items-center px-2 py-8">
-
-      <div class="w-full mx-auto flex flex-wrap items-center">
-        <div class="flex w-full md:w-1/2 justify-center md:justify-start text-white font-extrabold">
-          <a class="text-gray-900 no-underline hover:text-gray-900 hover:no-underline" href="#">
-            👻 <span class="text-base text-gray-200"> Ghostwind CSS</span>
-          </a>
-        </div>
-        <div class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
-          <ul class="list-reset flex justify-center flex-1 md:flex-none items-center">
-            <li>
-              <a class="inline-block py-2 px-3 text-white no-underline" href="#">Active</a>
-            </li>
-            <li>
-              <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-                 href="#">link</a>
-            </li>
-            <li>
-              <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-                 href="#">link</a>
-            </li>
-            <li>
-              <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-                 href="#">link</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-
-    </div>
-  </footer>
-
-  <script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
-  <script src="https://unpkg.com/tippy.js@4"></script>
-  <script>        /* Progress bar */
+<script>
+  /* Progress bar */
   //Source: https://alligator.io/js/progress-bar-javascript-css-variables/
   var h = document.documentElement,
     b = document.body,
@@ -208,9 +221,7 @@
   document.getElementById('nav-toggle').onclick = function () {
     document.getElementById("nav-content").classList.toggle("hidden");
   }
-  //Init tooltips
-  tippy('.avatar')
-  </script>
+</script>
 
 </body>
 
