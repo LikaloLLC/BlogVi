@@ -2,3 +2,4 @@ Markdown
 requests
 Jinja2
 pandas
+jinja_markdown

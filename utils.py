@@ -1,5 +1,6 @@
 import csv
 
+import markdown
 import requests
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
@@ -70,6 +71,7 @@ def get_md_file(markdown_url: str, file_name: str) -> None:
     f.write(response.content)
 
   return f"templates/articles/{file_name}.md"
+
 
 # url = "https://docs.google.com/spreadsheets/d/1deKANndKOOmOdQUQWDK6-zC7P6J25SzBrUx2RX9lvkY/gviz/tq?tqx=out:csv&sheet=Form%20Responses%201"
 # get_data(url)

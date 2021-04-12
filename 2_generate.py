@@ -2,6 +2,7 @@ import glob
 import os
 import random
 
+# import jinja_markdown
 import markdown
 from jinja2 import FileSystemLoader, Environment
 
@@ -58,33 +59,34 @@ class Blog():
     pass
 
   def generate_landing_page(self) -> None:
-    md = markdown.Markdown(extensions=[ImgExtExtension(), H1H2Extension()])
     try:
-
       directory_loader = FileSystemLoader('templates')
       env = Environment(loader=directory_loader)
+
       tm = env.get_template('base_landing.html')
 
-      n = random.randint(0, len(blogs_list))
+      try:
+        n = random.randint(0, len(blogs_list))
+      except:
+        n = 0
       ms = tm.render(blogs=blogs_list, head_blog=blogs_list[n])
-      # print(blogs_list)
-
       with open('templates/landing.html', 'w') as f:
         f.write(ms)
         print("Succes")
-    except:
-      raise Exception("Something went wrong")
+    except Exception as e:
+      raise e
 
   def generate_articles(self) -> None:
+    md = markdown.Markdown(
+      extensions=[ImgExtExtension(), H1H2Extension()])
     file_name = self.author_name + self.timestamp
     md_file = get_md_file(self.markdown, file_name)
     file_name = file_name.replace("templates/articles/", "")
     self.detail_url = f'{file_name}.html'
-    # print(self.detail_url)
-
     blogs_list.append(self.all())
 
-    markdown.markdownFromFile(input=md_file, output=f'{md_file[:len(md_file) - 3]}.html')
+    md.convertFile(md_file, f'{md_file[:len(md_file) - 3]}.html')
+
     for file in glob.glob('templates/articles/*.md'):
       os.remove(file)
 
@@ -97,7 +99,6 @@ class Blog():
   def create_blog(self) -> None:
     directory_loader = FileSystemLoader('templates')
     env = Environment(loader=directory_loader)
-
     tm = env.get_template('base_index.html')
 
     ms = tm.render(blog=f'articles/{self.detail_url}')
@@ -106,7 +107,6 @@ class Blog():
       f.write(ms)
 
     self.detail_url = f'templates/blogs/{self.detail_url}'
-    # print(self.detail_url)
 
 
 def main() -> None:
@@ -122,12 +122,13 @@ def main() -> None:
       blog.author_image = data['Author Avatar Image URL']
       blog.author_social = data['linked.in github urls']
       blog.summary = data['Excerpt/Short Summary']
-      blog.categories = data['Categories '].split(" ")
+      blog.categories = [x for x in data['Categories '].split(", ")]
       blog.timestamp = data['Отметка времени']
+      # blog.timestamp = data['Timestamp'].replace("/", ".")
       blog.markdown = data['Markdown']
       blog.generate_articles()
       blog.create_blog()
-      print(blog.categories)
+      # print(blog.categories)
   blog.generate_landing_page()
 
 
