@@ -1,5 +1,4 @@
 import glob
-import random
 
 import markdown
 from jinja2 import FileSystemLoader, Environment
@@ -13,6 +12,7 @@ from utils import get_data, get_md_file, ImgExtExtension, H1H2Extension
 # "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNYmtcxqYplBu7SlY6grJRb3Y0vrmOBkE8j2CyeQlQHq4ElynBfi0Tkd4h2u2tPj4EmeGFBxyy8g73/pub?output=csv"
 
 blogs_list = []
+all_categories = set()
 
 
 class Blog:
@@ -53,25 +53,40 @@ class Blog:
     return dct
 
   def generate_categories(self):
-    pass
+    dct = dict()
+    self.generate_landing_page()
+    for category in all_categories:
+      dct[category] = []
+      # print(category)
 
-  def generate_landing_page(self) -> None:
+    for item in dct:
+      for blg in blogs_list:
+        # print(blg)
+        if item[0] in blg.get('categories'):
+          dct[item].append(blg)
+
+    for key, value in dct.items():
+      self.generate_landing_page(key, value)
+
+  def generate_landing_page(self, category=None, lst=None) -> None:
+    # print(category, lst, '\n')
+    if lst is None or category is None:
+      lst = blogs_list
+      path_landing = 'templates/index.html'
+
+    else:
+      path_landing = f"templates/{category[0]}_landing.html"
     try:
       directory_loader = FileSystemLoader('templates')
       env = Environment(loader=directory_loader)
 
       tm = env.get_template('base_landing.html')
-
-      try:
-        n = random.randint(0, len(blogs_list))
-      except:
-        n = 0
-      ms = tm.render(blogs=blogs_list, head_blog=blogs_list[n])
-      with open('templates/landing.html', 'w') as f:
+      ms = tm.render(blogs=lst, head_blog=lst[len(lst) - 1], categories=all_categories)
+      with open(path_landing, 'w') as f:
         f.write(ms)
-        print("Succes")
+        # print("Succes")
     except Exception as e:
-      pass
+      print("Error", e)
 
   def generate_articles(self) -> None:
     md = markdown.Markdown(
@@ -113,7 +128,7 @@ def main() -> None:
   datas = get_data(url)
   blog = Blog()
   for data in datas:
-    if data['Status']:
+    if data['Status'] == '1':
       blog.author_name = data['Author Name']
       blog.author_email = data['Author email']
       blog.author_info = data['About the Author']
@@ -122,12 +137,17 @@ def main() -> None:
       blog.summary = data['Excerpt/Short Summary']
       blog.categories = [x for x in data['Categories '].split(", ")]
       blog.timestamp = data['Отметка времени']
+      blog.status = 1
       # blog.timestamp = data['Timestamp'].replace("/", ".")
       blog.markdown = data['Markdown']
       blog.generate_articles()
       blog.create_blog()
+
+      for item in blog.categories:
+        all_categories.add((item, f"{item}_landing.html"))
+
       # print(blog.categories)
-  blog.generate_landing_page()
+  blog.generate_categories()
 
 
 if __name__ == '__main__':
