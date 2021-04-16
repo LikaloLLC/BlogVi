@@ -84,9 +84,11 @@ class Blog:
       ms = tm.render(blogs=lst, head_blog=lst[len(lst) - 1], categories=all_categories)
       with open(path_landing, 'w') as f:
         f.write(ms)
-        # print("Succes")
+
     except Exception as e:
       print("Error", e)
+    finally:
+      print("Succes")
 
   def generate_articles(self) -> None:
     md = markdown.Markdown(
@@ -112,7 +114,7 @@ class Blog:
   def create_blog(self) -> None:
     directory_loader = FileSystemLoader('templates')
     env = Environment(loader=directory_loader)
-    tm = env.get_template('base_index.html')
+    tm = env.get_template('base_blog.html')
 
     ms = tm.render(blog=f'articles/{self.detail_url}', head_blog=self)
 
@@ -151,5 +153,5 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-  print("Running")
+  print("Running, Please wait")
   main()
