@@ -76,15 +76,24 @@
          id="nav-content">
       <ul class="list-reset lg:flex justify-end flex-1 items-center">
         <li class="mr-3">
-          <a class="inline-block py-2 px-4 text-gray-900 font-bold no-underline" href="#">Active</a>
+          <a class="inline-block py-2 px-4 text-gray-900 font-bold no-underline" href="index.html">Active</a>
         </li>
         <li class="mr-3">
           <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
-             href="#">link</a>
+             href="index.html">link</a>
         </li>
-        <li class="mr-3">
-          <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
-             href="#">link</a>
+         <li class="mr-3">
+          <input type="search" placeholder="Search blog"
+                 class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
+                 id="search">
+          <div
+            class="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg bg-white border border-gray-300 focus:outline-none"
+            id="search-bar"
+            style="width: 300px; display: none; position: absolute" >
+            <ul class="py-2" style="width: 300px">
+
+            </ul>
+          </div>
         </li>
       </ul>
     </div>
@@ -160,9 +169,13 @@
 
             <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">
               <div class="flex items-center justify-between">
-                <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="Author Name"
-                     src="http://i.pravatar.cc/300" alt="Avatar of Author">
-                <p class="text-gray-600 text-xs md:text-sm">1 MIN READ</p>
+                <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="{{ head_blog.author_name }}"
+                     src="{{ head_blog.author_image }}" alt="{{ head_blog.author_name }}">
+                <p class="text-gray-600 text-xs md:text-sm">
+                  {% for ctg in head_blog.categories%}
+                  {{ ctg }}
+                  {% endfor %}
+                </p>
               </div>
             </div>
           </div>
@@ -191,13 +204,17 @@
               </p>
             </a>
           </div>
-          <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">
-            <div class="flex items-center justify-between">
-              <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="Author Name"
-                   src="http://i.pravatar.cc/300" alt="Avatar of Author">
-              <p class="text-gray-600 text-xs md:text-sm">1 MIN READ</p>
+            <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">
+              <div class="flex items-center justify-between">
+                <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="{{ blog.author_name }}"
+                     data-src="{{ blog.author_image }}" alt="{{ blog.author_name }}">
+                <p class="text-gray-600 text-xs md:text-sm">
+                  {% for ctg in blog.categories%}
+                  {{ ctg }}
+                  {% endfor %}
+                </p>
+              </div>
             </div>
-          </div>
         </div>
 
         {% endfor %}
@@ -271,7 +288,8 @@
 
 <script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
 <script src="https://unpkg.com/tippy.js@4"></script>
-<script> src = "js/lazy_load_image.js" </script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
+<script src = "js/search.js"></script>
 <script>    /* Progress bar */
 //Source: https://alligator.io/js/progress-bar-javascript-css-variables/
 var h = document.documentElement,

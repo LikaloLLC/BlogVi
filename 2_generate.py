@@ -1,4 +1,7 @@
+import datetime
 import glob
+import json
+import os
 
 import markdown
 from jinja2 import FileSystemLoader, Environment
@@ -36,6 +39,9 @@ class Blog:
     return f"Blog is about {self.author_name}"
 
   def all(self) -> dict:
+    """
+    return all attributes of the blog
+    """
     dct = {
       'author_name': self.author_name,
       'author_email': self.author_email,
@@ -53,25 +59,29 @@ class Blog:
     return dct
 
   def generate_categories(self):
+    """
+    Filtered data by tag
+    """
     dct = dict()
     self.generate_landing_page()
     for category in all_categories:
       dct[category] = []
-      # print(category)
 
     for item in dct:
       for blg in blogs_list:
-        # print(blg)
         if item[0] in blg.get('categories'):
           dct[item].append(blg)
 
     for key, value in dct.items():
       self.generate_landing_page(key, value)
 
-  def generate_landing_page(self, category=None, lst=None) -> None:
-    # print(category, lst, '\n')
-    if lst is None or category is None:
-      lst = blogs_list
+  def generate_landing_page(self, category=None, queryset=None) -> None:
+    """
+    Generate landing page for each category or index.html page
+    category, queryset is optional
+    """
+    if queryset is None or category is None:
+      queryset = blogs_list
       path_landing = 'templates/index.html'
 
     else:
@@ -81,16 +91,23 @@ class Blog:
       env = Environment(loader=directory_loader)
 
       tm = env.get_template('base_landing.html')
-      ms = tm.render(blogs=lst, head_blog=lst[len(lst) - 1], categories=all_categories)
+
+      ms = tm.render(blogs=queryset, head_blog=queryset[len(queryset) - 1], categories=all_categories)
       with open(path_landing, 'w') as f:
         f.write(ms)
 
+      # print(queryset)
+      jns = json.dumps(blogs_list, indent=4)
+      with open('templates/data.json', 'w') as jsonf:
+        jsonf.write(jns)
+
     except Exception as e:
       print("Error", e)
-    finally:
-      print("Succes")
 
   def generate_articles(self) -> None:
+    """
+    Convert md to html
+    """
     md = markdown.Markdown(
       extensions=[ImgExtExtension(), H1H2Extension()])
     file_name = self.author_name + self.timestamp
@@ -102,16 +119,13 @@ class Blog:
     md.convertFile(md_file, f'{md_file[:len(md_file) - 3]}.html')
 
     for file in glob.glob('templates/articles/*.md'):
-      # os.remove(file)
-      pass
-
-  def generate_rss(self):
-    pass
-
-  def create_search_index(self):
-    pass
+      os.remove(file)
+      # pass
 
   def create_blog(self) -> None:
+    """
+    Generate blog page for each markdown file.
+    """
     directory_loader = FileSystemLoader('templates')
     env = Environment(loader=directory_loader)
     tm = env.get_template('base_blog.html')
@@ -122,6 +136,12 @@ class Blog:
       f.write(ms)
 
     self.detail_url = f'templates/blogs/{self.detail_url}'
+
+  def generate_rss(self):
+    pass
+
+  def create_search_index(self):
+    pass
 
 
 def main() -> None:
@@ -154,4 +174,7 @@ def main() -> None:
 
 if __name__ == '__main__':
   print("Running, Please wait")
+  print(datetime.datetime.now())
   main()
+  print(datetime.datetime.now())
+  print("Succes, Please open the index.html in browser")
