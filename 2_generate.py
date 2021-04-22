@@ -4,6 +4,7 @@ import json
 import os
 
 import markdown
+from feedgen.feed import FeedGenerator
 from jinja2 import FileSystemLoader, Environment
 
 from utils import get_data, get_md_file, ImgExtExtension, H1H2Extension
@@ -136,12 +137,30 @@ class Blog:
       f.write(ms)
 
     self.detail_url = f'templates/blogs/{self.detail_url}'
+    self.generate_rss()
 
   def generate_rss(self):
-    pass
+    fg = FeedGenerator()
+    fg.id("http://localhost:63342/BlogVi/templates/index.html")
+    fg.title('Minimal Blog')
+    # fg.author({'name': data.get('author_name'), 'email': data.get('author_email')})
+    fg.link(href='http://localhost:63342/BlogVi/templates/index.html', rel='alternate')
+    # fg.logo(data.get('author_image'))
+    fg.subtitle("Minimaal BlogV RSS ")
+    fg.language('en')
+    for data in blogs_list:
+      url = f'http://localhost:63342/BlogVi/templates/blogs/{data.get("detail_url")}'
+      fe = fg.add_entry()
+      fe.id(url)
+      fe.title(data.get('author_name'))
+      fe.summary(data.get('summary'))
+      fe.link(href=url)
+      fe.published()
 
-  def create_search_index(self):
-    pass
+    fg.rss_file('rss.xml')
+
+  # def create_search_index(self):
+  #   pass
 
 
 def main() -> None:

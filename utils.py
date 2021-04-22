@@ -1,17 +1,13 @@
 import csv
 
-import markdown
 import requests
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
 
 
-# First create the treeprocessor
-
-
 class ImgExtractor(Treeprocessor):
   def run(self, doc):
-    "Find all images and append to markdown.images. "
+    """Find all images and append to markdown.images."""
     self.markdown.images = []
     for image in doc.findall('.//img'):
       self.markdown.images.append(image.get('src'))
@@ -42,18 +38,17 @@ class H1H2Extension(Extension):
     md.treeprocessors.add('h1h2ext', h1h2_ext, '>inline')
 
 
-def make_json(file):
+def make_json(file: str) -> list:
   data = []
   # read records from data.csv file and convert it list
-  with open('data.csv', encoding='utf-8') as f:
+  with open(file, encoding='utf-8') as f:
     csvReader = csv.DictReader(f)
     for rows in csvReader:
       data.append(rows)
-  # print(data)
   return data
 
 
-def get_data(url: str):
+def get_data(url: str) -> list:
   response = requests.get(url=url)
   # write records to data.csv file
   with open('data.csv', 'wb') as f:
@@ -71,7 +66,3 @@ def get_md_file(markdown_url: str, file_name: str) -> None:
     f.write(response.content)
 
   return f"templates/articles/{file_name}.md"
-
-
-# url = "https://docs.google.com/spreadsheets/d/1deKANndKOOmOdQUQWDK6-zC7P6J25SzBrUx2RX9lvkY/gviz/tq?tqx=out:csv&sheet=Form%20Responses%201"
-# get_data(url)
