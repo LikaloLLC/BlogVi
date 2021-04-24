@@ -4,10 +4,12 @@ import json
 import os
 
 import markdown
+import yaml
 from feedgen.feed import FeedGenerator
 from jinja2 import FileSystemLoader, Environment
+from slugify import slugify
 
-from utils import get_data, get_md_file, ImgExtExtension, H1H2Extension
+from utils import get_md_file, ImgExtExtension, H1H2Extension, get_data
 
 # Philippe`s google Sheet
 # https://docs.google.com/spreadsheets/d/1deKANndKOOmOdQUQWDK6-zC7P6J25SzBrUx2RX9lvkY/gviz/tq?tqx=out:csv&sheet=Form%20Responses%201
@@ -20,9 +22,11 @@ all_categories = set()
 
 
 class Blog:
-  def __init__(self, timestamp=None, header_image=None, author_name=None, author_image=None, author_email=None,
+  def __init__(self, title=None, timestamp=None, header_image=None, author_name=None, author_image=None,
+               author_email=None,
                summary=None, categories=None, markdown=None, detail_url=None,
                author_info=None, author_social=None, status=None) -> None:
+    self.title = title
     self.author_name = author_name
     self.markdown = markdown
     self.header_image = header_image
@@ -44,6 +48,7 @@ class Blog:
     return all attributes of the blog
     """
     dct = {
+      'title': self.title,
       'author_name': self.author_name,
       'author_email': self.author_email,
       'author_info': self.author_info,
@@ -65,13 +70,13 @@ class Blog:
     """
     dct = dict()
     self.generate_landing_page()
-    for category in all_categories:
-      dct[category] = []
+    for tag in all_categories:
+      dct[tag] = []
 
-    for item in dct:
+    for tag in dct:
       for blg in blogs_list:
-        if item[0] in blg.get('categories'):
-          dct[item].append(blg)
+        if tag[0] in blg.get('categories'):
+          dct[tag].append(blg)
 
     for key, value in dct.items():
       self.generate_landing_page(key, value)
@@ -84,9 +89,9 @@ class Blog:
     if queryset is None or category is None:
       queryset = blogs_list
       path_landing = 'templates/index.html'
-
     else:
-      path_landing = f"templates/{category[0]}_landing.html"
+      path_landing = f'templates/{category[1]}'
+
     try:
       directory_loader = FileSystemLoader('templates')
       env = Environment(loader=directory_loader)
@@ -111,7 +116,7 @@ class Blog:
     """
     md = markdown.Markdown(
       extensions=[ImgExtExtension(), H1H2Extension()])
-    file_name = self.author_name + self.timestamp
+    file_name = slugify(self.title)
     md_file = get_md_file(self.markdown, file_name)
     file_name = file_name.replace("templates/articles/", "")
     self.detail_url = f'{file_name}.html'
@@ -159,8 +164,21 @@ class Blog:
 
     fg.rss_file('rss.xml')
 
-  # def create_search_index(self):
-  #   pass
+  def create_search_index(self):
+    with open('templates/search_field_options.yaml', 'r') as yml:
+      x = json.dumps(yaml.safe_load(yml), indent=4)
+      search_field_options = json.loads(x)
+      options = dict()
+      options['keys'] = []
+      for field_name, field_options in search_field_options['keys'].items():
+        options["keys"].append(
+          {
+            "name": field_name,
+            **field_options
+          }
+        )
+      with open('templates/search_field_options.json', 'w') as f:
+        f.write(json.dumps(options))
 
 
 def main() -> None:
@@ -168,8 +186,10 @@ def main() -> None:
   url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNYmtcxqYplBu7SlY6grJRb3Y0vrmOBkE8j2CyeQlQHq4ElynBfi0Tkd4h2u2tPj4EmeGFBxyy8g73/pub?output=csv"
   datas = get_data(url)
   blog = Blog()
+  blog.create_search_index()
   for data in datas:
     if data['Status'] == '1':
+      blog.title = data.get('title')
       blog.author_name = data['Author Name']
       blog.author_email = data['Author email']
       blog.author_info = data['About the Author']
@@ -184,8 +204,8 @@ def main() -> None:
       blog.generate_articles()
       blog.create_blog()
 
-      for item in blog.categories:
-        all_categories.add((item, f"{item}_landing.html"))
+      for tag in blog.categories:
+        all_categories.add((tag, f"{slugify(tag)}-landing.html"))
 
       # print(blog.categories)
   blog.generate_categories()
