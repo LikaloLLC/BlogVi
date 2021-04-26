@@ -115,12 +115,47 @@
               <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
                  href="index.html">ALL</a>
             </li>
-            {% for category in categories %}
+            
             <li class="mr-2">
               <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
-                 href="{{category[1]}}">{{category[0]}}</a>
+                 href="product-updates-landing.html">Product Updates</a>
             </li>
-            {% endfor %}
+            
+            <li class="mr-2">
+              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
+                 href="best-practices-landing.html">Best Practices</a>
+            </li>
+            
+            <li class="mr-2">
+              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
+                 href="api-documentation-landing.html">API Documentation</a>
+            </li>
+            
+            <li class="mr-2">
+              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
+                 href="product-management-landing.html">Product Management</a>
+            </li>
+            
+            <li class="mr-2">
+              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
+                 href="technical-writing-landing.html">Technical Writing</a>
+            </li>
+            
+            <li class="mr-2">
+              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
+                 href="product-documentation-landing.html">Product Documentation</a>
+            </li>
+            
+            <li class="mr-2">
+              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
+                 href="ai-landing.html">AI</a>
+            </li>
+            
+            <li class="mr-2">
+              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
+                 href="documentation-portals-landing.html">Documentation Portals</a>
+            </li>
+            
           </ul>
         </div>
         <h1></h1>
@@ -151,30 +186,34 @@
 
       <!--Lead Card-->
       <div class="flex h-full bg-white rounded overflow-hidden ">
-        <a href="blogs/{{ head_blog.detail_url }}" class="flex flex-wrap no-underline hover:no-underline">
+        <a href="blogs/this-is-the-repository-and-issue-tracker-for-python-org.html" class="flex flex-wrap no-underline hover:no-underline">
           <div class="w-full md:w-2/3 rounded-t">
             <!--            <img src="https://source.unsplash.com/collection/494263/800x600" class="h-full w-full shadow">-->
-            <img src="{{head_blog.author_image}}" class="h-full w-full shadow">
+            <img src="https://images.unsplash.com/photo-1595211877493-41a4e5f236b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=358&q=80" class="h-full w-full shadow">
           </div>
 
           <div class="w-full md:w-1/3 flex flex-col flex-grow flex-shrink">
             <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">
               <p class="w-full text-gray-600 text-xs md:text-sm pt-6 px-6">GETTING STARTED</p>
-              <div class="w-full font-bold text-xl text-gray-900 px-6">{{head_blog.title}}
+              <div class="w-full font-bold text-xl text-gray-900 px-6">This is the repository and issue tracker for python.org.
               </div>
               <p class="text-gray-800 font-serif text-base px-6 mb-5">
-                {{ head_blog.summary }}
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
               </p>
             </div>
 
             <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">
               <div class="flex items-center justify-between">
-                <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="{{ head_blog.author_name }}"
-                     src="{{ head_blog.author_image }}" alt="{{ head_blog.author_name }}">
+                <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="John Doe"
+                     src="https://images.unsplash.com/photo-1595211877493-41a4e5f236b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=358&q=80" alt="John Doe">
                 <p class="text-gray-600 text-xs md:text-sm">
-                  {% for ctg in head_blog.categories%}
-                  {{ ctg }}
-                  {% endfor %}
+                  
+                  Product Management
+                  
+                  Documentation Portals
+                  
+                  Technical Writing
+                  
                 </p>
               </div>
             </div>
@@ -183,39 +222,43 @@
         </a>
       </div>
       <!--/Lead Card-->
-<!--      {{ searchConfig }}-->
+<!--      {'keys': [{'name': 'title', 'weight': 8}, {'name': 'summary', 'weight': 6}, {'name': 'author_name', 'weight': 5}, {'name': 'categories', 'weight': 3}]}-->
 
       <!--Posts Container-->
       <div class="flex flex-wrap justify-between pt-12 -mx-6">
-        {% for blog in blogs %}
+        
         <!--1/3 col -->
         <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
           <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">
-            <a href="blogs/{{ blog.detail_url }}" class="flex flex-wrap no-underline hover:no-underline">
+            <a href="blogs/this-is-the-repository-and-issue-tracker-for-python-org.html" class="flex flex-wrap no-underline hover:no-underline">
               <!--              <img src="https://source.unsplash.com/collection/225/800x600" class="h-64 w-full rounded-t pb-6">-->
-              <img data-src="{{ blog.author_image }}" class="h-64 w-full rounded-t pb-6">
+              <img data-src="https://images.unsplash.com/photo-1595211877493-41a4e5f236b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=358&q=80" class="h-64 w-full rounded-t pb-6">
 
               <p class="w-full text-gray-600 text-xs md:text-sm px-6">GETTING STARTED</p>
-              <div class="w-full font-bold text-xl text-gray-900 px-6">{{blog.title}}</div>
+              <div class="w-full font-bold text-xl text-gray-900 px-6">This is the repository and issue tracker for python.org.</div>
               <p class="text-gray-800 font-serif text-base px-6 mb-5">
-                {{ blog.summary }}
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
               </p>
             </a>
           </div>
           <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">
             <div class="flex items-center justify-between">
-              <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="{{ blog.author_name }}"
-                   data-src="{{ blog.author_image }}" alt="{{ blog.author_name }}">
+              <img class="w-8 h-8 rounded-full mr-4 avatar" data-tippy-content="John Doe"
+                   data-src="https://images.unsplash.com/photo-1595211877493-41a4e5f236b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=358&q=80" alt="John Doe">
               <p class="text-gray-600 text-xs md:text-sm">
-                {% for ctg in blog.categories%}
-                {{ ctg }}
-                {% endfor %}
+                
+                Product Management
+                
+                Documentation Portals
+                
+                Technical Writing
+                
               </p>
             </div>
           </div>
         </div>
 
-        {% endfor %}
+        
 
       </div>
 
@@ -364,7 +407,8 @@ tippy('.avatar')
 
 </script>
 
-<script type="text/javascript">window["searchConfig"] = {{searchConfig}}</script>
+<script type="text/javascript">window["searchConfig"] = {'keys': [{'name': 'title', 'weight': 8}, {'name': 'summary', 'weight': 6}, {'name': 'author_name', 'weight': 5}, {'name': 'categories', 'weight': 3}]}
+</script>
 
 </body>
 

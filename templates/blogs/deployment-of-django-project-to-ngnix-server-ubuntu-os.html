@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <title>Tailwind Starter Template - Minimal Blog: Tailwind Toolbox</title>
+  <meta name="author" content="name"/>
+  <meta name="description" content="description here"/>
+  <meta name="keywords" content="keywords,here"/>
+  <link
+    href="../css/tailwind.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="../css/typography.min.css"
+  />
+  <!--Replace with your tailwind.css once created-->
+</head>
+
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+<nav id="header" class="fixed w-full z-10 top-0">
+
+  <div id="progress" class="h-1 z-20 top-0"
+       style="background:linear-gradient(to right, #4dc0b5 var(--scroll), transparent 0);"></div>
+
+  <div class="container max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-3">
+
+    <div class="pl-4">
+      <a class="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl" href="../index.html">
+        Minimal Blog
+      </a>
+    </div>
+
+    <div class="block lg:hidden pr-4">
+      <button id="nav-toggle"
+              class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-green-500 appearance-none focus:outline-none">
+        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <title>Menu</title>
+          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-gray-100 z-20"
+         id="nav-content">
+      <ul class="list-reset lg:flex justify-end flex-1 items-center">
+        <li class="mr-3">
+          <a class="inline-block py-2 px-4 text-gray-900 font-bold no-underline" href="#">Active</a>
+        </li>
+        <li class="mr-3">
+          <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
+             href="#">link</a>
+        </li>
+        <li class="mr-3">
+          <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
+             href="#">link</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!--Container-->
+<div class="container max-w-4xl mx-auto mt-32 px-8 md:px-0">
+
+  <!-- <img class="rounded" src="https://images.unsplash.com/photo-1556740758-90de374c12ad?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt=""> -->
+  <!-- <p class="text-base md:text-sm text-green-500 font-bold">&lt; <a href="/index.html" class="text-base md:text-sm text-green-500 font-bold no-underline hover:underline">BACK TO BLOG</a></p> -->
+  <div class="prose prose lg:prose-xl mx-auto mt-32">
+
+    <!--Title-->
+    <h1>Welcome to Minimal Blog</h1>
+    <p class="lead">Until now, trying to style an article, document, or blog post with Tailwind has been a tedious task
+      that required a keen eye for typography and a lot of complex custom CSS.</p>
+    <!--Author-->
+    <div class="flex items-center">
+      <img class="w-10 h-10 rounded-full mr-4" src="https://images.unsplash.com/photo-1612102804446-2f01cfe4e544?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80" alt="Avatar of Author">
+      <div class="flex-1 px-2">
+        <div class="font-bold leading-none mb-2">Sayfullayev Doniyor</div>
+        <div class="text-xs md:text-base">on 07.04.2021 23:15:51· filed under <span
+          class="block md:inline mt-2 md:mt-0">
+						
+            <span class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm">Best Practices</span>
+						
+					</span>
+        </div>
+      </div>
+    </div>
+    <!--/Author-->
+
+
+    <!--Post Content-->
+
+
+    <!--Lead Para-->
+    <h2>Django Frameworkida qilingan loyihamizni Debian/Ubuntu 20.04 serveriga joylash, Postgres, Nginx, Gunicorn paketlarini sozlash va ishga tushurish</h2>
+<p>ESLATMA:
+  - Loyiha nomi <code>project_name</code>
+  - Ma'lumotlar bazasining nomi  <code>database_name</code>
+  - Ma'lumotlar bazasining foydalanuvchisining ismi  <code>user_name</code>
+  - Ma'lumotlar bazasining paroli  <code>password</code>
+  - Ubuntu foydalanuvchi nomi <code>sammy</code>
+Ushbu o'zgaruvchilar orniga uzingizni ma'lumotlaringizni kiriting!!!
+```
+<strong>Ushbu qollanmada men quyidagi loyihadan foydalanaman, sizning loyihangizni tuzilishi menikidan farq qilishi mumkin</strong>
+├── projectname
+    ├── appname
+    │   ├── <strong>init</strong>.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── models.py
+    │   ├── views.py
+    │   └── urls.py
+    ├── projectname
+    │   ├── <strong>init</strong>.py
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    ├── templates
+    ├── static
+    ├── media
+    ├── manage.py
+    └── requirements.txt</p>
+<p>```
+Ushbu qollanmani root foydalanuvchi sifatida bajarish tavsiya etilmaydi, Foydalanuvchi <a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-new-sudo-enabled-user-on-ubuntu-20-04-quickstart">yaratish va unga sudo huquqini</a> berish. </p>
+<h3>Kerakli paketlarni o'rnatish</h3>
+<p><code>sh
+$ sudo apt update
+$ sudo apt install -y python-pip python-dev libpq-dev vim git htop postgresql postgresql-contrib nginx redis-server</code></p>
+<h3>PostgreSQL ni sozlash</h3>
+<p>Oldin ma'lumotlar bazasini va shu ma'lumotlar bazasidan foydalanuvchi yaratib olamiz.</p>
+<p>PostgreSQL ma'lumotlar bazasini o'rnatgandan so'ng PostgreSQL ma'lumotlar bazasi postgresql nomli foydalanuvchi yaratadi, biz ma'lumotlar bazasini sozlashda o'sha foydalanuvchidan foydalanamiz, biz <code>sudo</code> komandasi <code>-u</code> parametri bilan foydalanuvchi nomini kiritishimiz kerak
+<code>$ sudo -u postgres psql</code>
+Ma'lumotlar bazasini yaratib olamiz.
+<code>postgres=# CREATE DATABASE database_name;</code>
+Yaratilgan ma'lumotlar bazasidan foydalanuvchi yaratamiz.
+<code>sh
+postgres=# CREATE USER user_name WITH PASSWORD 'password';</code>
+Ma'lumotlar bazasini sozlab olamiz
+   - Kodirofkani utf8 ga o'zgartiramiz
+   - Tranzaktsiyalarni kutilmagan ma'lumotlar bazasi foydalanuvchisidan cheklab qoyamiz
+   - Timezone ni UTC ga o'zgartirish (agarda siz loyihangizni boshqa UTC ishlatsangiz shunga o'zgartirish tavsfiya etiladi)
+<code>sh
+postgres=# ALTER ROLE user_name SET client_encoding TO 'utf8'; 
+postgres=# ALTER ROLE user_name SET default_transaction_isolation TO 'read committed'; 
+postgres=# ALTER ROLE user_name SET timezone TO 'UTC';</code>
+Foydalanuvchiga ma'lumotlar bazasini boshqarishga huquq berish
+<code>sh
+postgres=# GRANT ALL PRIVILEGES ON DATABASE user_name TO database_name;</code>
+Endi PostgreSQL dan chiqamiz.
+<code>sh
+postgres=# \q</code></p>
+<h3>Loyihani git repositoriyasidan yuklab olish</h3>
+<p><code>sh
+$ git clone your_repository_link</code></p>
+<h3>Virtual muhit</h3>
+<p>Birinchi navbatda <a href="https://docs.python.org/3/library/venv.html">Virtual muhitni</a> yaratib olamiz.
+<code>sh
+$ cd my_project
+$ python3 -m venv venv</code>
+Virtual muhitni aktivatsiya qilish va kerakli kutubxonalarni o'rnatish
+<code>sh
+$ . venv/bin/activate &amp;&amp; pip3 insatll -r requirements.txt</code>
+Agarda siz loyihangizda boshqa qo'shimcha kutubxonalarni ishlatgan bolsangiz requirements.txt ga qo'shib qo'yishingiz kerak bo'ladi</p>
+<h3>Loyihani sozlash</h3>
+<p>Loyihamizni serverda ishga tushurish uchun oldin loyihani sozlab olishimiz kerak, loyiha sozlamari <code>settings.py</code> faylida joylashishi bilsangiz kerak? xa albatta bilasiz degan ummida man, <code>ALLOWED_HOSTS</code> ro'yhatimizda loyihani ishga tushirilgan server IP va domen nomlarini kiritishimiz kerak bu Django loyihamiz qaysi serverdan kelgan xabarlarga javob qaytarishi bilishi uchun kerak bo'ladi.
+<code>python
+ALLOWED_HOSTS = ['your_server_domain_or_IP', 'second_domain_or_IP']</code>
+Ma'lumotlar bazasini sozlamarini saqlaydigan dictga o'zgartirish kirishimiz kerak, ya'ni qaysi ma'lumotlar bazasiga ulanish, ma'lumotlar bazasini foydalanuvchising ismi va paroli, ma'lumotlar bazasimiz qaysi port da ishlab turganini kiritishimiz kerak
+<code>python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'database_name',
+        'USER': 'user_name',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}</code>
+Statik fayllarni qaerga jo'ylashtirish keraklini bildiradigan o'zgaruvchi yaratishimiz kerak, django loyihamizni localhost da ishlatganimizda bu o'zgaruvchi kerak bolmaydi chunki <code>DEBUG=True</code> holatda statik fayllarni django qayta ishlaydi <code>DEBUG=False</code> xolatda esa statik fayllarni Nginx(proxy-server) qayta ishlaydi.
+settings.py faylni oxiriga <code>STATIC_ROOT</code> o'zgaruvchi elon qilamiz va <code>BASE_DIR</code> (loyihamiz joylashgan joy) ga statik fayllarni saqlash uchun mo'ljallangan <code>staticfiles</code> nomli directoriyani qo'shib qoyamiz
+<code>python
+STATIC_ROOT = BASE_DIR / 'staticfiles'</code>
+Migratsiyalarni yaratib ularni ma'lumotlar bazamizga saqlaymiz, <code>python3 manage.py makemigrations</code> komandasi modelimizni holatini migratsiya faylida saqlab qoyadi va <code>python3 manage.py migrate</code> komandasi esa migratsiya fayllarini ma'lumotlar bazamizga saqlaydi
+<code>sh
+(venv)$ python3 manage.py makemigrations
+(venv)$ python3 manage.py migrate</code>
+Endilikda admin paneliga kira olishimiz uchun superuser yaratib olamiz.
+<code>sh
+(venv)$ python3 manage.py createsuperuser</code>
+Nginxga statik fayllarni qaysi direktoriya(papkada) dan izlash keraklikini ko'rsatishimiz uchun statik fayllarni bir joyga jamlab olamiz. 
+<code>sh
+(venv)$ python3 manage.py collectstatic</code>
+Va nihoyat biz loyihamizni tog'ri sozlaganimizni bilishimiz uchun loyihani ishga tushirib ko'rishimiz mumkin
+<code>sh
+python3 manage.py runserver 0.0.0.0:8000</code>
+Brauzeringizda server ipisiga 8000-portni qo'shib yozib tekshirib ko'rishingiz mumkin
+example: server_ip:8000
+Tushunarliki bunday qilib loyihani ishlatib qoyib bolmaydi chunki loyihamizni real serverga  joylaganimizda <code>DEBUG=FALSE</code> bo'lishi kerak bu foydalanuvchiga loyihamizda yuz bergan xatoliklarni ko'rsatmaslikimiz uchun kerak.
+Virtual muhitni deaktivatsiya qilishimizdan oldin gunicorn kelgan habarlga javob qayta olishini tekshirib ko'rishimiz kerak, biz loyihamiz katalogiga kirib, <code>gunicorn</code> yordamida loyihaning WSGI modulini yuklashga urinib ko'ramiz:
+<code>sh
+cd ~/myproject
+gunicorn --bind 0.0.0.0:8000 myproject.wsgi</code>
+Bu komanda orqali Gunicorn orqali Django loyihamizni ishga tushiramiz.Orqaga qaytib loyihamiz ko'rsatilgan ip orqali ishlayotganini qayta sinab ko'rishingiz mumkin. CTRL+C tugmachasini bosib gunicorn ni toxtatib virtual muhitni deaktivatsiya qilamiz.
+<code>sh
+(venv)$ deactivate</code></p>
+<h3>Gunicorn ni sozlash</h3>
+<p>Django Loyihamizni serverda ishlatib qoyishimiz uchun <a href="https://nginx.org/ru/">Nginx</a> va <a href="https://gunicorn.org/">Gunicorn</a> dan foydalanamiz
+Gunicorn uchun systemd ni sozlab olishimiz kerak, systemd Linux xizmatlarini ishga tushurish/boshqarish uchun qulay tizim hisoblanadi.
+<code>$ sudo nano /etc/systemd/system/gunicorn.service</code>
+Yuqoridaki komanda orqali <code>/etc/systemd/system/</code> katoligida gunicorn.service faylini yaratamiz, va quyidaki sozlamarni kiritib <code>ctrl+x+y+y+ENTER</code> tugmachasini bosamiz.
+```commandline
+[Unit]
+Description=gunicorn daemon
+After=network.target</p>
+<p>[Service]
+User=sammy
+Group=www-data
+WorkingDirectory=/home/sammy/myproject
+ExecStart=/home/sammy/myproject/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/sammy/myproject/myproject.sock myproject.wsgi:application</p>
+<p>[Install]
+WantedBy=multi-user.target
+<code>- `[Unit]` bo'limida biz qanday xizmat uchun sozlamar kirityapganimizni va qachon ishga tushirilishi keraklikni kiritamiz.
+  - `[Service]` bo'limida foydalanuvchi nomini va qaysi guruhga mansub ekanligini kiritamiz, nginx va gunicorn muloqat qila olishi uchun foydalanuvchi guruhi sifatida `www-data` ni kiritamiz. `WorkingDirectory` da qaysi direktoriyada ishlashni bildirishimiz uchun kerak bo'ladi, `ExecStart` esa qaysi komanda orqali ishga tushirimiz keraklikini kiritamiz.
+  - `[Install]` bo'limi nimaga keraklikini uzim ham bilmaymiz ammo buni yozmasak ishlamaydida))
+Endi systemctl komandasi orqali yuqorida yozgan xizmatimizni ishga tushiramiz va OS qayta ishga tushgan paytida avtomatik tarzda ishga tushirilishi keraklikini aytamiz.</code>sh
+$ sudo systemctl start gunicorn
+$ sudo systemctl enable gunicorn
+<code>Endi Gunicorn ni holatini tekshirib ko'ramiz</code>sh
+$ sudo systemctl status gunicorn
+<code>Qollanmani davom ettirishdan oldin gunicorn holati aktiv ekanligiga ishonch hosil qiling!!!
+Agarda siz biron bir sabablarga ko'ra gunicorn loglarini ko'rmoqchi bolsangiz quyidaki komanda orqali buni amalga oshirishingiz mumkin</code>sh
+$ sudo journalctl -u gunicorn
+<code>`gunicorn.service` fayliga o'zgarish kiritsangiz gunicorn daemoni va gunicorn xizmatini qayta ishga tushurishingiz kerak boladi</code>sh
+$ sudo systemctl daemon-reload 
+$ sudo systemctl restart gunicorn 
+<code>``
+Agarda Gunicorn ishlayotgan bo'lsa loyihangiz katoligida</code>myproject.sock` fayli paydo bo'ladi!!!</p>
+<h3>Nginxni sozlash</h3>
+<p>Loyihamiz uchun Nginx sozlamarini saqlaydigan yangi fayl yaratamiz. 
+<code>sh
+$ sudo nano /etc/nginx/sites-available/myproject</code>
+Va quyidaki sozlamarni nusxasini ko'chirib olamiz
+```editorconfig
+server {
+    server_name server_domain_or_IP;</p>
+<pre><code>location = /favicon.ico { access_log off; log_not_found off; }
+location /static/ {
+    alias /home/sammy/myproject/staticfiles/;
+}    
+location /media/ {
+    alias /home/sammy/myproject/media/;
+}
+location / {
+    include proxy_params;
+    proxy_pass http://unix:/home/sammy/myproject/myproject.sock;
+}
+</code></pre>
+<p>}
+<code>Endi biz yuqoridaki sozlamarni saytlar katalogiga bog'lab uni faollashtiramiz:</code>sh
+$ sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled 
+<code>Nginx sozlamalarini kiritishda sintaksis xatolik qilmaganimizni quyidaki komanda orqali tekshirishimiz mumkin.</code>sh
+$ sudo nginx -t
+<code>Agar xatoliklar yo'q bolsa Nginx qayta ishga tushuring.</code>sh
+$ sudo systemctl restart nginx 
+```
+Va nihoyat serverni sozlab boldik!!! Siz brauzeringizda server IP si yo'ki domenini kiritib buni tekshirib ko'rishingiz mumkin, ha aytkancha serveringiz uchun <a href="https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04">SSL sertifikat olish</a>ni unitmang</p>
+  </div>
+  <!--/ Post Content-->
+
+</div>
+
+<!--Divider-->
+<hr class="border-b-1 border-gray-400 mt-12 mb-8 mx-4">
+
+<!--Next & Prev Links-->
+<div class="font-sans flex justify-between content-center px-4 mb-4">
+  <div class="text-left">
+    <span class="text-xs md:text-sm font-normal text-gray-600">&lt; Previous Post</span><br>
+    <p><a href="#" class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">Blog
+      title</a></p>
+  </div>
+  <div class="text-right">
+    <span class="text-xs md:text-sm font-normal text-gray-600">Next Post &gt;</span><br>
+    <p><a href="#" class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">Blog
+      title</a></p>
+  </div>
+</div>
+
+
+<!--/Next & Prev Links-->
+
+
+<!--Subscribe-->
+<div class="container font-sans bg-white rounded mt-8 p-4 md:p-24 mb-10 text-center">
+  <h2 class="font-bold break-normal text-2xl md:text-4xl">Subscribe to Ghostwind CSS</h2>
+  <h3 class="font-bold break-normal font-normal text-gray-600 text-base md:text-xl">Get the latest posts delivered right
+    to your inbox</h3>
+  <div class="w-full text-center pt-4">
+    <form action="#">
+      <div class="max-w-xl mx-auto p-1 pr-0 flex flex-wrap items-center">
+        <input type="email" placeholder="youremail@example.com"
+               class="flex-1 appearance-none rounded shadow p-3 text-gray-600 mr-2 focus:outline-none">
+        <button type="submit"
+                class="flex-1 mt-4 md:mt-0 block md:inline-block appearance-none bg-green-500 text-white text-base font-semibold tracking-wider uppercase py-4 rounded shadow hover:bg-green-400">
+          Subscribe
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- /Subscribe-->
+</div>
+<!--/container-->
+
+<footer class="bg-gray-900">
+  <div class="container max-w-6xl mx-auto flex items-center px-2 py-8">
+
+    <div class="w-full mx-auto flex flex-wrap items-center">
+      <div class="flex w-full md:w-1/2 justify-center md:justify-start text-white font-extrabold">
+        <a class="text-gray-900 no-underline hover:text-gray-900 hover:no-underline" href="#">
+          👻 <span class="text-base text-gray-200"> Ghostwind CSS</span>
+        </a>
+      </div>
+      <div class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
+        <ul class="list-reset flex justify-center flex-1 md:flex-none items-center">
+          <li>
+            <a class="inline-block py-2 px-3 text-white no-underline" href="#">Active</a>
+          </li>
+          <li>
+            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+               href="#">link</a>
+          </li>
+          <li>
+            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+               href="#">link</a>
+          </li>
+          <li>
+            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+               href="#">link</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js"></script>
+<script>
+  const myLazyLoad = new LazyLoad({
+    elements_selector:""
+  });
+</script>
+<script>
+  /* Progress bar */
+  //Source: https://alligator.io/js/progress-bar-javascript-css-variables/
+  var h = document.documentElement,
+    b = document.body,
+    st = 'scrollTop',
+    sh = 'scrollHeight',
+    progress = document.querySelector('#progress'),
+    scroll;
+  var scrollpos = window.scrollY;
+  var header = document.getElementById("header");
+  var navcontent = document.getElementById("nav-content");
+
+  document.addEventListener('scroll', function () {
+
+    /*Refresh scroll % width*/
+    scroll = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
+    progress.style.setProperty('--scroll', scroll + '%');
+
+    /*Apply classes for slide in bar*/
+    scrollpos = window.scrollY;
+
+    if (scrollpos > 10) {
+      header.classList.add("bg-white");
+      header.classList.add("shadow");
+      navcontent.classList.remove("bg-gray-100");
+      navcontent.classList.add("bg-white");
+    } else {
+      header.classList.remove("bg-white");
+      header.classList.remove("shadow");
+      navcontent.classList.remove("bg-white");
+      navcontent.classList.add("bg-gray-100");
+
+    }
+
+  });
+
+
+  //Javascript to toggle the menu
+  document.getElementById('nav-toggle').onclick = function () {
+    document.getElementById("nav-content").classList.toggle("hidden");
+  }
+</script>
+
+</body>
+
+</html>

@@ -98,7 +98,11 @@ class Blog:
 
       tm = env.get_template('base_landing.html')
 
-      ms = tm.render(blogs=queryset, head_blog=queryset[len(queryset) - 1], categories=all_categories)
+      ms = tm.render(
+        blogs=queryset,
+        head_blog=queryset[len(queryset) - 1],
+        categories=all_categories,
+        searchConfig=self.create_search_index())
       with open(path_landing, 'w') as f:
         f.write(ms)
 
@@ -165,7 +169,7 @@ class Blog:
     fg.rss_file('rss.xml')
 
   def create_search_index(self):
-    with open('templates/search_field_options.yaml', 'r') as yml:
+    with open('1_settings.yaml', 'r') as yml:
       x = json.dumps(yaml.safe_load(yml), indent=4)
       search_field_options = json.loads(x)
       options = dict()
@@ -177,8 +181,7 @@ class Blog:
             **field_options
           }
         )
-      with open('templates/search_field_options.json', 'w') as f:
-        f.write(json.dumps(options))
+      return options
 
 
 def main() -> None:
