@@ -19,7 +19,7 @@ See example here: www.docsie.io/blog/
 
 # Getting start
 
-####1. Clone the project
+#### 1. Clone the project
 
 
     git clone https://github.com/LikaloLLC/BlogVi.git
@@ -30,7 +30,7 @@ or
     git clone git@github.com:LikaloLLC/BlogVi.git
 
 
-####2. create virtual environment
+#### 2. create virtual environment
 
 
 Ubuntu OS
@@ -43,7 +43,7 @@ Windows OS
 
     virtualenv venv
 
-####3. Activate environment
+#### 3. Activate environment
 
 Ubuntu OS
 
@@ -53,7 +53,7 @@ Windows OS
 
     venv\Scripts\activate
 
-####4. Install requirements
+#### 4. Install requirements
 
 Ubuntu OS
 
@@ -63,7 +63,7 @@ Windows OS
 
     pip install -r requirements.txt
 
-####5. Run the `2_generate.py` file
+#### 5. Run the `2_generate.py` file
 
 Ubuntu OS
 
@@ -73,7 +73,7 @@ Windows OS
 
     python 2_generate.py
 
-####6. Open index.html file in browser
+#### 6. Open index.html file in browser
 
 
 
