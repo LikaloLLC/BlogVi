@@ -17,7 +17,7 @@ The goal of this project is to be a free static blog:
 
 See example here: www.docsie.io/blog/
 
-# Getting start
+# Quick start
 
 #### 1. Clone the project and enter
 
