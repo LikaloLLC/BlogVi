@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           ]
         };
 
-        console.log(search_field_options.keys.length)
+        // console.log(search_field_options.keys.length)
         if (search_field_options.keys.length > 0) {
           options = search_field_options
         }

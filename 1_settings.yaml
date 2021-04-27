@@ -1,3 +1,16 @@
+mandatory:
+  blog_name: "Docsie.io Blog"
+  landing_name : ""
+  landing_description: ""
+  landing_image: ""
+  theme: "tailwind_g"
+  template: "tailwind_g"
+  blog_root_url: "blog"
+optional:
+  link_menu:
+    link_1: "https://www.docsie.io"
+    link_2: "https://www.docsie.io/pricing/"
+    link_3: "https://www.docsie.io/try_docsie/"
 keys:
   title:
     weight: 8
