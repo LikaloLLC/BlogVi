@@ -19,16 +19,17 @@ See example here: www.docsie.io/blog/
 
 # Getting start
 
-#### 1. Clone the project
+#### 1. Clone the project and enter
 
 
     git clone https://github.com/LikaloLLC/BlogVi.git
+    cd BlogVi
 
 
 or
 
     git clone git@github.com:LikaloLLC/BlogVi.git
-
+    cd BlogVi
 
 #### 2. create virtual environment
 
