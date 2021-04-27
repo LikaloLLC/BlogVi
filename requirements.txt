@@ -2,3 +2,7 @@ Markdown
 requests
 Jinja2
 pandas
+jinja_markdown
+feedgen
+python-slugify
+pyyaml
