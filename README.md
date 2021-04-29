@@ -17,17 +17,61 @@ The goal of this project is to be a free static blog:
 
 See example here: www.docsie.io/blog/
 
+# Quick start
+
+#### 1. Clone the project and enter
 
 
+    git clone https://github.com/LikaloLLC/BlogVi.git
+    cd BlogVi
 
 
+or
+
+    git clone git@github.com:LikaloLLC/BlogVi.git
+    cd BlogVi
+
+#### 2. create virtual environment
 
 
+Ubuntu OS
 
 
+    python3 -m venv venv
 
 
+Windows OS
 
+    virtualenv venv
 
+#### 3. Activate environment
 
+Ubuntu OS
 
+    source venv/bin/activate
+
+Windows OS
+
+    venv\Scripts\activate
+
+#### 4. Install requirements
+
+Ubuntu OS
+
+    pip3 install -r requirements.txt
+
+Windows OS
+
+    pip install -r requirements.txt
+
+#### 5. Run the `2_generate.py` file
+
+Ubuntu OS
+
+    python3 2_generate.py
+
+Windows OS
+
+    python 2_generate.py
+
+#### 6. Open index.html file in browser
