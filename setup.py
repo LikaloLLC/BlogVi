@@ -40,14 +40,13 @@ setup(
         "requests>=2.0.0,<2.22.0",
         "Jinja2>=2.0.0,<2.22.0",
         "jinja_markdown>=1.200000,<=1.200630",
-        "feedgen>=2.0.0,<2.22.0",
-        "feedgen>=2.0.0,<2.22.0",
+        "feedgen>=0.6.0,<1.0.0",
         "python-slugify>=4.0.0,<4.0.1",
         "PyYAML>=5.0.0,<5.3.1",
     ],
     entry_points={
         "console_scripts": [
-            "blogvi=blog-vi._cli:_cli"
+            "blogvi=blog_vi._cli:_cli"
         ]
     },
 )
