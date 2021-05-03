@@ -1,4 +1,3 @@
-import datetime
 import glob
 import json
 import os
@@ -149,16 +148,16 @@ class Blog:
     self.generate_rss()
 
   def generate_rss(self):
+    domain_name = "https://www.docsie.io"
+    template_path = "BlogVi/templates"
     fg = FeedGenerator()
-    fg.id("http://localhost:63342/BlogVi/templates/index.html")
+    fg.id(f"{domain_name}/{template_path}/index.html")
     fg.title('Minimal Blog')
-    # fg.author({'name': data.get('author_name'), 'email': data.get('author_email')})
-    fg.link(href='http://localhost:63342/BlogVi/templates/index.html', rel='alternate')
-    # fg.logo(data.get('author_image'))
+    fg.link(href=f'{domain_name}/{template_path}/index.html', rel='alternate')
     fg.subtitle("Minimaal BlogV RSS ")
     fg.language('en')
     for data in blogs_list:
-      url = f'http://localhost:63342/BlogVi/templates/blogs/{data.get("detail_url")}'
+      url = f'{domain_name}/{template_path}/blogs/{data.get("detail_url")}'
       fe = fg.add_entry()
       fe.id(url)
       fe.title(data.get('author_name'))
@@ -210,13 +209,10 @@ def main() -> None:
       for tag in blog.categories:
         all_categories.add((tag, f"{slugify(tag)}-landing.html"))
 
-      # print(blog.categories)
   blog.generate_categories()
 
 
 if __name__ == '__main__':
   print("Running, Please wait")
-  print(datetime.datetime.now())
   main()
-  print(datetime.datetime.now())
   print("Succes, Please open the index.html in browser")
