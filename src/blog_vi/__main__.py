@@ -1,7 +1,7 @@
-import datetime
 import glob
 import json
 import os
+from pathlib import Path
 
 import markdown
 import yaml
@@ -9,7 +9,8 @@ from feedgen.feed import FeedGenerator
 from jinja2 import FileSystemLoader, Environment
 from slugify import slugify
 
-from utils import get_md_file, ImgExtExtension, H1H2Extension, get_data
+from ._config import SETTINGS_FILENAME
+from .utils import get_md_file, ImgExtExtension, H1H2Extension, get_data
 
 # Philippe`s google Sheet
 # https://docs.google.com/spreadsheets/d/1deKANndKOOmOdQUQWDK6-zC7P6J25SzBrUx2RX9lvkY/gviz/tq?tqx=out:csv&sheet=Form%20Responses%201
@@ -142,8 +143,11 @@ class Blog:
 
     ms = tm.render(blog=f'articles/{self.detail_url}', head_blog=self)
 
-    with open(f'templates/blogs/{self.detail_url}', mode="w") as f:
-      f.write(ms)
+    blogs_dir = Path('templates/blogs/')
+    blogs_dir.mkdir(parents=True, exist_ok=True)
+
+    file = blogs_dir / self.detail_url
+    file.write_text(ms)
 
     self.detail_url = f'templates/blogs/{self.detail_url}'
     self.generate_rss()
@@ -169,7 +173,7 @@ class Blog:
     fg.rss_file('rss.xml')
 
   def create_search_index(self):
-    with open('1_settings.yaml', 'r') as yml:
+    with open(SETTINGS_FILENAME, 'r') as yml:
       x = json.dumps(yaml.safe_load(yml), indent=4)
       search_field_options = json.loads(x)
       options = dict()
@@ -184,34 +188,52 @@ class Blog:
       return options
 
 
-def generate_blog(url) -> None:
-  # url = "https://docs.google.com/spreadsheets/d/1deKANndKOOmOdQUQWDK6-zC7P6J25SzBrUx2RX9lvkY/gviz/tq?tqx=out:csv&sheet=Form%20Responses%201"
-  # url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNYmtcxqYplBu7SlY6grJRb3Y0vrmOBkE8j2CyeQlQHq4ElynBfi0Tkd4h2u2tPj4EmeGFBxyy8g73/pub?output=csv"
-  datas = get_data(url)
-  blog = Blog()
-  blog.create_search_index()
-  for data in datas:
-    if data['Status'] == '1':
-      blog.title = data.get('title')
-      blog.author_name = data['Author Name']
-      blog.author_email = data['Author email']
-      blog.author_info = data['About the Author']
-      blog.author_image = data['Author Avatar Image URL']
-      blog.author_social = data['linked.in github urls']
-      blog.summary = data['Excerpt/Short Summary']
-      blog.categories = [x for x in data['Categories '].split(", ")]
-      blog.timestamp = data['Timestamp']
-      blog.status = 1
-      # blog.timestamp = data['Timestamp'].replace("/", ".")
-      blog.markdown = data['Markdown']
-      blog.generate_articles()
-      blog.create_blog()
+def get_settings(filename='1_settings.yaml'):
+    """Return settings dictionary.
 
-      for tag in blog.categories:
-        all_categories.add((tag, f"{slugify(tag)}-landing.html"))
+    :param filename: path to yaml settings file, defaults to `1_settings.yaml`
+    :type filename: str
+    :return: settings dictionary object
+    :rtype: dict
+    """
 
-      # print(blog.categories)
-  blog.generate_categories()
+    return yaml.load(open(filename), Loader=yaml.FullLoader)
+
+
+def generate_blog(dirname) -> None:
+    # TODO: Replace with more appropriate way to access data in another directory
+    os.chdir(dirname)
+
+    # url = "https://docs.google.com/spreadsheets/d/1deKANndKOOmOdQUQWDK6-zC7P6J25SzBrUx2RX9lvkY/gviz/tq?tqx=out:csv&sheet=Form%20Responses%201"
+    # url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNYmtcxqYplBu7SlY6grJRb3Y0vrmOBkE8j2CyeQlQHq4ElynBfi0Tkd4h2u2tPj4EmeGFBxyy8g73/pub?output=csv"
+    settings = get_settings(SETTINGS_FILENAME)
+
+    url = settings['mandatory']['url']
+    datas = get_data(url)
+    blog = Blog()
+    blog.create_search_index()
+    for data in datas:
+        if data['Status'] == '1':
+            blog.title = data.get('title')
+            blog.author_name = data['Author Name']
+            blog.author_email = data['Author email']
+            blog.author_info = data['About the Author']
+            blog.author_image = data['Author Avatar Image URL']
+            blog.author_social = data['linked.in github urls']
+            blog.summary = data['Excerpt/Short Summary']
+            blog.categories = [x for x in data['Categories '].split(", ")]
+            # blog.timestamp = data['Timestamp']
+            blog.status = 1
+            # blog.timestamp = data['Timestamp'].replace("/", ".")
+            blog.markdown = data['Markdown']
+            blog.generate_articles()
+            blog.create_blog()
+
+            for tag in blog.categories:
+                all_categories.add((tag, f"{slugify(tag)}-landing.html"))
+
+            # print(blog.categories)
+    blog.generate_categories()
 
 #
 # if __name__ == '__main__':

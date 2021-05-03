@@ -1,4 +1,5 @@
 import csv
+from pathlib import Path
 
 import requests
 from markdown import Extension
@@ -62,7 +63,10 @@ def get_data(url: str) -> list:
 def get_md_file(markdown_url: str, file_name: str) -> None:
   response = requests.get(markdown_url)
 
-  with open(f"templates/articles/{file_name}.md", "wb") as f:
-    f.write(response.content)
+  articles_dir = Path(f"templates/articles/")
+  articles_dir.mkdir(parents=True, exist_ok=True)
+
+  file = articles_dir / f'{file_name}.md'
+  file.write_bytes(response.content)
 
   return f"templates/articles/{file_name}.md"
