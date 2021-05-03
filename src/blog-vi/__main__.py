@@ -184,9 +184,9 @@ class Blog:
       return options
 
 
-def main() -> None:
+def generate_blog(url) -> None:
   # url = "https://docs.google.com/spreadsheets/d/1deKANndKOOmOdQUQWDK6-zC7P6J25SzBrUx2RX9lvkY/gviz/tq?tqx=out:csv&sheet=Form%20Responses%201"
-  url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNYmtcxqYplBu7SlY6grJRb3Y0vrmOBkE8j2CyeQlQHq4ElynBfi0Tkd4h2u2tPj4EmeGFBxyy8g73/pub?output=csv"
+  # url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNYmtcxqYplBu7SlY6grJRb3Y0vrmOBkE8j2CyeQlQHq4ElynBfi0Tkd4h2u2tPj4EmeGFBxyy8g73/pub?output=csv"
   datas = get_data(url)
   blog = Blog()
   blog.create_search_index()
@@ -200,7 +200,7 @@ def main() -> None:
       blog.author_social = data['linked.in github urls']
       blog.summary = data['Excerpt/Short Summary']
       blog.categories = [x for x in data['Categories '].split(", ")]
-      blog.timestamp = data['Отметка времени']
+      blog.timestamp = data['Timestamp']
       blog.status = 1
       # blog.timestamp = data['Timestamp'].replace("/", ".")
       blog.markdown = data['Markdown']
@@ -213,10 +213,10 @@ def main() -> None:
       # print(blog.categories)
   blog.generate_categories()
 
-
-if __name__ == '__main__':
-  print("Running, Please wait")
-  print(datetime.datetime.now())
-  main()
-  print(datetime.datetime.now())
-  print("Succes, Please open the index.html in browser")
+#
+# if __name__ == '__main__':
+#   print("Running, Please wait")
+#   print(datetime.datetime.now())
+#   generate_blog()
+#   print(datetime.datetime.now())
+#   print("Succes, Please open the index.html in browser")
