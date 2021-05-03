@@ -47,11 +47,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "ff=functions_framework._cli:_cli",
-            "functions-framework=functions_framework._cli:_cli",
-            "functions_framework=functions_framework._cli:_cli",
-            "functions-framework-python=functions_framework._cli:_cli",
-            "functions_framework_python=functions_framework._cli:_cli",
+            "blogvi=blog-vi._cli:_cli"
         ]
     },
 )

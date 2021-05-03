@@ -4,7 +4,7 @@ import click
 from .__main__ import generate_blog
 
 @click.command()
-# @click.option("--target", envvar="FUNCTION_TARGET", type=click.STRING, required=True)
+@click.option("--url", envvar="BLOGVI_URL", type=click.STRING, required=True)
 # @click.option("--source", envvar="FUNCTION_SOURCE", type=click.Path(), default=None)
 #
 # @click.option("--host", envvar="HOST", type=click.STRING, default="0.0.0.0")
@@ -14,5 +14,4 @@ from .__main__ import generate_blog
 
 
 def _cli():
-
     generate_blog()
