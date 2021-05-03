@@ -34,7 +34,7 @@ or
 #### 2. create virtual environment
 
 
-Ubuntu OS
+Linux OS(Ubuntu)
 
 
     python3 -m venv venv
@@ -46,7 +46,7 @@ Windows OS
 
 #### 3. Activate environment
 
-Ubuntu OS
+Linux OS(Ubuntu)
 
     source venv/bin/activate
 
@@ -56,7 +56,7 @@ Windows OS
 
 #### 4. Install requirements
 
-Ubuntu OS
+Linux OS(Ubuntu)
 
     pip3 install -r requirements.txt
 
@@ -66,7 +66,7 @@ Windows OS
 
 #### 5. Run the `2_generate.py` file
 
-Ubuntu OS
+Linux OS(Ubuntu)
 
     python3 2_generate.py
 
