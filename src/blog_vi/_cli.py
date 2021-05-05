@@ -17,6 +17,7 @@ MANDATORY_FILENAMES = [SETTINGS_FILENAME, AUTHORS_FILENAME]
     required=True
 )
 def _cli(directory):
+    directory += '/src/blog_vi'
     dir_contents = os.listdir(directory)
 
     for filename in MANDATORY_FILENAMES:
