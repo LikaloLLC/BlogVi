@@ -45,7 +45,7 @@
   <meta property="twitter:image" content="https://www.tailwindtoolbox.com/social.png">
 
 
-  <link href="css/tailwind.min.css" rel="stylesheet">
+  <link href="./css/tailwind.min.css" rel="stylesheet">
 
 </head>
 
@@ -157,7 +157,7 @@
         <a href="blogs/{{ head_blog.detail_url }}" class="flex flex-wrap no-underline hover:no-underline">
           <div class="w-full md:w-2/3 rounded-t">
             <!--            <img src="https://source.unsplash.com/collection/494263/800x600" class="h-full w-full shadow">-->
-            <img src="{{head_blog.author_image}}" class="h-full w-full shadow">
+            <img src="{{head_blog.header_image}}" class="h-full w-full shadow">
           </div>
 
           <div class="w-full md:w-1/3 flex flex-col flex-grow flex-shrink">
@@ -196,7 +196,7 @@
           <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">
             <a href="blogs/{{ blog.detail_url }}" class="flex flex-wrap no-underline hover:no-underline">
               <!--              <img src="https://source.unsplash.com/collection/225/800x600" class="h-64 w-full rounded-t pb-6">-->
-              <img data-src="{{ blog.author_image }}" class="h-64 w-full rounded-t pb-6">
+              <img data-src="{{ blog.header_image }}" class="h-64 w-full rounded-t pb-6">
             </a>
             <p class="w-full text-gray-600 text-xs md:text-sm px-6">GETTING STARTED</p>
             <div class="w-full font-bold text-xl text-gray-900 px-6">{{blog.title}}</div>
@@ -366,7 +366,11 @@ tippy('.avatar')
 
 </script>
 
-<script type="text/javascript">window["searchConfig"] = {{ searchConfig }}</script>
+<script type="text/javascript">window["searchConfig"] = {
+{
+  searchConfig
+}
+}</script>
 <script>
   /*
     Twitter
