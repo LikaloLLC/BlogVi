@@ -237,12 +237,13 @@ if __name__ == '__main__':
 # Excerpt/Short Summary	
 # Categories 	
 # About the Author	
-# linked.in github urls	
-Header Image (will be used in RSS feed)	
-Author Image	
+# linked.in github urls		
 # Title	
 # Status	
+
 Hero Image (Used for RSS)	
+Header Image (will be used in RSS feed)	
+Author Image
 
 self.title = title
 self.author_name = author_name

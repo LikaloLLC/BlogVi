@@ -60,9 +60,13 @@ def get_data(url: str) -> list:
 
 
 def get_md_file(text: str, file_name: str) -> None:
+    mode = 'w'
+    if text.startswith('https://'):
+        text = requests.get(text).content
+        mode = 'wb'
     # response = requests.get(markdown_url)
 
-    with open(f"templates/articles/{file_name}.md", "w") as f:
+    with open(f"templates/articles/{file_name}.md", mode) as f:
         f.write(text)
 
     return f"templates/articles/{file_name}.md"
