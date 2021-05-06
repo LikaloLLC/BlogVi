@@ -1,2 +1,3 @@
 include src/blog_vi/templates/*
-
+include src/blog_vi/templates/css/*
+include src/blog_vi/templates/js/*
