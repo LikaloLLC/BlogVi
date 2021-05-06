@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import click
 
@@ -17,11 +18,13 @@ MANDATORY_FILENAMES = [SETTINGS_FILENAME, AUTHORS_FILENAME]
     required=True
 )
 def _cli(directory):
-    directory += '/src/blog_vi'
-    dir_contents = os.listdir(directory)
+    # TODO: Checks for `templates_dir`
+    workdir = Path(directory)
 
     for filename in MANDATORY_FILENAMES:
-        if filename not in dir_contents:
+        if not workdir.joinpath(filename).exists():
             click.echo('Could not find {} in directory {}.'.format(filename, directory))
 
-    generate_blog(directory)
+            return
+
+    generate_blog(workdir)
