@@ -18,6 +18,7 @@ setup(
     url="https://github.com/LikaloLLC/BlogVi",
     author="Likalo Limited",
     author_email="hello@docsie.io",
+    include_package_data=True,
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
