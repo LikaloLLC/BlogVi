@@ -1,6 +1,9 @@
 import csv
+import shutil
+from pathlib import Path
 
 import requests
+import yaml
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
 
@@ -65,7 +68,37 @@ def get_md_file(text: str, file_name: str) -> None:
         text = requests.get(text).content
         mode = 'wb'
 
-    with open(f"templates/articles/{file_name}.md", mode) as f:
+    with open(file_name, mode) as f:
         f.write(text)
 
-    return f"templates/articles/{file_name}.md"
+    return file_name
+
+
+def get_settings(filename: str = '1_settings.yaml') -> dict:
+    """Return settings dictionary.
+
+    :param filename: path to yaml settings file, defaults to `1_settings.yaml`
+    :return: settings dictionary object
+    :rtype: dict
+    """
+
+    return yaml.load(open(filename), Loader=yaml.FullLoader)
+
+
+def prepare_workdir(workdir: Path) -> tuple[Path, Path]:
+    """Create necessary directories if needed, such as templates directiry, articles directory, etc.
+
+    :param workdir: Working directory, where the blog is generated.
+    :return: Working dir and Template dir Path objects
+    """
+    workdir.joinpath('blogs').mkdir(exist_ok=True)
+    workdir.joinpath('articles').mkdir(exist_ok=True)
+
+    templates_dir = workdir / 'templates'
+    if not templates_dir.exists():
+        app_templates_dir = Path(__file__).parent / 'templates'
+
+        # Move the default template dir to the current workdir
+        shutil.copytree(app_templates_dir, templates_dir)
+
+    return workdir, templates_dir
