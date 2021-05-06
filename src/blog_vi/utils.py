@@ -85,7 +85,7 @@ def get_settings(filename: str = '1_settings.yaml') -> dict:
     return yaml.load(open(filename), Loader=yaml.FullLoader)
 
 
-def prepare_workdir(workdir: Path) -> tuple[Path, Path]:
+def prepare_workdir(workdir: Path):
     """Create necessary directories if needed, such as templates directiry, articles directory, etc.
 
     :param workdir: Working directory, where the blog is generated.
