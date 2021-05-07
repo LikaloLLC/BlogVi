@@ -1,5 +1,4 @@
 import json
-import os
 from pathlib import Path
 
 import markdown
@@ -22,10 +21,11 @@ all_categories = set()
 
 
 class Blog:
-    def __init__(self, workdir: Path, templates_dir: Path, title=None, timestamp=None, header_image=None, author_name=None,
+    def __init__(self, workdir: Path, templates_dir: Path, title=None, timestamp=None, header_image=None,
+                 author_name=None,
                  author_image=None, author_email=None,
                  summary=None, categories=None, markdown=None, detail_url=None,
-                 author_info=None, author_social=None, status=None) -> None:
+                 author_info=None, author_social=None, status=None, prev_link=None, next_link=None) -> None:
         self.workdir = workdir
         self.templates_dir = templates_dir
 
@@ -42,6 +42,8 @@ class Blog:
         self.author_social = author_social
         self.status = status
         self.detail_url = detail_url
+        self.prev_link = prev_link
+        self.next_link = next_link
 
     def __str__(self) -> str:
         return f"Blog is about {self.author_name}"
@@ -61,7 +63,9 @@ class Blog:
             'timestamp': self.timestamp,
             'categories': self.categories,
             'status': self.status,
-            'detail_url': self.detail_url
+            'detail_url': self.detail_url,
+            'prev_link': self.prev_link,
+            'next_link': self.next_link
         }
         return dct
 
@@ -96,11 +100,13 @@ class Blog:
             env = Environment(loader=directory_loader)
 
             tm = env.get_template('base_landing.html')
-
+            settings = get_settings(self.workdir / SETTINGS_FILENAME)
+            subscribe = settings['subscribe']
             ms = tm.render(
                 blogs=queryset,
                 head_blog=queryset[len(queryset) - 1],
                 categories=all_categories,
+                subscribe=subscribe,
                 searchConfig=self.create_search_index())
 
             landing_index_path.write_text(ms)
@@ -131,8 +137,9 @@ class Blog:
         directory_loader = FileSystemLoader([self.workdir, self.templates_dir])
         env = Environment(loader=directory_loader)
         tm = env.get_template('base_blog.html')
-
-        ms = tm.render(blog=str(Path('articles', self.detail_url)), head_blog=self)
+        settings = get_settings(self.workdir / SETTINGS_FILENAME)
+        subscribe = settings['subscribe']
+        ms = tm.render(blog=str(Path('articles', self.detail_url)), head_blog=self, subscribe=subscribe)
 
         blogs_dir = self.workdir / 'blogs'
         blogs_dir.mkdir(parents=True, exist_ok=True)
@@ -191,7 +198,6 @@ def generate_blog(workdir: Path) -> None:
     blog.create_search_index()
     cnt = 0
     for data in datas:
-        cnt += 1
         if data['Status'] == '1':
             if data.get('Title'):
                 blog.title = data.get('Title')
@@ -209,8 +215,32 @@ def generate_blog(workdir: Path) -> None:
             blog.timestamp = data['Timestamp'].replace("/", ".")
             blog.markdown = data['Markdown']
             blog.generate_articles()
-            blog.create_blog()
+            current_link = slugify(blog.title) + '.html'
 
+            try:
+                if datas[cnt - 1].get('Title'):
+                    if current_link != blog.prev_link:
+                        blog.prev_link = slugify(datas[cnt - 1].get('Title')) + '.html'
+                else:
+                    if current_link != blog.prev_link:
+                        blog.prev_link = slugify(f'blog-{cnt - 1}') + '.html'
+
+                if cnt == len(datas) - 1:
+                    cnt = -1
+
+                if datas[cnt + 1].get('Title'):
+                    if current_link != blog.prev_link:
+                        blog.next_link = slugify(datas[cnt + 1].get('Title')) + '.html'
+                else:
+                    if current_link != blog.prev_link:
+                        blog.next_link = slugify(f'blog-{cnt + 1}') + '.html'
+            except Exception as e:
+                pass
+            blog.create_blog()
+            for tag in blog.categories:
+                all_categories.add((tag, f"{slugify(tag)}-landing.html"))
+
+            cnt += 1
         for tag in blog.categories:
             all_categories.add((tag, f"{slugify(tag)}-landing.html"))
 

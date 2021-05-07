@@ -1,6 +1,6 @@
 mandatory:
   blog_name: "Docsie.io Blog"
-  landing_name : ""
+  landing_name: ""
   landing_description: ""
   landing_image: ""
   theme: "tailwind_g"
@@ -21,3 +21,7 @@ keys:
     weight: 5
   categories:
     weight: 3
+subscribe:
+  title: "Subscribe Title"
+  summary: "Subscribe Text Summary"
+  button_text: "Subscribe"
