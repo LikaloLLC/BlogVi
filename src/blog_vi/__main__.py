@@ -101,13 +101,13 @@ class Blog:
 
             tm = env.get_template('base_landing.html')
             settings = get_settings(self.workdir / SETTINGS_FILENAME)
-            subscribe = settings['subscribe']
             ms = tm.render(
                 blogs=queryset,
                 head_blog=queryset[len(queryset) - 1],
                 categories=all_categories,
-                subscribe=subscribe,
-                searchConfig=self.create_search_index())
+                searchConfig=self.create_search_index(),
+                settings=settings
+            )
 
             landing_index_path.write_text(ms)
 
@@ -138,8 +138,11 @@ class Blog:
         env = Environment(loader=directory_loader)
         tm = env.get_template('base_blog.html')
         settings = get_settings(self.workdir / SETTINGS_FILENAME)
-        subscribe = settings['subscribe']
-        ms = tm.render(blog=str(Path('articles', self.detail_url)), head_blog=self, subscribe=subscribe)
+        ms = tm.render(
+            blog=str(Path('articles', self.detail_url)),
+            head_blog=self,
+            settings=settings
+        )
 
         blogs_dir = self.workdir / 'blogs'
         blogs_dir.mkdir(parents=True, exist_ok=True)
@@ -155,9 +158,9 @@ class Blog:
         template_path = "blog_vi/templates"
         fg = FeedGenerator()
         fg.id(f"{domain_name}/{template_path}/index.html")
-        fg.title('Minimal Blog')
+        fg.title(settings['mandatory']['blog_name'])
         fg.link(href=f'{domain_name}/{template_path}/index.html', rel='alternate')
-        fg.subtitle("Minimaal BlogV RSS ")
+        fg.subtitle(settings['mandatory']['blog_name'])
         fg.language('en')
         for data in blogs_list:
             url = f'{domain_name}/{template_path}/blogs/{data.get("detail_url")}'

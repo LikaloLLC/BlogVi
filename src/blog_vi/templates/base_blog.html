@@ -31,7 +31,7 @@
 
     <div class="pl-4">
       <a class="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl" href="../index.html">
-        Minimal Blog
+          {{ settings.mandatory.blog_name}}
       </a>
     </div>
 
@@ -139,16 +139,10 @@
 
 <!--/Next & Prev Links-->
 
-<div class="container" style="margin-left: 30px;">
-    {% for dct in subscribe.values() %}
-        <p>{{ dct }}</p>
-    {% endfor %}
-</div>
 <!--Subscribe-->
 <div class="container font-sans bg-white rounded mt-8 p-4 md:p-24 mb-10 text-center">
-  <h2 class="font-bold break-normal text-2xl md:text-4xl">Subscribe to Ghostwind CSS</h2>
-  <h3 class="font-bold break-normal font-normal text-gray-600 text-base md:text-xl">Get the latest posts delivered right
-    to your inbox</h3>
+  <h2 class="font-bold break-normal text-2xl md:text-4xl">{{ settings.subscribe.title }}</h2>
+  <h3 class="font-bold break-normal font-normal text-gray-600 text-base md:text-xl">{{ settings.subscribe.summary }}</h3>
   <div class="w-full text-center pt-4">
     <form action="#">
       <div class="max-w-xl mx-auto p-1 pr-0 flex flex-wrap items-center">
@@ -156,7 +150,7 @@
                class="flex-1 appearance-none rounded shadow p-3 text-gray-600 mr-2 focus:outline-none">
         <button type="submit"
                 class="flex-1 mt-4 md:mt-0 block md:inline-block appearance-none bg-green-500 text-white text-base font-semibold tracking-wider uppercase py-4 rounded shadow hover:bg-green-400">
-          Subscribe
+            {{ settings.subscribe.button_text }}
         </button>
       </div>
     </form>
