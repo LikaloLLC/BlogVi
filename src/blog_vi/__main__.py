@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from pathlib import Path
 
 import markdown
@@ -36,7 +37,6 @@ class Blog:
         self.author_image = author_image
         self.author_email = author_email
         self.summary = summary
-        self.timestamp = timestamp
         self.categories = categories
         self.author_info = author_info
         self.author_social = author_social
@@ -44,6 +44,8 @@ class Blog:
         self.detail_url = detail_url
         self.prev_link = prev_link
         self.next_link = next_link
+
+        self.publish_date = self.get_publish_date(timestamp) if timestamp else None
 
     def __str__(self) -> str:
         return f"Blog is about {self.author_name}"
@@ -60,7 +62,7 @@ class Blog:
             'markdown': self.markdown,
             'header_image': self.header_image,
             'summary': self.summary,
-            'timestamp': self.timestamp,
+            'publish_date': self.publish_date,
             'categories': self.categories,
             'status': self.status,
             'detail_url': self.detail_url,
@@ -188,6 +190,9 @@ class Blog:
                 )
             return options
 
+    def get_publish_date(self, timestamp: datetime) -> str:
+        return timestamp.strftime('%B %d, %Y')
+
 
 def generate_blog(workdir: Path) -> None:
     workdir, templates_dir = prepare_workdir(workdir)
@@ -215,7 +220,8 @@ def generate_blog(workdir: Path) -> None:
             blog.summary = data['Excerpt/Short Summary']
             blog.categories = [x for x in data['Categories '].split(", ")]
             blog.status = 1
-            blog.timestamp = data['Timestamp'].replace("/", ".")
+            blog.timestamp = data['Timestamp']
+            blog.publish_date = blog.get_publish_date(datetime.strptime(data['Timestamp'], '%d/%m/%Y %H:%M:%S'))
             blog.markdown = data['Markdown']
             blog.generate_articles()
             current_link = slugify(blog.title) + '.html'
