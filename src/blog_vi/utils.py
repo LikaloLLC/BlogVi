@@ -46,7 +46,7 @@ class Settings:
     mandatory = ('blog_name', 'landing_name', 'landing_description',
                  'landing_image', 'theme', 'template', 'blog_root_url', 'url')
     optional = {
-        'link_menu': {},
+        'link_menu': [],
         'search_config': {
             'title': {
                 'weight': 8

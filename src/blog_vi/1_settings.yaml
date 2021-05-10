@@ -9,9 +9,12 @@ mandatory:
   url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Unb1VTOB1upja915Rp7N6MJnqtLLOPYUlrJW7R0qybH_kGWB1wPozgjAf6X5JD-Bv_XldO9yKSLU/pub?output=csv"
 optional:
   link_menu:
-    link_1: "https://www.docsie.io"
-    link_2: "https://www.docsie.io/pricing/"
-    link_3: "https://www.docsie.io/try_docsie/"
+    - link: "https://www.docsie.io"
+      text: "Docsie"
+    - link: "https://www.docsie.io/pricing/"
+      text: "Docsie Pricing"
+    - link: "https://www.docsie.io/try_docsie/"
+      text: "Try Docsie"
 
   search_config:
     title:

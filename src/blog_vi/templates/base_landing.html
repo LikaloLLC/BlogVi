@@ -262,18 +262,12 @@
       </div>
       <div class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
         <ul class="list-reset flex justify-center flex-1 md:flex-none items-center">
-          <li>
-            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-               href="#">link</a>
-          </li>
-          <li>
-            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-               href="#">link</a>
-          </li>
-          <li>
-            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-               href="#">link</a>
-          </li>
+          {% for link in settings.link_menu %}
+            <li>
+              <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+                 href="{{ link.link }}">{{ link.text }}</a>
+            </li>
+          {% endfor %}
         </ul>
       </div>
     </div>

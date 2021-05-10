@@ -48,17 +48,12 @@
     <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-gray-100 z-20"
          id="nav-content">
       <ul class="list-reset lg:flex justify-end flex-1 items-center">
-        <li class="mr-3">
-          <a class="inline-block py-2 px-4 text-gray-900 font-bold no-underline" href="#">Active</a>
+        {% for link in settings.link_menu %}
+        <li>
+          <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+             href="{{ link.link }}">{{ link.text }}</a>
         </li>
-        <li class="mr-3">
-          <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
-             href="#">link</a>
-        </li>
-        <li class="mr-3">
-          <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
-             href="#">link</a>
-        </li>
+        {% endfor %}
       </ul>
     </div>
     <div class="flex w-full justify-end content-center">
@@ -93,8 +88,6 @@
 
     <!--Title-->
     <h1 id="blog-title">{{head_blog.title}}</h1>
-    <p class="lead">Until now, trying to style an article, document, or blog post with Tailwind has been a tedious task
-      that required a keen eye for typography and a lot of complex custom CSS.</p>
     <!--Author-->
     <div class="flex items-center">
       <img class="w-10 h-10 rounded-full mr-4" src="{{ head_blog.header_image }}" alt="Avatar of Author">
@@ -179,21 +172,12 @@
       </div>
       <div class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
         <ul class="list-reset flex justify-center flex-1 md:flex-none items-center">
-          <li>
-            <a class="inline-block py-2 px-3 text-white no-underline" href="#">Active</a>
-          </li>
-          <li>
-            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-               href="#">link</a>
-          </li>
-          <li>
-            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-               href="#">link</a>
-          </li>
-          <li>
-            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
-               href="#">link</a>
-          </li>
+          {% for link in settings.link_menu %}
+            <li>
+              <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+                 href="{{ link.link }}">{{ link.text }}</a>
+            </li>
+          {% endfor %}
         </ul>
       </div>
     </div>
