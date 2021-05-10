@@ -60,6 +60,12 @@ class Settings:
             'categories': {
                 'weight': 3
             }
+        },
+        'comments': {
+            'enabled': False,
+        },
+        'subscribe': {
+            'enabled': False
         }
     }
 
@@ -133,7 +139,6 @@ def prepare_workdir(workdir: Path):
     :param workdir: Working directory, where the blog is generated.
     :return: Working dir and Template dir Path objects
     """
-    workdir.joinpath('blogs').mkdir(exist_ok=True)
     workdir.joinpath('articles').mkdir(exist_ok=True)
 
     templates_dir = workdir / 'templates'

@@ -12,6 +12,7 @@ optional:
     link_1: "https://www.docsie.io"
     link_2: "https://www.docsie.io/pricing/"
     link_3: "https://www.docsie.io/try_docsie/"
+
   search_config:
     title:
       weight: 8
@@ -22,7 +23,12 @@ optional:
     categories:
       weight: 3
 
-subscribe:
-  title: "Subscribe Title"
-  summary: "Subscribe Text Summary"
-  button_text: "Subscribe"
+  comments:
+    enabled: true
+    commentbox_project_id: "5725910686760960-proj"
+
+  subscribe:
+    enabled: true
+    title: "Subscribe to the newsletter"
+    summary: "Stay up to date with our latest news and products"
+    button_text: "Subscribe"
