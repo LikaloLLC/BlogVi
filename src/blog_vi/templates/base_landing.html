@@ -77,6 +77,12 @@
     <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-gray-100 z-20"
          id="nav-content">
       <ul class="list-reset lg:flex justify-end flex-1 items-center">
+          {% for link in settings.link_menu %}
+          <li class="mr-3">
+            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+               href="{{ link.link }}">{{ link.text }}</a>
+          </li>
+          {% endfor %}
         <li class="mr-3">
           <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
              href="../rss.xml"><i class="fas fa-rss" style="color: orangered"></i></a>
