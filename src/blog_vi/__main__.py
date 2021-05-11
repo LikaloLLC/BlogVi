@@ -64,16 +64,15 @@ class Landing:
         )
     
     def generate_rss(self):
-        domain_name = self.link_menu['link_1']
-        template_path = "blog_vi/templates"
+        domain_name = self.workdir
         fg = FeedGenerator()
-        fg.id(f"{domain_name}/{template_path}/index.html")
+        fg.id(f"{domain_name}/index.html")
         fg.title(self.name)
-        fg.link(href=f'{domain_name}/{template_path}/index.html', rel='alternate')
+        fg.link(href=f'{domain_name}/index.html', rel='alternate')
         fg.subtitle(self.name)
         fg.language('en')
         for article in self._articles:
-            url = f'{domain_name}/{template_path}/articles/{article.filename}'
+            url = f'{domain_name}/articles/{article.filename}'
             fe = fg.add_entry()
             fe.id(url)
             fe.title(article.author_name)
@@ -81,7 +80,7 @@ class Landing:
             fe.link(href=url)
             fe.published()
 
-        fg.rss_file('rss.xml')
+        fg.rss_file(str(self.workdir / 'rss.xml'))
 
     def add_article(self, article: 'Article'):
         """Validate and add an article to the list of articles."""
@@ -160,6 +159,8 @@ class Landing:
         filepath.write_text(rendered)
 
         json.dump([article.to_dict() for article in self._articles], self.workdir.joinpath('data.json').open('w'))
+
+        self.generate_rss()
 
     @staticmethod
     def prepare_search_config(search_config) -> dict:

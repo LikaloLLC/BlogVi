@@ -42,32 +42,35 @@ class H1H2Extension(Extension):
         md.treeprocessors.add('h1h2ext', h1h2_ext, '>inline')
 
 
+DEFAULTS = {
+    'link_menu': [],
+    'search_config': {
+        'title': {
+            'weight': 8
+        },
+        'summary': {
+            'weight': 6
+        },
+        'author_name': {
+            'weight': 5
+        },
+        'categories': {
+            'weight': 3
+        }
+    },
+    'comments': {
+        'enabled': False,
+    },
+    'subscribe': {
+        'enabled': False
+    }
+}
+
+
 class Settings:
     mandatory = ('blog_name', 'landing_name', 'landing_description',
                  'landing_image', 'theme', 'template', 'blog_root_url', 'url')
-    optional = {
-        'link_menu': [],
-        'search_config': {
-            'title': {
-                'weight': 8
-            },
-            'summary': {
-                'weight': 6
-            },
-            'author_name': {
-                'weight': 5
-            },
-            'categories': {
-                'weight': 3
-            }
-        },
-        'comments': {
-            'enabled': False,
-        },
-        'subscribe': {
-            'enabled': False
-        }
-    }
+    optional = DEFAULTS
 
     def __init__(self, workdir: Path, templates_dir: Path, **settings):
         self.workdir = workdir
@@ -76,16 +79,18 @@ class Settings:
         self.fill_settings(settings)
 
     def fill_settings(self, settings):
-        # May raise AttributeError
+        # Fill mandatory settings. May raise AttributeError
         self.__dict__.update({key: settings['mandatory'][key] for key in self.mandatory})
 
+        # Fill optional settings
         if settings.get('optional') is not None:
             self.__dict__.update(
                 {
-                    key: settings['optional'].get(key, settings.get(key, default))
+                    key: settings['optional'].get(key, default)
                     for key, default in self.optional.items()}
             )
 
+        # Fill other settings
         self.__dict__.update({key: value for key, value in settings.items() if key not in ['mandatory', 'optional']})
 
 
