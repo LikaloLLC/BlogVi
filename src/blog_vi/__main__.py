@@ -1,4 +1,5 @@
 import json
+import mimetypes
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict
@@ -10,6 +11,7 @@ from slugify import slugify
 
 from ._config import SETTINGS_FILENAME
 from .utils import get_md_file, ImgExtExtension, H1H2Extension, get_data, get_settings, prepare_workdir, Settings
+
 
 # Philippe`s google Sheet
 # https://docs.google.com/spreadsheets/d/1deKANndKOOmOdQUQWDK6-zC7P6J25SzBrUx2RX9lvkY/gviz/tq?tqx=out:csv&sheet=Form%20Responses%201
@@ -83,6 +85,7 @@ class Landing:
             fe.link(href=url)
             fe.author(name=article.author_name, email=article.author_email)
             fe.category(category=[{'term': category} for category in article.categories])
+            fe.enclosure(url=article.header_image, type=mimetypes.guess_type(article.header_image)[0] or '')
             fe.published(article.timestamp)
 
         fg.rss_file(str(self.workdir / 'rss.xml'))
