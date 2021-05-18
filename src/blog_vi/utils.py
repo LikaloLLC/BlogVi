@@ -69,7 +69,7 @@ DEFAULTS = {
 
 class Settings:
     mandatory = ('blog_name', 'landing_name', 'landing_description',
-                 'landing_image', 'theme', 'template', 'blog_root_url', 'url')
+                 'landing_image', 'theme', 'template', 'blog_root_url', 'url', 'domain_url')
     optional = DEFAULTS
 
     def __init__(self, workdir: Path, templates_dir: Path, **settings):

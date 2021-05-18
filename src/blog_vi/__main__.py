@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict
 
@@ -64,21 +64,26 @@ class Landing:
         )
     
     def generate_rss(self):
-        domain_name = self.workdir
+        domain_url = self.settings.domain_url
         fg = FeedGenerator()
-        fg.id(f"{domain_name}/index.html")
+
+        fg.id(f"{domain_url}/index.html")
         fg.title(self.name)
-        fg.link(href=f'{domain_name}/index.html', rel='alternate')
+        fg.link(href=f'{domain_url}/index.html', rel='alternate')
         fg.subtitle(self.name)
         fg.language('en')
+
         for article in self._articles:
-            url = f'{domain_name}/articles/{article.filename}'
             fe = fg.add_entry()
+
+            url = f'{domain_url}/articles/{article.slug}/'
             fe.id(url)
-            fe.title(article.author_name)
+            fe.title(article.title)
             fe.summary(article.summary)
             fe.link(href=url)
-            fe.published()
+            fe.author(name=article.author_name, email=article.author_email)
+            fe.category(category=[{'term': category} for category in article.categories])
+            fe.published(article.timestamp)
 
         fg.rss_file(str(self.workdir / 'rss.xml'))
 
@@ -227,7 +232,7 @@ class Article:
             summary=config['Excerpt/Short Summary'],
             categories=config['Categories '].split(", "),
             status=int(config['Status']),
-            timestamp=datetime.strptime(config['Timestamp'], '%d/%m/%Y %H:%M:%S'),
+            timestamp=datetime.strptime(config['Timestamp'], '%d/%m/%Y %H:%M:%S').replace(tzinfo=timezone.utc),
             markdown=config['Markdown'],
         )
 

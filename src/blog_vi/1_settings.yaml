@@ -7,6 +7,7 @@ mandatory:
   template: "tailwind_g"
   blog_root_url: "blog"
   url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Unb1VTOB1upja915Rp7N6MJnqtLLOPYUlrJW7R0qybH_kGWB1wPozgjAf6X5JD-Bv_XldO9yKSLU/pub?output=csv"
+  domain_url: ""
 optional:
   link_menu:
     - link: "https://www.docsie.io"
