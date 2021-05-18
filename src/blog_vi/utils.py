@@ -63,6 +63,9 @@ DEFAULTS = {
     },
     'subscribe': {
         'enabled': False
+    },
+    'sharect': {
+        'enabled': False
     }
 }
 

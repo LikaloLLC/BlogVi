@@ -36,3 +36,13 @@ optional:
     title: "Subscribe to the newsletter"
     summary: "Stay up to date with our latest news and products"
     button_text: "Subscribe"
+
+  sharect:
+    enabled: true
+    twitter: true
+    facebook: true
+    twitterUsername: ""
+    backgroundColor: "#333333"
+    iconColor: "#FFFFFF"
+    selectableElements:
+      - body

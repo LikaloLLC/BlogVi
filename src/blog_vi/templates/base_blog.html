@@ -246,9 +246,15 @@
 
   facebookURI.setAttribute('href', `https://www.facebook.com/sharer.php?u=${postURI}`);
   twitterURI.setAttribute('href', `https://twitter.com/share?url=${postURI}&text=${postTitle}`);
-
-
 </script>
+
+<!--Sharect-->
+{% if settings.sharect.enabled %}
+<script src="https://unpkg.com/sharect@2.0.0/dist/sharect.js"></script>
+<script>window["sharectConfig"] = {{ settings.sharect|tojson|safe }}</script>
+<script src="../templates/js/sharect.js"></script>
+{% endif %}
+
 </body>
 
 </html>
