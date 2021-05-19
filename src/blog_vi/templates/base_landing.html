@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{ settings.blog_name }}</title>
-  <meta name="author" content="name">
-  <meta name="description" content="Free open source Tailwind CSS starter Ghost blog index template (Casper theme)">
+  <meta name="author" content="{{ settings.meta.author }}">
+  <meta name="description" content="{{ settings.meta.description }}">
   <meta name="keywords"
-        content="tailwind,tailwindcss,tailwind css,css,starter template,free template,blog template, blog layout, ghost, casper, theme">
+        content="{{ settings.meta.keywords }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous"/>
@@ -23,26 +23,26 @@
   <meta name="theme-color" content="#3b7977">
 
   <!-- Primary Meta Tags -->
-  <title>Tailwind Toolbox - Free Starter Templates and Components for Tailwind CSS</title>
-  <meta name="title" content="Tailwind Toolbox - Free Starter Templates and Components for Tailwind CSS">
+  <title>{{ settings.meta.title or settings.blog_name }}</title>
+  <meta name="title" content="{{ settings.meta.title or settings.blog_name }}">
   <meta name="description"
-        content="Free open source Tailwind CSS starter Templates and Components to get you started quickly to creating websites in Tailwind CSS!">
+        content="{{ settings.meta.description }}">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.tailwindtoolbox.com/">
-  <meta property="og:title" content="Tailwind Toolbox - Free Starter Templates and Components for Tailwind CSS">
+  <meta property="og:url" content="{{ settings.meta.url }}">
+  <meta property="og:title" content="{{ settings.meta.title or settings.blog_name }}">
   <meta property="og:description"
-        content="Free open source Tailwind CSS starter Templates and Components to get you started quickly to creating websites in Tailwind CSS!">
-  <meta property="og:image" content="https://www.tailwindtoolbox.com/social.png">
+        content="{{ settings.meta.description }}">
+  <meta property="og:image" content="{{ settings.meta.image }}">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://www.tailwindtoolbox.com/">
-  <meta property="twitter:title" content="Tailwind Toolbox - Free Starter Templates and Components for Tailwind CSS">
+  <meta property="twitter:url" content="{{ settings.meta.url }}">
+  <meta property="twitter:title" content="{{ settings.meta.title or settings.blog_name }}">
   <meta property="twitter:description"
-        content="Free open source Tailwind CSS starter Templates and Components to get you started quickly to creating websites in Tailwind CSS!">
-  <meta property="twitter:image" content="https://www.tailwindtoolbox.com/social.png">
+        content="{{ settings.meta.description }}">
+  <meta property="twitter:image" content="{{ settings.meta.image }}">
 
 
   <link href="templates/css/tailwind.min.css" rel="stylesheet">

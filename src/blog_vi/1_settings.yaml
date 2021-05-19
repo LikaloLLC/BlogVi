@@ -46,3 +46,11 @@ optional:
     iconColor: "#FFFFFF"
     selectableElements:
       - body
+
+  meta:
+    title: ""
+    description: ""
+    image: ""
+    keywords: ""
+    url: ""
+    author: ""
