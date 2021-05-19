@@ -66,6 +66,14 @@ DEFAULTS = {
     },
     'sharect': {
         'enabled': False
+    },
+    'meta': {
+        'title': '',
+        'description': '',
+        'image': '',
+        'keywords': '',
+        'url': '',
+        'author': ''
     }
 }
 
