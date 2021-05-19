@@ -93,7 +93,8 @@
       <img class="w-10 h-10 rounded-full mr-4" src="{{ head_blog.header_image }}" alt="Avatar of Author">
       <div class="flex-1 px-2">
         <div class="font-bold leading-none mb-2">{{ head_blog.author_name }}</div>
-        <div class="text-xs md:text-base">on {{ head_blog.publish_date }}· filed under <span
+        <div class="text-xs md:text-base">on {{ head_blog.publish_date }} · <span id="reading-time"
+                class="block md:inline mt-2 md:mt-0"></span> · filed under <span
           class="block md:inline mt-2 md:mt-0">
 						{% for category in head_blog.categories %}
             <span class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm">{{ category }}</span>
@@ -106,7 +107,9 @@
 
     <!--Post Content-->
     <!--Lead Para-->
-    {% include blog %}
+    <div id="content">
+      {% include blog %}
+    </div>
   </div>
   <!--/ Post Content-->
 
@@ -254,6 +257,19 @@
 <script>window["sharectConfig"] = {{ settings.sharect|tojson|safe }}</script>
 <script src="../templates/js/sharect.js"></script>
 {% endif %}
+
+
+<!--Reading time-->
+<script src="../templates/js/reading-time.js"></script>
+<script>
+  const text = []
+  let content = [...document.getElementById('content').getElementsByTagName('p')].forEach((elem) => {
+    text.push(elem.textContent)
+  });
+  const stats = readingTime(text.join(" "));
+
+  document.getElementById('reading-time').innerHTML = stats.text;
+</script>
 
 </body>
 
