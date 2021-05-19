@@ -126,7 +126,7 @@ def get_data(url: str) -> list:
     return data
 
 
-def get_md_file(text: str, file_name: str) -> None:
+def get_md_file(text: str, file_name: str) -> str:
     mode = 'w'
     if text.startswith('https://'):
         text = requests.get(text).content
