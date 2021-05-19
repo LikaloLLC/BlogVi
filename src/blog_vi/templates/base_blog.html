@@ -4,10 +4,29 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+
+  <!-- Primary Meta Tags -->
   <title>{{ settings.blog_name }} - {{head_blog.title}}</title>
   <meta name="author" content="{{ head_blog.author_name }}"/>
-  <meta name="description" content="{{head_blog.title}}"/>
-  <meta name="keywords" content="{{head_blog.categories|join(',')}}"/>
+  <meta name="description" content="{{ head_blog.summary }}"/>
+  <meta name="keywords" content="{{ head_blog.categories|join(',') }}"/>
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ head_blog.url }}">
+  <meta property="og:title" content="{{ head_blog.title }}">
+  <meta property="og:description"
+        content="{{ head_blog.summary }}">
+  <meta property="og:image" content="{{ head_blog.header_image }}">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{{ head_blog.url }}">
+  <meta property="twitter:title" content="{{ head_blog.title }}">
+  <meta property="twitter:description"
+        content="{{ head_blog.summary }}">
+  <meta property="twitter:image" content="{{ head_blog.header_image }}">
+
   <link
     href="../templates/css/tailwind.min.css"
     rel="stylesheet"

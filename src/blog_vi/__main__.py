@@ -78,11 +78,10 @@ class Landing:
         for article in self._articles:
             fe = fg.add_entry()
 
-            url = f'{domain_url}/articles/{article.slug}/'
-            fe.id(url)
+            fe.id(article.url)
             fe.title(article.title)
             fe.summary(article.summary)
-            fe.link(href=url)
+            fe.link(href=article.url)
             fe.author(name=article.author_name, email=article.author_email)
             fe.category(category=[{'term': category} for category in article.categories])
             fe.enclosure(url=article.header_image, type=mimetypes.guess_type(article.header_image)[0] or '')
@@ -219,6 +218,7 @@ class Article:
         self.slug = slugify(title)
         self.filename = f'{self.slug}.html'
         self.template = template or self.base_template
+        self.url = f'{self.settings.domain_url}/articles/{self.slug}/'
     
     @classmethod
     def from_config(cls, settings: 'Settings', config: dict) -> 'Article':
