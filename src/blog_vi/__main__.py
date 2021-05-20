@@ -242,13 +242,12 @@ class Article:
     def generate(self):
         """Generate an article."""
         filepath = self._md_to_html()
-        template_path = Path(*filepath.parts[1:])
 
         directory_loader = FileSystemLoader([self.workdir, self.templates_dir])
         env = Environment(loader=directory_loader)
         template = env.get_template(self.template)
         rendered = template.render(
-            blog=str(template_path),
+            blog=f'{self.path}/index.html',
             head_blog=self,
             settings=self.settings
         )
