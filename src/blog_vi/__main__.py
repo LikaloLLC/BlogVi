@@ -128,7 +128,6 @@ class Landing:
             try:
                 article.generate()
             except Exception as e:
-                raise e
                 print(f'[!] Error generating article {article.title}: {e}')
                 continue
 
