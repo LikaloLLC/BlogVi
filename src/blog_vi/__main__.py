@@ -116,12 +116,12 @@ class Landing:
             # Generates previous and next links for each article
             if generated_articles:
                 article.previous = {
-                    'link': generated_articles[-1].filename,
+                    'link': f'../{Path(generated_articles[-1].path).name}',
                     'title': generated_articles[-1].title
                 }
 
                 generated_articles[-1].next = {
-                    'link': article.filename,
+                    'link': f'../{Path(article.path).name}',
                     'title': article.title
                 }
 
@@ -216,9 +216,9 @@ class Article:
 
         # Misc
         self.slug = slugify(title)
-        self.filename = f'{self.slug}.html'
+        self.path = f'articles/{self.slug}/'
         self.template = template or self.base_template
-        self.url = f'{self.settings.domain_url}/articles/{self.slug}/'
+        self.url = f'{self.settings.domain_url}/{self.path}/'
     
     @classmethod
     def from_config(cls, settings: 'Settings', config: dict) -> 'Article':
@@ -242,12 +242,13 @@ class Article:
     def generate(self):
         """Generate an article."""
         filepath = self._md_to_html()
+        template_path = Path(*filepath.parts[1:])
 
         directory_loader = FileSystemLoader([self.workdir, self.templates_dir])
         env = Environment(loader=directory_loader)
         template = env.get_template(self.template)
         rendered = template.render(
-            blog=str(Path('articles', filepath.name)),
+            blog=str(template_path),
             head_blog=self,
             settings=self.settings
         )
@@ -258,7 +259,10 @@ class Article:
         """Convert markdown content to the html one and return the path to resulting file."""
         md = markdown.Markdown(extensions=[ImgExtExtension(), H1H2Extension()])
         source = self.workdir.joinpath('articles', f'{self.slug}.md')
-        output = self.workdir.joinpath('articles', f'{self.slug}.html')
+
+        output_dir = self.workdir.joinpath('articles', self.slug)
+        output_dir.mkdir(exist_ok=True)
+        output = output_dir.joinpath('index.html')
 
         md_file = get_md_file(self.markdown, str(source))
         md.convertFile(md_file, str(output))
@@ -272,7 +276,7 @@ class Article:
 
     def to_dict(self) -> dict:
         keys = ('title', 'author_name', 'author_email', 'author_info', 'author_image', 'author_social', 'markdown',
-                'header_image', 'summary', 'publish_date', 'categories', 'status', 'filename', 'slug', 'previous',
+                'header_image', 'summary', 'publish_date', 'categories', 'status', 'path', 'slug', 'previous',
                 'next')
 
         return {key: getattr(self, key) for key in keys}
