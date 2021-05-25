@@ -71,7 +71,7 @@ class Landing:
 
         fg.id(f"{domain_url}/index.html")
         fg.title(self.name)
-        fg.link(href=f'{domain_url}/index.html', rel='alternate')
+        fg.link(href=f'{domain_url}/index.html', rel='self')
         fg.subtitle(self.name)
         fg.language('en')
 
@@ -218,7 +218,7 @@ class Article:
         self.slug = slugify(title)
         self.path = f'articles/{self.slug}/'
         self.template = template or self.base_template
-        self.url = f'{self.settings.domain_url}/{self.path}/'
+        self.url = f'{self.settings.domain_url}/{self.path}'
     
     @classmethod
     def from_config(cls, settings: 'Settings', config: dict) -> 'Article':
