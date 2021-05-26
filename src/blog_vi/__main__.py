@@ -1,11 +1,10 @@
 import json
 import mimetypes
 from datetime import datetime, timezone
+from functools import reduce
 from pathlib import Path
 from typing import List, Dict
-import os
 from urllib.parse import urljoin
-from functools import reduce
 
 import markdown
 from feedgen.feed import FeedGenerator
