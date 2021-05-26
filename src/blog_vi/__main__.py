@@ -1,8 +1,10 @@
 import json
 import mimetypes
 from datetime import datetime, timezone
+from functools import reduce
 from pathlib import Path
 from typing import List, Dict
+from urllib.parse import urljoin
 
 import markdown
 from feedgen.feed import FeedGenerator
@@ -218,8 +220,9 @@ class Article:
         self.slug = slugify(title)
         self.path = f'articles/{self.slug}/'
         self.template = template or self.base_template
-        self.url = f'{self.settings.domain_url}/{self.path}'
-    
+
+        self.url = self.prepare_url()
+
     @classmethod
     def from_config(cls, settings: 'Settings', config: dict) -> 'Article':
         """Return a class instance from the given config."""
@@ -279,6 +282,23 @@ class Article:
                 'next')
 
         return {key: getattr(self, key) for key in keys}
+
+    def prepare_url(self):
+        """
+        Returns URL for the article. Takes domain url, blog directory from settings
+        and concatenates it with relative article path."""
+        _url_bits = (self.settings.domain_url, self.settings.blog_root_url, self.path)
+        url_bits = []
+        for bit in _url_bits:
+            if not bit.endswith('/'):
+                bit += '/'
+
+            if bit.startswith('/'):
+                bit = bit[1:]
+
+            url_bits.append(bit)
+
+        return reduce(urljoin, url_bits)
 
 
 def generate_blog(workdir: Path) -> None:
