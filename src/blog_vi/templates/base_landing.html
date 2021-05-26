@@ -79,17 +79,17 @@
       <ul class="list-reset lg:flex justify-end flex-1 items-center">
           {% for link in settings.link_menu %}
           <li class="mr-3">
-            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+            <a class="inline-block text-gray-600 hover:text-gray-900 hover:underline py-2 px-4"
                href="{{ link.link }}">{{ link.text }}</a>
           </li>
           {% endfor %}
         <li class="mr-3">
-          <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
+          <a class="inline-block py-2 px-4"
              href="rss.xml"><i class="fas fa-rss" style="color: orangered"></i></a>
         </li>
-        <li class="mr-3">
+        <li class="mr-3 relative">
           <input type="search" placeholder="Search blog"
-                 class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
+                 class="border rounded inline-block py-2 px-4"
                  id="search">
           <div
             class="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg bg-white border border-gray-300 focus:outline-none"
@@ -112,25 +112,18 @@
 
     <!--Nav-->
     <nav class="mt-0 w-full">
-      <div class="container mx-auto flex items-center">
-
-        <div class="flex w-full pl-4 text-sm">
-          <ul class="list-reset w-full flex justify-between flex-1 md:flex-none items-center">
-            <li class="mr-2">
-              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
-                 href="index.html">ALL</a>
-            </li>
-            {% for category in categories %}
-            <li class="mr-2">
-              <a class="rounded bg-green-500 text-white px-1 uppercase text-xs md:text-sm"
-                 href="{{ category.1 }}">{{ category.0 }}</a>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-        <h1></h1>
-
-      </div>
+      <ul class="list-reset w-full flex flex-wrap flex-1 md:flex-none">
+        <li class="mr-2">
+          <a class="rounded bg-green-500 text-white px-1 uppercase text-xs whitespace-nowrap md:text-sm"
+              href="index.html">ALL</a>
+        </li>
+        {% for category in categories %}
+        <li class="mr-2">
+          <a class="rounded bg-green-500 text-white px-1 uppercase text-xs whitespace-nowrap md:text-sm"
+              href="{{ category.1 }}">{{ category.0 }}</a>
+        </li>
+        {% endfor %}
+      </ul>
 
       <div class="flex w-full justify-end content-center">
         <a
@@ -159,8 +152,7 @@
       <div class="flex h-full bg-white rounded overflow-hidden ">
         <a href="{{ head_blog.path }}" class="flex flex-wrap no-underline hover:no-underline">
           <div class="w-full md:w-2/3 rounded-t">
-            <!--            <img src="https://source.unsplash.com/collection/494263/800x600" class="h-full w-full shadow">-->
-            <img src="{{head_blog.header_image}}" class="h-full w-full shadow">
+            <img src="{{head_blog.header_image}}" class="h-full w-full shadow object-cover">
           </div>
 
           <div class="w-full md:w-1/3 flex flex-col flex-grow flex-shrink">
@@ -198,7 +190,7 @@
         <div class="w-full md:w-1/3 p-6 flex flex-col flex-shrink">
           <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">
             <a href="{{ blog.path }}" class="flex flex-wrap no-underline hover:no-underline">
-              <img data-src="{{ blog.header_image }}" class="h-64 w-full rounded-t pb-6">
+              <img data-src="{{ blog.header_image }}" class="h-64 w-full rounded-t pb-6 object-cover">
               <p class="w-full text-gray-600 text-xs md:text-sm px-6">GETTING STARTED</p>
               <div class="w-full font-bold text-xl text-gray-900 px-6">{{ blog.title }}</div>
               <p class="text-gray-800 font-serif text-base px-6 mb-5">
