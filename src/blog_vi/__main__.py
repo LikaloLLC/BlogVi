@@ -238,7 +238,7 @@ class Article:
             summary=config['Excerpt/Short Summary'],
             categories=config['Categories '].split(", "),
             status=int(config['Status']),
-            timestamp=datetime.strptime(config['Timestamp'], '%d/%m/%Y %H:%M:%S').replace(tzinfo=timezone.utc),
+            timestamp=datetime.strptime(config['Timestamp'], '%m/%d/%Y %H:%M:%S').replace(tzinfo=timezone.utc),
             markdown=config['Markdown'],
         )
 
