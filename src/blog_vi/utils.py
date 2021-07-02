@@ -115,15 +115,13 @@ def make_json(file: str) -> list:
     return data
 
 
-def get_data(url: str) -> list:
+def get_articles_from_csv(url: str) -> list:
     response = requests.get(url=url)
     # write records to data.csv file
     with open('data.csv', 'wb') as f:
         f.write(response.content)
 
-    # with open('data.csv') as f:
-    data = make_json('data.csv')
-    return data
+    return make_json('data.csv')
 
 
 def get_md_file(text: str, file_name: str) -> str:
