@@ -67,10 +67,6 @@ class Landing:
             search_config=search_config,
         )
 
-    @property
-    def articles(self):
-        return sorted(self._articles, key=lambda i: i.timestamp)
-    
     def generate_rss(self):
         domain_url = self.settings.domain_url
         fg = FeedGenerator()
