@@ -1,5 +1,6 @@
 # BlogVi - Tailwind Static Blog with Search (No backend)
-
+ by [Docsie](https://www.docsie.io).
+ 
 # 👋 Reason for this Project
 
 I tried to setup a static blog for my company, but I quickly found out that it's really difficult to get a nice looking *free blog with search and comments* without:
@@ -75,3 +76,4 @@ Windows OS
     python 2_generate.py
 
 #### 6. Open index.html file in browser
+
