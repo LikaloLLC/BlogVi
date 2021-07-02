@@ -5,7 +5,6 @@ from functools import reduce
 from pathlib import Path
 from typing import List, Dict
 from urllib.parse import urljoin
-import arrow
 
 import markdown
 from feedgen.feed import FeedGenerator
@@ -202,8 +201,6 @@ class Article:
         self.status = status
         self.timestamp = timestamp
         self.publish_date = self._get_publish_date()
-
-        print(self.timestamp)
 
         # Source markdown file url
         self.markdown = markdown
