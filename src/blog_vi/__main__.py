@@ -5,6 +5,7 @@ from functools import reduce
 from pathlib import Path
 from typing import List, Dict
 from urllib.parse import urljoin
+import arrow
 
 import markdown
 from feedgen.feed import FeedGenerator
@@ -202,6 +203,8 @@ class Article:
         self.timestamp = timestamp
         self.publish_date = self._get_publish_date()
 
+        print(self.timestamp)
+
         # Source markdown file url
         self.markdown = markdown
 
@@ -238,7 +241,7 @@ class Article:
             summary=config['Excerpt/Short Summary'],
             categories=config['Categories '].split(", "),
             status=int(config['Status']),
-            timestamp=datetime.strptime(config['Timestamp'], '%d/%m/%Y %H:%M:%S').replace(tzinfo=timezone.utc),
+            timestamp=datetime.strptime(config['Timestamp'], '%m/%d/%Y %H:%M:%S').replace(tzinfo=timezone.utc),
             markdown=config['Markdown'],
         )
 
