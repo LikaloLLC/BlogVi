@@ -12,7 +12,7 @@ from jinja2 import FileSystemLoader, Environment
 from slugify import slugify
 
 from ._config import SETTINGS_FILENAME
-from .utils import get_md_file, ImgExtExtension, H1H2Extension, get_data, get_settings, prepare_workdir, Settings
+from .utils import get_md_file, ImgExtExtension, H1H2Extension, get_articles_from_csv, get_settings, prepare_workdir, Settings
 
 
 # Philippe`s google Sheet
@@ -66,7 +66,7 @@ class Landing:
             link_menu=settings.link_menu,
             search_config=search_config,
         )
-    
+
     def generate_rss(self):
         domain_url = self.settings.domain_url
         fg = FeedGenerator()
@@ -134,8 +134,9 @@ class Landing:
                 continue
 
             generated_articles.append(article)
-        
-        return generated_articles
+
+        # Order articles in chronological order
+        return sorted(generated_articles, key=lambda i: i.timestamp, reverse=True)
 
     def generate(self, filename: str = 'index.html', is_category: bool = False):
         """Generate the landing page and its contents, such as articles and categories."""
@@ -308,7 +309,7 @@ def generate_blog(workdir: Path) -> None:
     settings = Settings(workdir, templates_dir, **settings_dict)
 
     url = settings.url
-    articles = get_data(url)
+    articles = get_articles_from_csv(url)
 
     index = Landing.from_settings(settings)
 
