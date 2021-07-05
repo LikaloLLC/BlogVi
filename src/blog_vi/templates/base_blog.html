@@ -8,6 +8,7 @@
   <!-- Primary Meta Tags -->
   <title>{{ settings.blog_name }} - {{head_blog.title}}</title>
   <meta name="author" content="{{ head_blog.author_name }}"/>
+  <meta name="title" content="{{ settings.meta.title or settings.blog_name }}">
   <meta name="description" content="{{ head_blog.summary }}"/>
   <meta name="keywords" content="{{ head_blog.categories|join(',') }}"/>
 
