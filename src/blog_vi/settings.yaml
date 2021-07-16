@@ -44,7 +44,7 @@ sharect:
   selectableElements:
     - body
 
-meta:
+landing_meta:
   title: ""
   description: ""
   image: ""

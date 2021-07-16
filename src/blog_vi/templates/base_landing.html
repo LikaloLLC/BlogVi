@@ -19,27 +19,27 @@
   <meta name="theme-color" content="#3b7977">
 
   <!-- Primary Meta Tags -->
-  <title>{{ settings.meta.title or settings.blog_name }}</title>
-  <meta name="author" content="{{ settings.meta.author }}">
-  <meta name="title" content="{{ settings.meta.title or settings.blog_name }}">
-  <meta name="description" content="{{ settings.meta.description }}">
-  <meta name="keywords" content="{{ settings.meta.keywords }}">
+  <title>{{ settings.landing_meta.title or settings.blog_name }}</title>
+  <meta name="author" content="{{ settings.landing_meta.author }}">
+  <meta name="title" content="{{ settings.landing_meta.title or settings.blog_name }}">
+  <meta name="description" content="{{ settings.landing_meta.description }}">
+  <meta name="keywords" content="{{ settings.landing_meta.keywords }}">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="{{ settings.meta.url }}">
-  <meta property="og:title" content="{{ settings.meta.title or settings.blog_name }}">
+  <meta property="og:url" content="{{ settings.landing_meta.url }}">
+  <meta property="og:title" content="{{ settings.landing_meta.title or settings.blog_name }}">
   <meta property="og:description"
-        content="{{ settings.meta.description }}">
-  <meta property="og:image" content="{{ settings.meta.image }}">
+        content="{{ settings.landing_meta.description }}">
+  <meta property="og:image" content="{{ settings.landing_meta.image }}">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="{{ settings.meta.url }}">
-  <meta property="twitter:title" content="{{ settings.meta.title or settings.blog_name }}">
+  <meta property="twitter:url" content="{{ settings.landing_meta.url }}">
+  <meta property="twitter:title" content="{{ settings.landing_meta.title or settings.blog_name }}">
   <meta property="twitter:description"
-        content="{{ settings.meta.description }}">
-  <meta property="twitter:image" content="{{ settings.meta.image }}">
+        content="{{ settings.landing_meta.description }}">
+  <meta property="twitter:image" content="{{ settings.landing_meta.image }}">
 
 
   <link href="templates/css/tailwind.min.css" rel="stylesheet">

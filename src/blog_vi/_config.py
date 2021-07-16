@@ -26,7 +26,7 @@ SETTINGS_DEFAULTS = {
     'sharect': {
         'enabled': False
     },
-    'meta': {
+    'landing_meta': {
         'title': '',
         'description': '',
         'image': '',
