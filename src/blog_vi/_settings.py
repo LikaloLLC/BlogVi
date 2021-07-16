@@ -40,7 +40,7 @@ class MandatorySettingNotFoundError(SettingsError):
 
 
 class Settings:
-    mandatory = ('blog_name', 'blog_root_url', 'url', 'domain_url')
+    mandatory = ('blog_name', 'blog_root_url', 'blog_post_location_url', 'domain_url')
     optional = SETTINGS_DEFAULTS
 
     def __init__(self, workdir: Path, templates_dir: Path, **settings):

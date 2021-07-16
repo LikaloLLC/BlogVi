@@ -302,7 +302,7 @@ def generate_blog(workdir: Path) -> None:
     settings_dict = get_settings(workdir / SETTINGS_FILENAME)
     settings = Settings(workdir, templates_dir, **settings_dict)
 
-    url = settings.url
+    url = settings.blog_post_location_url
     articles = get_articles_from_csv(url)
 
     index = Landing.from_settings(settings)
