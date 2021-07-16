@@ -7,7 +7,7 @@ from .__main__ import generate_blog
 from ._config import SETTINGS_FILENAME, AUTHORS_FILENAME
 
 # List of filenames, that must exists in the directory
-MANDATORY_FILENAMES = [SETTINGS_FILENAME, AUTHORS_FILENAME]
+MANDATORY_FILENAMES = [SETTINGS_FILENAME]
 
 
 @click.command()
@@ -23,7 +23,7 @@ def _cli(directory):
 
     for filename in MANDATORY_FILENAMES:
         if not workdir.joinpath(filename).exists():
-            click.echo('Could not find {} in directory {}.'.format(filename, directory))
+            click.echo('Could not find `{}` in directory `{}`.'.format(filename, directory))
 
             return
 

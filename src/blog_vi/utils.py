@@ -3,9 +3,7 @@ import shutil
 from pathlib import Path
 
 import requests
-import yaml
 from markdown import Extension
-from ._config import SETTINGS_FILENAME
 from markdown.treeprocessors import Treeprocessor
 
 
@@ -16,8 +14,6 @@ class ImgExtractor(Treeprocessor):
         for image in doc.findall('.//img'):
             self.markdown.images.append(image.get('src'))
 
-
-# Then tell markdown about it
 
 class ImgExtExtension(Extension):
     def extendMarkdown(self, md, md_globals):
@@ -40,69 +36,6 @@ class H1H2Extension(Extension):
     def extendMarkdown(self, md, md_globals):
         h1h2_ext = NameDescriptionExtractor(md)
         md.treeprocessors.add('h1h2ext', h1h2_ext, '>inline')
-
-
-DEFAULTS = {
-    'link_menu': [],
-    'search_config': {
-        'title': {
-            'weight': 8
-        },
-        'summary': {
-            'weight': 6
-        },
-        'author_name': {
-            'weight': 5
-        },
-        'categories': {
-            'weight': 3
-        }
-    },
-    'comments': {
-        'enabled': False,
-    },
-    'subscribe': {
-        'enabled': False
-    },
-    'sharect': {
-        'enabled': False
-    },
-    'meta': {
-        'title': '',
-        'description': '',
-        'image': '',
-        'keywords': '',
-        'url': '',
-        'author': ''
-    }
-}
-
-
-class Settings:
-    mandatory = ('blog_name', 'landing_name', 'landing_description',
-                 'landing_image', 'theme', 'template', 'blog_root_url', 'url', 'domain_url')
-    optional = DEFAULTS
-
-    def __init__(self, workdir: Path, templates_dir: Path, **settings):
-        self.workdir = workdir
-        self.templates_dir = templates_dir
-
-        self.fill_settings(settings)
-
-    def fill_settings(self, settings):
-        # Fill mandatory settings. May raise AttributeError
-        self.__dict__.update({key: settings['mandatory'][key] for key in self.mandatory})
-
-        # Fill optional settings
-        if settings.get('optional') is not None:
-            self.__dict__.update(
-                {
-                    key: settings['optional'].get(key, default)
-                    for key, default in self.optional.items()}
-            )
-
-        # Fill other settings
-        self.__dict__.update({key: value for key, value in settings.items() if key not in ['mandatory', 'optional']})
 
 
 def make_json(file: str) -> list:
@@ -134,17 +67,6 @@ def get_md_file(text: str, file_name: str) -> str:
         f.write(text)
 
     return file_name
-
-
-def get_settings(filename: str = '1_settings.yaml') -> dict:
-    """Return settings dictionary.
-
-    :param filename: path to yaml settings file, defaults to `1_settings.yaml`
-    :return: settings dictionary object
-    :rtype: dict
-    """
-
-    return yaml.load(open(filename), Loader=yaml.FullLoader)
 
 
 def prepare_workdir(workdir: Path):
