@@ -18,62 +18,132 @@ The goal of this project is to be a free static blog:
 
 See example here: www.docsie.io/blog/
 
-# Quick start
+# Installation
 
-#### 1. Clone the project and enter
+#### 1. Install the package:
 
+```shell
+    pip install git+https://github.com/LikaloLLC/BlogVi
+```
 
-    git clone https://github.com/LikaloLLC/BlogVi.git
-    cd BlogVi
+#### 2. Create a folder for the blog:
 
+```shell
+    mkdir blog
+    cd blog
+```
+    
 
-or
+#### 3. Create a settings file:
 
-    git clone git@github.com:LikaloLLC/BlogVi.git
-    cd BlogVi
+**Note:** `1_settings.yaml` is the required filename.
 
-#### 2. create virtual environment
+```shell
+    touch 1_settings.yaml
+```
 
+#### 4. Fill the settings:
 
-Linux OS(Ubuntu)
+```yaml
+# mandatory
+blog_name: "Docsie.io Blog"
+blog_post_location_url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Unb1VTOB1upja915Rp7N6MJnqtLLOPYUlrJW7R0qybH_kGWB1wPozgjAf6X5JD-Bv_XldO9yKSLU/pub?output=csv"
+domain_url: "https://www.docsie.io/"
+blog_root_url: "blog/"
 
+# optional
+link_menu:
+  - link: "https://www.docsie.io"
+    text: "Docsie"
+  - link: "https://www.docsie.io/pricing/"
+    text: "Docsie Pricing"
+  - link: "https://www.docsie.io/try_docsie/"
+    text: "Try Docsie"
 
-    python3 -m venv venv
+search_config:
+  title:
+    weight: 8
+  summary:
+    weight: 6
+  author_name:
+    weight: 5
+  categories:
+    weight: 3
 
+comments:
+  enabled: true
+  commentbox_project_id: "5725910686760960-proj"
 
-Windows OS
+subscribe:
+  enabled: true
+  title: "Subscribe to the newsletter"
+  summary: "Stay up to date with our latest news and products"
+  button_text: "Subscribe"
 
-    virtualenv venv
+sharect:
+  enabled: true
+  twitter: true
+  facebook: true
+  twitterUsername: ""
+  backgroundColor: "#333333"
+  iconColor: "#FFFFFF"
+  selectableElements:
+    - body
 
-#### 3. Activate environment
+landing_meta:
+  title: ""
+  description: ""
+  image: ""
+  keywords: ""
+  url: ""
+  author: ""
 
-Linux OS(Ubuntu)
+```
 
-    source venv/bin/activate
+#### 4. Generate your awesome blog:
 
-Windows OS
+```shell
+    blogvi .
+```
 
-    venv\Scripts\activate
+### 5. Open `index.html` file in browser
 
-#### 4. Install requirements
+# Settings
 
-Linux OS(Ubuntu)
+## Mandatory
 
-    pip3 install -r requirements.txt
+***blog_name***  
+    The name of the blog, which will be shown on the home page.
 
-Windows OS
+***blog_post_location_url***  
+    A URL to the CSV table, containing content and meta of all articles.
 
-    pip install -r requirements.txt
+***domain_url***  
+    Domain name. Used in generating internal links.
 
-#### 5. Run the `2_generate.py` file
+***blog_root_url***  
+    Blog path under the specified domain. Used in generating internal links.
 
-Linux OS(Ubuntu)
+## Optional
 
-    python3 2_generate.py
+***link_menu***  
+    The list of external links in the header and footer
 
-Windows OS
+***search_config***  
+    The search config.  
+    Each key is an article field name, and wight gives them higher (or lower) values in search results.
 
-    python 2_generate.py
+***comments***  
+    Enable or disable comment system on the blog. It uses [commentbox](https://commentbox.io/) as a provider.  
+    You need to provide `commentbox_project_id`, available after registration a project,
+in order to enable this functionality.
 
-#### 6. Open index.html file in browser
+***subscribe***  
+    Enable or disable "subscribe to the newsletter" form.
 
+***sharect***  
+    Enable or disable sharing system. Uses [sharect](https://estevanmaito.github.io/sharect/) as a provider.  
+    It mirrors settings from sharect.
+
+***landing_meta***
+    Meta info for the blog.
