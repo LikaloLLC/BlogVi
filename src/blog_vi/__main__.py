@@ -12,14 +12,8 @@ from jinja2 import FileSystemLoader, Environment
 from slugify import slugify
 
 from ._config import SETTINGS_FILENAME
-from .utils import get_md_file, ImgExtExtension, H1H2Extension, get_articles_from_csv, get_settings, prepare_workdir, Settings
-
-
-# Philippe`s google Sheet
-# https://docs.google.com/spreadsheets/d/1deKANndKOOmOdQUQWDK6-zC7P6J25SzBrUx2RX9lvkY/gviz/tq?tqx=out:csv&sheet=Form%20Responses%201
-
-# Zarif`s google sheet
-# "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNYmtcxqYplBu7SlY6grJRb3Y0vrmOBkE8j2CyeQlQHq4ElynBfi0Tkd4h2u2tPj4EmeGFBxyy8g73/pub?output=csv"
+from .utils import get_md_file, ImgExtExtension, H1H2Extension, get_articles_from_csv, prepare_workdir
+from ._settings import Settings, get_settings
 
 
 class Landing:
@@ -308,7 +302,7 @@ def generate_blog(workdir: Path) -> None:
     settings_dict = get_settings(workdir / SETTINGS_FILENAME)
     settings = Settings(workdir, templates_dir, **settings_dict)
 
-    url = settings.url
+    url = settings.blog_post_location_url
     articles = get_articles_from_csv(url)
 
     index = Landing.from_settings(settings)
