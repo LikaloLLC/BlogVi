@@ -72,7 +72,7 @@ class Landing:
         fg.language('en')
 
         for article in self._articles:
-            fe = fg.add_entry()
+            fe = fg.add_entry(order='append')
 
             fe.id(article.url)
             fe.title(article.title)
