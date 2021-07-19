@@ -146,10 +146,11 @@ class Landing:
         template = env.get_template(self.template)
         
         template_categories = {(category, f'{slugify(category)}.html') for category in self._categories.keys()}
+        head_article = self._articles[0] if self._articles else None
 
         rendered = template.render(
             blogs=self._articles[1:],
-            head_blog=self._articles[0],
+            head_blog=head_article,
             categories=template_categories,
             searchConfig=self.search_config,
             settings=self.settings
