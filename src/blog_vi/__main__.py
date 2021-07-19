@@ -231,7 +231,7 @@ class Article:
             author_social=config['linked.in github urls'],
             header_image=config.get('Header Image (will be used in RSS feed)'),
             summary=config['Excerpt/Short Summary'],
-            categories=config['Categories '].split(", "),
+            categories=config['Categories'].split(", "),
             status=int(config['Status']),
             timestamp=datetime.strptime(config['Timestamp'], '%m/%d/%Y %H:%M:%S').replace(tzinfo=timezone.utc),
             markdown=config['Markdown'],
