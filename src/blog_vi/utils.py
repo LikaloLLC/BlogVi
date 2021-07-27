@@ -1,4 +1,5 @@
 import csv
+import os
 import shutil
 from pathlib import Path
 
@@ -70,7 +71,7 @@ def get_md_file(text: str, file_name: str) -> str:
 
 
 def prepare_workdir(workdir: Path):
-    """Create necessary directories if needed, such as templates directiry, articles directory, etc.
+    """Create necessary directories if needed, such as templates directory, articles directory, etc.
 
     :param workdir: Working directory, where the blog is generated.
     :return: Working dir and Template dir Path objects
@@ -78,12 +79,26 @@ def prepare_workdir(workdir: Path):
     workdir.joinpath('articles').mkdir(exist_ok=True)
 
     templates_dir = workdir / 'templates'
+    app_templates_dir = Path(__file__).parent / 'templates'
     if not templates_dir.exists():
-        app_templates_dir = Path(__file__).parent / 'templates'
 
         # Move the default template dir to the current workdir
         shutil.copytree(app_templates_dir, templates_dir)
     else:
         """Walk through the base templates directory and move missing templates to the user's templates dir."""
+
+        template_files = list(os.walk(templates_dir))[0][2]
+        app_files = list(os.walk(app_templates_dir))[0][2]
+
+        for directory in list(os.walk(app_templates_dir))[0][1]:
+            if directory == 'assets':
+                if directory in list(os.walk(templates_dir))[0][1]:
+                    break
+                shutil.copytree(app_templates_dir/directory, templates_dir/directory)
+
+        for file in app_files:
+            if file in template_files:
+                continue
+            shutil.copy(app_templates_dir/file, templates_dir)
 
     return workdir, templates_dir

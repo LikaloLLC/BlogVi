@@ -1,12 +1,30 @@
 <!-- Base template of the article card on the blog page. -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="w-full md:w-1/3 p-6 flex flex-col flex-shrink">
+    <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">
+        <a href="{{ blog.path }}" class="flex flex-wrap no-underline hover:no-underline">
+            <img data-src="{{ blog.header_image }}" class="h-64 w-full rounded-t pb-6 object-cover">
+            <p class="w-full text-gray-600 text-xs md:text-sm px-6">GETTING STARTED</p>
+            <div class="w-full font-bold text-xl text-gray-900 px-6">{{ blog.title }}</div>
+            <p class="text-gray-800 font-serif text-base px-6 mb-5">
+                {{ blog.summary }}
+            </p>
+        </a>
+    </div>
+    <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">
+        <div class="flex items-center justify-between">
+            <img class="w-8 h-8 rounded-full mr-4 avatar"
+                 data-tippy-content="{{ blog.author_name }}"
+                 data-src="{{ blog.author_image }}" alt="{{ blog.author_name }}">
 
-</body>
-</html>
+            <p class="text-gray-600 text-xs md:text-sm">
+                by {{ blog.author_name }} on {{ blog.publish_date }} in
+
+                {% for category in blog.categories %}
+                    <!-- TODO: category item styling -->
+                    {{ category }}
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+</div>
