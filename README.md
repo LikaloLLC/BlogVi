@@ -138,6 +138,11 @@ landing_meta:
     You need to provide `commentbox_project_id`, available after registration a project,
 in order to enable this functionality.
 
+***google_tag_manager***  
+    Enable or disable [Google Tag Manager](https://marketingplatform.google.com/about/tag-manager/) on the blog. This is handy if you have lots of marketing, analytics and other tags that you need to add to your blog. 
+    You need to provide `google_tag_manager_projectid`, which you can get from [by following this guide][https://support.google.com/tagmanager/answer/6103696?hl=en],in order to enable this functionality.
+
+
 ***subscribe***  
     Enable or disable "subscribe to the newsletter" form.
 
@@ -147,3 +152,5 @@ in order to enable this functionality.
 
 ***landing_meta***  
     Meta info for the blog.
+
+
