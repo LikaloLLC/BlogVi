@@ -70,6 +70,14 @@ def get_md_file(text: str, file_name: str) -> str:
     return file_name
 
 
+def copy_(src, dst):
+    if os.path.exists(dst):
+        return
+    shutil.copy2(src, dst)
+
+    return dst
+
+
 def prepare_workdir(workdir: Path):
     """Create necessary directories if needed, such as templates directory, articles directory, etc.
 
@@ -87,18 +95,6 @@ def prepare_workdir(workdir: Path):
     else:
         """Walk through the base templates directory and move missing templates to the user's templates dir."""
 
-        template_files = list(os.walk(templates_dir))[0][2]
-        app_files = list(os.walk(app_templates_dir))[0][2]
-
-        for directory in list(os.walk(app_templates_dir))[0][1]:
-            if directory == 'assets':
-                if directory in list(os.walk(templates_dir))[0][1]:
-                    break
-                shutil.copytree(app_templates_dir/directory, templates_dir/directory)
-
-        for file in app_files:
-            if file in template_files:
-                continue
-            shutil.copy(app_templates_dir/file, templates_dir)
+        shutil.copytree(app_templates_dir, templates_dir, copy_function=copy_, dirs_exist_ok=True)
 
     return workdir, templates_dir
