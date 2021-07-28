@@ -20,6 +20,9 @@ SETTINGS_DEFAULTS = {
     'comments': {
         'enabled': False,
     },
+    'google_tag_manager': {
+        'enabled' : False
+    },
     'subscribe': {
         'enabled': False
     },
