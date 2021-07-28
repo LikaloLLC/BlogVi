@@ -1,3 +1,4 @@
 include src/blog_vi/templates/*
-include src/blog_vi/templates/css/*
-include src/blog_vi/templates/js/*
+include src/blog_vi/templates/assets/*
+include src/blog_vi/templates/assets/css/*
+include src/blog_vi/templates/assets/js/*
