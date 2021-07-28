@@ -70,7 +70,7 @@ def get_md_file(text: str, file_name: str) -> str:
     return file_name
 
 
-def copy_(src, dst):
+def copy_without_overwrite(src, dst):
     if os.path.exists(dst):
         return
     shutil.copy2(src, dst)
@@ -89,6 +89,6 @@ def prepare_workdir(workdir: Path):
     templates_dir = workdir / 'templates'
     app_templates_dir = Path(__file__).parent / 'templates'
 
-    shutil.copytree(app_templates_dir, templates_dir, copy_function=copy_, dirs_exist_ok=True)
+    shutil.copytree(app_templates_dir, templates_dir, copy_function=copy_without_overwrite, dirs_exist_ok=True)
 
     return workdir, templates_dir

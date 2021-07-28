@@ -30,12 +30,12 @@
   <meta property="twitter:image" content="{{ head_blog.header_image }}">
 
   <link
-    href="templates/assets/css/tailwind.min.css"
+    href="../../templates/assets/css/tailwind.min.css"
     rel="stylesheet"
   />
   <link
     rel="stylesheet"
-    href="templates/assets/css/typography.min.css"
+    href="../../templates/assets/css/typography.min.css"
   />
   <!--Replace with your tailwind.css once created-->
 </head>
@@ -258,12 +258,12 @@
 {% if settings.sharect.enabled %}
 <script src="https://unpkg.com/sharect@2.0.0/dist/sharect.js"></script>
 <script>window["sharectConfig"] = {{ settings.sharect|tojson|safe }}</script>
-<script src="templates/assets/js/sharect.js"></script>
+<script src="../../templates/assets/js/sharect.js"></script>
 {% endif %}
 
 
 <!--Reading time-->
-<script src="templates/assets/js/reading-time.min.js"></script>
+<script src="../../templates/assets/js/reading-time.min.js"></script>
 <script>
   const text = []
   let content = [...document.getElementById('content').getElementsByTagName('p')].forEach((elem) => {
