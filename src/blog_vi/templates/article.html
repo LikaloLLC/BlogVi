@@ -274,6 +274,15 @@
   document.getElementById('reading-time').innerHTML = stats.text;
 </script>
 
+
+  {% if settings.google_tag_manager.enabled %}
+      <!-- Google Tag Manager (noscript) -->
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ settings.google_tag_manager.google_tag_manager_projectid }}"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  {% endif %}
+
 </body>
 
 </html>

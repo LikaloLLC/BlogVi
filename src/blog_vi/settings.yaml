@@ -27,6 +27,10 @@ comments:
   enabled: true
   commentbox_project_id: "5725910686760960-proj"
 
+google_tag_manager:
+  enabled: false
+  google_tag_manager_projectid: "GTM-TZRGMQ!"
+
 subscribe:
   enabled: true
   title: "Subscribe to the newsletter"
