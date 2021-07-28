@@ -145,5 +145,5 @@ in order to enable this functionality.
     Enable or disable sharing system. Uses [sharect](https://estevanmaito.github.io/sharect/) as a provider.  
     It mirrors settings from sharect.
 
-***landing_meta***
+***landing_meta***  
     Meta info for the blog.
