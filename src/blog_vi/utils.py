@@ -88,13 +88,7 @@ def prepare_workdir(workdir: Path):
 
     templates_dir = workdir / 'templates'
     app_templates_dir = Path(__file__).parent / 'templates'
-    if not templates_dir.exists():
 
-        # Move the default template dir to the current workdir
-        shutil.copytree(app_templates_dir, templates_dir)
-    else:
-        """Walk through the base templates directory and move missing templates to the user's templates dir."""
-
-        shutil.copytree(app_templates_dir, templates_dir, copy_function=copy_, dirs_exist_ok=True)
+    shutil.copytree(app_templates_dir, templates_dir, copy_function=copy_, dirs_exist_ok=True)
 
     return workdir, templates_dir
