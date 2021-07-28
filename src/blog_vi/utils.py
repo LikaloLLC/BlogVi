@@ -1,4 +1,5 @@
 import csv
+import os
 import shutil
 from pathlib import Path
 
@@ -69,8 +70,16 @@ def get_md_file(text: str, file_name: str) -> str:
     return file_name
 
 
+def copy_without_overwrite(src, dst):
+    if os.path.exists(dst):
+        return
+    shutil.copy2(src, dst)
+
+    return dst
+
+
 def prepare_workdir(workdir: Path):
-    """Create necessary directories if needed, such as templates directiry, articles directory, etc.
+    """Create necessary directories if needed, such as templates directory, articles directory, etc.
 
     :param workdir: Working directory, where the blog is generated.
     :return: Working dir and Template dir Path objects
@@ -78,10 +87,8 @@ def prepare_workdir(workdir: Path):
     workdir.joinpath('articles').mkdir(exist_ok=True)
 
     templates_dir = workdir / 'templates'
-    if not templates_dir.exists():
-        app_templates_dir = Path(__file__).parent / 'templates'
+    app_templates_dir = Path(__file__).parent / 'templates'
 
-        # Move the default template dir to the current workdir
-        shutil.copytree(app_templates_dir, templates_dir)
+    shutil.copytree(app_templates_dir, templates_dir, copy_function=copy_without_overwrite, dirs_exist_ok=True)
 
     return workdir, templates_dir

@@ -22,7 +22,7 @@ class Landing:
     Can be used as an index page and as a category page.
     """
     # Filename of the base template. Overrides with the `template` argument in __init__().
-    base_template: str = 'base_landing.html'
+    base_template: str = 'blog.html'
 
     def __init__(
             self,
@@ -179,7 +179,7 @@ class Landing:
 
 class Article:
     """Class representing an article in the blog."""
-    base_template: str = 'base_blog.html'
+    base_template: str = 'article.html'
     
     def __init__(self, settings: 'Settings', title, timestamp, header_image, author_name, author_image, author_email,
                  summary, categories, markdown, author_info, author_social, status, previous=None, next=None,
