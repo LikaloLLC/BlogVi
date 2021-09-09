@@ -30,11 +30,12 @@ class Landing:
             name: str,
             link_menu: dict = None,
             search_config: dict = None,
-            template: str = None
+            template: str = None,
+            workdir: str = None
     ):
         self.settings = settings
 
-        self.workdir = settings.workdir
+        self.workdir = settings.workdir or workdir
         self.templates_dir = settings.templates_dir
 
         self.name = name
