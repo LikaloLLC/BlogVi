@@ -1,5 +1,6 @@
 SETTINGS_FILENAME = 'settings.yaml'
 AUTHORS_FILENAME = 'authors.yaml'
+DEEPL_API_KEY = ''
 
 SETTINGS_DEFAULTS = {
     'link_menu': [],
