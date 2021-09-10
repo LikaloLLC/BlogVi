@@ -8,15 +8,6 @@ class TranslateEngine:
 
         self.settings = landing.settings
 
-        # Create a "clean" landing
-        # to which all the translated articles and categories will be appended
-        self.translated_landing = Landing(
-            self.settings,
-            self.landing.name,
-            link_menu=self.landing.link_menu,
-            search_config=self.landing.search_config
-        )
-
         # TODO:
         #   - Validate settings
         #   - Get translate provider from registry
