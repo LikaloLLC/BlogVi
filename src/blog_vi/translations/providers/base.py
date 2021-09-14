@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod, ABCMeta
+
 from ..registry import translation_provider_registry
 
 
