@@ -12,11 +12,11 @@
           integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
           crossorigin="anonymous"/>
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,700,800" rel="stylesheet">
-    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-    <link rel="manifest" href="../site.webmanifest">
-    <link rel="mask-icon" href="../safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="apple-touch-icon" sizes="180x180" href="/{{settings.blog_root}}/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/{{settings.blog_root}}/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/{{settings.blog_root}}/favicon-16x16.png">
+    <link rel="manifest" href="/{{settings.blog_root}}/site.webmanifest">
+    <link rel="mask-icon" href="/{{settings.blog_root}}/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#00aba9">
     <meta name="theme-color" content="#3b7977">
 
@@ -44,7 +44,7 @@
     <meta property="twitter:image" content="{{ settings.landing_meta.image }}">
 
 
-    <link href="templates/assets/css/tailwind.min.css" rel="stylesheet">
+    <link href="/{{ settings.blog_root }}/templates/assets/css/tailwind.min.css" rel="stylesheet">
 
 </head>
 
@@ -62,7 +62,7 @@
             <ul class="list-reset w-full flex flex-wrap flex-1 md:flex-none">
                 <li class="mr-2">
                     <a class="rounded bg-green-500 text-white px-1 uppercase text-xs whitespace-nowrap md:text-sm"
-                       href="index.html">ALL</a>
+                       href="/{{ blog.root_url }}">ALL</a>
                 </li>
                 {% for category in categories %}
                     <li class="mr-2">
@@ -102,7 +102,7 @@
 
             <!--Posts Container-->
             <div class="flex flex-wrap justify-between pt-12 -mx-6">
-                {% for blog in blogs %}
+                {% for article in articles %}
                     <!--1/3 col -->
                     {% include 'card.html' %}
                 {% endfor %}
@@ -128,7 +128,7 @@
 <script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
 <script src="https://unpkg.com/tippy.js@4"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
-<script src="templates/assets/js/search.js"></script>
+<script src="/{{ settings.blog_root }}/templates/assets/js/search.js"></script>
 
 <script>    /* Progress bar */
 //Source: https://alligator.io/js/progress-bar-javascript-css-variables/
@@ -231,7 +231,7 @@ tippy('.avatar')
 {% if settings.sharect.enabled %}
     <script src="https://unpkg.com/sharect@2.0.0/dist/sharect.js"></script>
     <script>window["sharectConfig"] = {{ settings.sharect|tojson|safe }}</script>
-    <script src="templates/assets/js/sharect.js"></script>
+    <script src="/{{ settings.blog_root }}/templates/assets/js/sharect.js"></script>
 {% endif %}
 
 </body>

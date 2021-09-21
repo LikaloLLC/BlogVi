@@ -50,3 +50,22 @@ landing_meta:
   keywords: ""
   url: ""
   author: ""
+
+translate_articles: false  # defaults to false
+
+google_translator:
+  api_key: <api key>
+
+deepl_translator:
+  api_key: <api key>
+
+translation_list:
+  - ru
+  - de
+  - fr
+  - ca
+
+translator: deepl # or google
+source_abbreviation: en
+# User should select an available translator or get warned if `translate_articles` is set to true, but translator is not.
+

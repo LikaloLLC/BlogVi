@@ -34,6 +34,10 @@ SETTINGS_DEFAULTS = {
         'keywords': '',
         'url': '',
         'author': ''
-    }
+    },
+    'translator': None,
+    'deepl_translator': {},
+    'translation_list': [],
+    'translate_articles': None,
+    'source_abbreviation': None,
 }
-
