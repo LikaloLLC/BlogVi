@@ -44,6 +44,7 @@ setup(
         "feedgen>=0.6.0,<1.0.0",
         "python-slugify>=4.0.0,<4.0.1",
         "PyYAML>=5.0.0,<5.3.1",
+        "deepl>=1.0.1,<2"
     ],
     entry_points={
         "console_scripts": [
