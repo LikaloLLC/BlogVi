@@ -1,5 +1,6 @@
 import json
 import mimetypes
+import sys
 from datetime import datetime, timezone
 from functools import reduce
 from pathlib import Path
@@ -12,6 +13,7 @@ from jinja2 import FileSystemLoader, Environment
 from slugify import slugify
 
 from ._config import SETTINGS_FILENAME
+from .translations.exceptions import ProviderSettingsNotFound, TranslateEngineNotFound, BadProviderSettingsError
 from .utils import get_md_file, ImgExtExtension, H1H2Extension, get_articles_from_csv, prepare_workdir
 from ._settings import Settings, get_settings
 
@@ -30,12 +32,16 @@ class Landing:
             name: str,
             link_menu: dict = None,
             search_config: dict = None,
-            template: str = None
+            template: str = None,
+            workdir: str = None
     ):
         self.settings = settings
 
-        self.workdir = settings.workdir
+        self.workdir = workdir or settings.workdir
+        Path(f"{self.workdir}/articles").mkdir(exist_ok=True)
         self.templates_dir = settings.templates_dir
+
+        self.root_url = urljoin(str(settings.blog_root), str(self.workdir))
 
         self.name = name
         self.link_menu = link_menu or {}
@@ -48,9 +54,9 @@ class Landing:
 
         # List of categories. Filled from the articles categories automatically.
         self._categories: Dict[str, 'Landing'] = {}
-        
+
     @classmethod
-    def from_settings(cls, settings: 'Settings') -> 'Landing':
+    def from_settings(cls, settings: 'Settings', **kwargs) -> 'Landing':
         """Return an instance from the given settings and automatically prepare neccessary parameters."""
         search_config = cls.prepare_search_config(settings.search_config)
 
@@ -59,6 +65,7 @@ class Landing:
             settings.blog_name,
             link_menu=settings.link_menu,
             search_config=search_config,
+            **kwargs
         )
 
     def generate_rss(self):
@@ -95,12 +102,13 @@ class Landing:
 
         for article in self._articles:
             for category in article.categories:
-                category_landing = category_landings.get(category, Landing.from_settings(self.settings))
+                category_landing = category_landings.get(category,
+                                                         Landing.from_settings(self.settings, workdir=self.workdir))
                 category_landing.add_article(article)
                 category_landings[category] = category_landing
 
         return category_landings
-        
+
     def pregenerate_articles(self) -> List['Article']:
         """A hook returning pregenerated articles, that are ready to be generated."""
         generated_articles = []
@@ -144,18 +152,19 @@ class Landing:
         env = Environment(loader=directory_loader)
 
         template = env.get_template(self.template)
-        
+
         template_categories = {(category, f'{slugify(category)}.html') for category in self._categories.keys()}
         head_article = self._articles[0] if self._articles else None
 
         rendered = template.render(
-            blogs=self._articles[1:],
-            head_blog=head_article,
+            articles=self._articles[1:],
+            head_article=head_article,
             categories=template_categories,
             searchConfig=self.search_config,
-            settings=self.settings
+            settings=self.settings,
+            blog=self
         )
-        
+
         for category, landing in self._categories.items():
             # `is_category` MUST always be set to True, when generating non-index pages.
             landing.generate(f'{slugify(category)}.html', is_category=True)
@@ -180,13 +189,13 @@ class Landing:
 class Article:
     """Class representing an article in the blog."""
     base_template: str = 'article.html'
-    
+
     def __init__(self, settings: 'Settings', title, timestamp, header_image, author_name, author_image, author_email,
                  summary, categories, markdown, author_info, author_social, status, previous=None, next=None,
-                 template=None):
+                 template=None, workdir=None):
         self.settings = settings
 
-        self.workdir = settings.workdir
+        self.workdir = workdir or settings.workdir
         self.templates_dir = settings.templates_dir
 
         # Article card data
@@ -214,7 +223,8 @@ class Article:
 
         # Misc
         self.slug = slugify(title)
-        self.path = f'articles/{self.slug}/'
+        self.path = str(Path('articles', self.slug))
+        self.root_path = str((self.settings.blog_root, 'articles', self.slug))
         self.template = template or self.base_template
 
         self.url = self.prepare_url()
@@ -252,7 +262,7 @@ class Article:
         )
 
         filepath.write_text(rendered)
-        
+
     def _md_to_html(self) -> Path:
         """Convert markdown content to the html one and return the path to resulting file."""
         md = markdown.Markdown(extensions=[ImgExtExtension(), H1H2Extension()])
@@ -298,6 +308,8 @@ class Article:
 
 
 def generate_blog(workdir: Path) -> None:
+    from .translations.engine import TranslateEngine
+
     workdir, templates_dir = prepare_workdir(workdir)
 
     settings_dict = get_settings(workdir / SETTINGS_FILENAME)
@@ -316,5 +328,23 @@ def generate_blog(workdir: Path) -> None:
 
         article_obj = Article.from_config(settings, article)
         index.add_article(article_obj)
-    
+
     index.generate()
+
+    if settings.translate_articles:
+        try:
+            if settings.source_abbreviation is None:
+                print('[-] Please, provide a source language abbreviation.')
+                sys.exit(1)
+            engine = TranslateEngine(index, settings.source_abbreviation)
+        except ProviderSettingsNotFound:
+            print(f'[-] Settings not found for translate provider {settings.translator}')
+        except TranslateEngineNotFound:
+            print('[-] Translate engine not found')
+        except BadProviderSettingsError:
+            print(f'[-] Please, fill all {settings.translator} provider settings')
+        except TypeError:
+            print('[-] Please define translator provider in settings')
+        else:
+            print("ok")
+            # engine.translate()

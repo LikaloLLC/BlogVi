@@ -6,3 +6,4 @@ feedgen
 python-slugify
 pyyaml
 click
+deepl

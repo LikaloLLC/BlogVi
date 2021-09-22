@@ -1,5 +1,6 @@
 SETTINGS_FILENAME = 'settings.yaml'
 AUTHORS_FILENAME = 'authors.yaml'
+DEEPL_API_KEY = ''
 
 SETTINGS_DEFAULTS = {
     'link_menu': [],
@@ -36,6 +37,10 @@ SETTINGS_DEFAULTS = {
         'keywords': '',
         'url': '',
         'author': ''
-    }
+    },
+    'translator': None,
+    'deepl_translator': {},
+    'translation_list': [],
+    'translate_articles': None,
+    'source_abbreviation': None,
 }
-
