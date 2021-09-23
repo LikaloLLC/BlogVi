@@ -33,15 +33,18 @@ class Landing:
             link_menu: dict = None,
             search_config: dict = None,
             template: str = None,
-            workdir: str = None
+            workdir: str = None,
+            rootdir: str = None
     ):
         self.settings = settings
 
         self.workdir = workdir or settings.workdir
-        Path(f"{self.workdir}/articles").mkdir(exist_ok=True)
+        self.blog_root_dir = rootdir or self.workdir
+
+
         self.templates_dir = settings.templates_dir
 
-        self.root_url = urljoin(str(settings.blog_root), str(self.workdir))
+        self.root_url = urljoin(str(settings.blog_root), str(self.blog_root_dir))
 
         self.name = name
         self.link_menu = link_menu or {}
@@ -60,13 +63,10 @@ class Landing:
         """Return an instance from the given settings and automatically prepare neccessary parameters."""
         search_config = cls.prepare_search_config(settings.search_config)
 
-        return cls(
-            settings,
-            settings.blog_name,
-            link_menu=settings.link_menu,
-            search_config=search_config,
-            **kwargs
-        )
+        landing_kwargs = {'settings': settings, 'name': settings.blog_name,
+                          'link_menu': settings.link_menu, 'search_config': search_config, **kwargs}
+
+        return cls(**landing_kwargs)
 
     def generate_rss(self):
         domain_url = self.settings.domain_url
@@ -102,8 +102,14 @@ class Landing:
 
         for article in self._articles:
             for category in article.categories:
+                workdir = Path(self.workdir, slugify(category))
+                workdir.mkdir(exist_ok=True)
+
                 category_landing = category_landings.get(category,
-                                                         Landing.from_settings(self.settings, workdir=self.workdir))
+                                                         Landing.from_settings(self.settings,
+                                                                               workdir=workdir,
+                                                                               rootdir=self.workdir,
+                                                                               name=category))
                 category_landing.add_article(article)
                 category_landings[category] = category_landing
 
@@ -142,6 +148,9 @@ class Landing:
 
     def generate(self, filename: str = 'index.html', is_category: bool = False):
         """Generate the landing page and its contents, such as articles and categories."""
+        if not is_category:
+            Path(f"{self.workdir}/articles").mkdir(exist_ok=True)
+
         self._articles = self.pregenerate_articles()
 
         # Generate categories only for the main landing page.
@@ -153,7 +162,7 @@ class Landing:
 
         template = env.get_template(self.template)
 
-        template_categories = {(category, f'{slugify(category)}.html') for category in self._categories.keys()}
+        template_categories = {(category, f'{slugify(category)}/') for category in self._categories.keys()}
         head_article = self._articles[0] if self._articles else None
 
         rendered = template.render(
@@ -167,14 +176,15 @@ class Landing:
 
         for category, landing in self._categories.items():
             # `is_category` MUST always be set to True, when generating non-index pages.
-            landing.generate(f'{slugify(category)}.html', is_category=True)
+            landing.generate('index.html', is_category=True)
 
         filepath = self.workdir.joinpath(filename)
         filepath.write_text(rendered)
 
-        json.dump([article.to_dict() for article in self._articles], self.workdir.joinpath('data.json').open('w'))
+        if not is_category:
+            json.dump([article.to_dict() for article in self._articles], self.workdir.joinpath('data.json').open('w'))
 
-        self.generate_rss()
+            self.generate_rss()
 
     @staticmethod
     def prepare_search_config(search_config) -> dict:

@@ -76,6 +76,15 @@ class TranslateEngine:
             target_abbreviation=target_abbreviation
         )
 
+        translated_categories = []
+        for category in cloned_article.categories:
+            translated_categories.append(self.translator.translate(
+                text=category,
+                source_abbreviation=self.source_abbreviation,
+                target_abbreviation=target_abbreviation
+            ))
+        cloned_article.categories = translated_categories
+
         return cloned_article
 
     def clone_landing_for_translation(self, folder_name: str) -> Landing:
