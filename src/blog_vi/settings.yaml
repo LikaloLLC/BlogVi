@@ -64,12 +64,18 @@ deepl_translator:
   api_key: <api key>
 
 translation_list:
-  - ru
-  - de
-  - fr
-  - ca
+  -
+    abbreviation: de
+    label: Deutsch
+  -
+    abbreviation: ru
+    label: Русский
+
+source_language:
+  abbreviation: en
+  label: English
+
 
 translator: deepl # or google
-source_abbreviation: en
 # User should select an available translator or get warned if `translate_articles` is set to true, but translator is not.
 

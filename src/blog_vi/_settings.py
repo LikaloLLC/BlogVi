@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from typing import Optional
 
@@ -67,6 +68,15 @@ class Settings:
         root = Path(self.blog_root_url)
         return root
 
+    def to_json(self):
+        settings = {}
+        for mandatory in self.mandatory:
+            settings[mandatory] = getattr(self, mandatory)
+
+        for optional_name, optional_default in self.optional.items():
+            settings[optional_name] = getattr(self, optional_name, optional_default)
+
+        return json.dumps(settings)
 
 def get_settings(filename: str = SETTINGS_FILENAME) -> dict:
     """Return settings dictionary.

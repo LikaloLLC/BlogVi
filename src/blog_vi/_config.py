@@ -42,5 +42,5 @@ SETTINGS_DEFAULTS = {
     'deepl_translator': {},
     'translation_list': [],
     'translate_articles': None,
-    'source_abbreviation': None,
+    'source_language': {},
 }
