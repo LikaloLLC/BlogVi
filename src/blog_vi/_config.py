@@ -43,4 +43,5 @@ SETTINGS_DEFAULTS = {
     'translation_list': [],
     'translate_articles': None,
     'source_abbreviation': None,
+    'favicons': []
 }
