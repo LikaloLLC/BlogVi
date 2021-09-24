@@ -1,0 +1,3 @@
+{% for favicon in settings.favicons %}
+    <link rel="{{ favicon.rel }}" type="{{ favicon.type }}" sizes="{{ favicon.sizes }}" href="/{{ settings.blog_root }}/{{ favicon.path }}">
+{% endfor %}
