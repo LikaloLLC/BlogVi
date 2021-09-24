@@ -73,3 +73,9 @@ translator: deepl # or google
 source_abbreviation: en
 # User should select an available translator or get warned if `translate_articles` is set to true, but translator is not.
 
+favicons:
+  -
+    rel: icon
+    sizes: 32x32
+    type: image/png
+    path: favicon.ico
