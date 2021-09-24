@@ -29,9 +29,9 @@ class TranslateEngine:
 
     def translate(self) -> None:
         """Translate landing and its articles into specified in the settings languages."""
-        for target_abbreviation in self.settings.translation_list:
+        for translation in self.settings.translation_list:
             try:
-                translated_landing = self.translate_landing(target_abbreviation)
+                translated_landing = self.translate_landing(translation['abbreviation'])
                 translated_landing.generate()
             except Exception as e:
                 print(f'[-] Something went wrong when translating. Error - {e}')
@@ -96,7 +96,8 @@ class TranslateEngine:
             self.landing.name,
             link_menu=self.landing.link_menu,
             search_config=self.landing.search_config,
-            workdir=workdir
+            workdir=workdir,
+            rootdir=self.landing.workdir
         )
 
     def clone_article_for_translation(self, article, folder_name: str) -> Article:

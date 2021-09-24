@@ -31,7 +31,7 @@
         content="{{ head_blog.summary }}">
   <meta property="twitter:image" content="{{ head_blog.header_image }}">
 
-  <link href="/{{settings.blog_root}}/templates/assets/css/tailwind.min.css" rel="stylesheet"/>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/{{settings.blog_root}}/templates/assets/css/typography.min.css"/>
   <!--Replace with your tailwind.css once created-->
     {% if settings.google_tag_manager.enabled %}
