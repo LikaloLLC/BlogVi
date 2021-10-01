@@ -301,7 +301,7 @@ class Article:
 
     def _get_output_dir(self) -> Path:
         output_dir = self.workdir.joinpath('articles', self.slug)
-        output_dir.mkdir(exist_ok=True)
+        output_dir.mkdir(exist_ok=True, parents=True)
 
         return output_dir
 
