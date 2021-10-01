@@ -155,10 +155,9 @@ class Landing:
         if not is_category:
             Path(f"{self.workdir}/articles").mkdir(exist_ok=True)
 
-        self._articles = self.pregenerate_articles()
-
         # Generate categories only for the main landing page.
         if not is_category:
+            self._articles = self.pregenerate_articles()
             self._categories = self.pregenerate_categories()
 
         directory_loader = FileSystemLoader(self.templates_dir)
