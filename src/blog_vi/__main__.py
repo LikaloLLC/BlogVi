@@ -13,9 +13,10 @@ from jinja2 import FileSystemLoader, Environment
 from slugify import slugify
 
 from ._config import SETTINGS_FILENAME
+from ._settings import Settings, get_settings
+from .tracker import Tracker
 from .translations.exceptions import ProviderSettingsNotFound, TranslateEngineNotFound, BadProviderSettingsError
 from .utils import get_md_file, ImgExtExtension, H1H2Extension, get_articles_from_csv, prepare_workdir
-from ._settings import Settings, get_settings
 
 
 class Landing:
@@ -67,6 +68,9 @@ class Landing:
                           'link_menu': settings.link_menu, 'search_config': search_config, **kwargs}
 
         return cls(**landing_kwargs)
+
+    def get_articles(self) -> List['Article']:
+        return self._articles.copy()
 
     def generate_rss(self):
         domain_url = self.settings.domain_url
@@ -151,10 +155,9 @@ class Landing:
         if not is_category:
             Path(f"{self.workdir}/articles").mkdir(exist_ok=True)
 
-        self._articles = self.pregenerate_articles()
-
         # Generate categories only for the main landing page.
         if not is_category:
+            self._articles = self.pregenerate_articles()
             self._categories = self.pregenerate_categories()
 
         directory_loader = FileSystemLoader(self.templates_dir)
@@ -239,6 +242,8 @@ class Article:
 
         self.url = self.prepare_url()
 
+        self.tracker = Tracker(self, ['title', 'markdown', 'summary', 'categories'], self._get_output_dir())
+
     @classmethod
     def from_config(cls, settings: 'Settings', config: dict) -> 'Article':
         """Return a class instance from the given config."""
@@ -260,6 +265,9 @@ class Article:
 
     def generate(self):
         """Generate an article."""
+        if not self.tracker.is_changed():
+            return
+
         filepath = self._md_to_html()
 
         directory_loader = FileSystemLoader([self.workdir, self.templates_dir])
@@ -278,8 +286,7 @@ class Article:
         md = markdown.Markdown(extensions=[ImgExtExtension(), H1H2Extension()])
         source = self.workdir.joinpath('articles', f'{self.slug}.md')
 
-        output_dir = self.workdir.joinpath('articles', self.slug)
-        output_dir.mkdir(exist_ok=True)
+        output_dir = self._get_output_dir()
         output = output_dir.joinpath('index.html')
 
         md_file = get_md_file(self.markdown, str(source))
@@ -291,6 +298,12 @@ class Article:
 
     def _get_publish_date(self) -> str:
         return self.timestamp.strftime('%B %d, %Y')
+
+    def _get_output_dir(self) -> Path:
+        output_dir = self.workdir.joinpath('articles', self.slug)
+        output_dir.mkdir(exist_ok=True, parents=True)
+
+        return output_dir
 
     def to_dict(self) -> dict:
         keys = ('title', 'author_name', 'author_email', 'author_info', 'author_image', 'author_social', 'markdown',
@@ -357,3 +370,6 @@ def generate_blog(workdir: Path) -> None:
             print('[-] Please define translator provider in settings')
         else:
             engine.translate()
+
+    for article in index.get_articles():
+        article.tracker.save_changes()

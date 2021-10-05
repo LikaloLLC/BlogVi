@@ -4,7 +4,7 @@
     <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">
         <a href="{{ article.path }}" class="flex flex-wrap no-underline hover:no-underline">
             <img data-src="{{ article.header_image }}" class="h-64 w-full rounded-t pb-6 object-cover">
-            <p class="w-full text-gray-600 text-xs md:text-sm px-6">GETTING STARTED</p>
+            <p class="w-full text-gray-600 text-xs md:text-sm px-6">{{ article.categories[0] }}</p>
             <div class="w-full font-bold text-xl text-gray-900 px-6">{{ article.title }}</div>
             <p class="text-gray-800 font-serif text-base px-6 mb-5">
                 {{ article.summary }}

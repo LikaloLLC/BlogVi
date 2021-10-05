@@ -1,11 +1,12 @@
 from pathlib import Path
 
+from blog_vi.__main__ import Landing, Article
+
 from .exceptions import (
     BadProviderSettingsError,
     TranslateEngineNotFound
 )
 from .registry import translation_provider_registry
-from blog_vi.__main__ import Landing, Article
 
 
 class TranslateEngine:
@@ -41,23 +42,33 @@ class TranslateEngine:
         Translate landing and its articles into the target language,
         specified by `target_abbreviation` param.
         """
-        translated_landing = self.clone_landing_for_translation(target_abbreviation)
+        workdir = self.get_translation_workdir(target_abbreviation)
+
+        translated_landing = self.clone_landing_for_translation(workdir)
 
         for article in self.landing._articles:
             try:
-                translated_landing.add_article(self.translate_article(article, target_abbreviation))
+                translated_landing.add_article(self.translate_article(article, workdir, target_abbreviation))
             except Exception as e:
                 print(f'[-] Something went wrong when translating article {article.title} - {e}')
 
         return translated_landing
 
-    def translate_article(self, article: Article, target_abbreviation: str) -> Article:
+    def translate_article(self, article: Article, workdir: Path, target_abbreviation: str) -> Article:
         """
         Translate article title, summary and text into the target language,
         specified by `target_abbreviation` param.
         """
+        cloned_article = self.clone_article_for_translation(article, workdir)
 
-        cloned_article = self.clone_article_for_translation(article, target_abbreviation)
+        if not article.tracker.is_changed() and cloned_article.tracker.tracked_exists():
+            tracked_data = cloned_article.tracker.get_tracked_data()
+
+            cloned_article.title = tracked_data['title']['content']
+            cloned_article.summary = tracked_data['summary']['content']
+            cloned_article.markdown = tracked_data['markdown']['content']
+
+            return cloned_article
 
         cloned_article.title = self.translator.translate(
             text=cloned_article.title,
@@ -87,10 +98,7 @@ class TranslateEngine:
 
         return cloned_article
 
-    def clone_landing_for_translation(self, folder_name: str) -> Landing:
-        workdir = Path(f'{self.landing.workdir}/{folder_name}')
-        workdir.mkdir(exist_ok=True)
-
+    def clone_landing_for_translation(self, workdir: Path) -> Landing:
         return Landing(
             self.settings,
             self.landing.name,
@@ -100,9 +108,7 @@ class TranslateEngine:
             rootdir=self.landing.workdir
         )
 
-    def clone_article_for_translation(self, article, folder_name: str) -> Article:
-        workdir = Path(f'{self.landing.workdir}/{folder_name}')
-        workdir.mkdir(exist_ok=True)
+    def clone_article_for_translation(self, article, workdir: Path) -> Article:
         return Article(
             self.settings,
             title=article.title,
@@ -119,3 +125,9 @@ class TranslateEngine:
             markdown=article.markdown,
             workdir=workdir
         )
+
+    def get_translation_workdir(self, folder_name: str) -> Path:
+        workdir = Path(self.landing.workdir, folder_name)
+        workdir.mkdir(exist_ok=True)
+
+        return workdir
