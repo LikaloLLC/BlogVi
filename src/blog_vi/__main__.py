@@ -41,7 +41,6 @@ class Landing:
         self.workdir = workdir or settings.workdir
         self.blog_root_dir = rootdir or self.workdir
 
-
         self.templates_dir = settings.templates_dir
 
         self.root_url = urljoin(str(settings.blog_root), str(self.blog_root_dir))
@@ -90,7 +89,7 @@ class Landing:
             fe.enclosure(url=article.header_image, type=mimetypes.guess_type(article.header_image)[0] or '')
             fe.published(article.timestamp)
 
-        fg.rss_file(str(self.workdir / 'rss.xml'))
+        fg.rss_file(str(self.blog_root_dir / 'rss.xml'))
 
     def add_article(self, article: 'Article'):
         """Validate and add an article to the list of articles."""
