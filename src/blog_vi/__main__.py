@@ -44,7 +44,7 @@ class Landing:
 
         self.templates_dir = settings.templates_dir
 
-        self.root_url = urljoin(str(settings.blog_root), str(self.blog_root_dir))
+        self.root_url = str(settings.blog_root)
 
         self.name = name
         self.link_menu = link_menu or {}
