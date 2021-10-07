@@ -1,4 +1,5 @@
 import csv
+import hashlib
 import os
 import shutil
 from pathlib import Path
@@ -92,3 +93,7 @@ def prepare_workdir(workdir: Path):
     shutil.copytree(app_templates_dir, templates_dir, copy_function=copy_without_overwrite, dirs_exist_ok=True)
 
     return workdir, templates_dir
+
+
+def get_md5_hash(text: str) -> str:
+    return hashlib.md5(str(text).encode()).hexdigest()
