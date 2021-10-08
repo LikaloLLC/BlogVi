@@ -34,6 +34,9 @@ class TranslateEngine:
             try:
                 translated_landing = self.translate_landing(translation['abbreviation'])
                 translated_landing.generate()
+
+                for translated_article in translated_landing.get_articles():
+                    translated_article.tracker.save_changes()
             except Exception as e:
                 print(f'[-] Something went wrong when translating. Error - {e}')
 
