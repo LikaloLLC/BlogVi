@@ -1,6 +1,7 @@
 from pathlib import Path
 
-from blog_vi.__main__ import Landing, Article
+from blog_vi.core.article import Article
+from blog_vi.core.landing import Landing
 
 from .exceptions import (
     BadProviderSettingsError,
@@ -34,6 +35,7 @@ class TranslateEngine:
             try:
                 translated_landing = self.translate_landing(translation['abbreviation'])
                 translated_landing.generate()
+                translated_landing.cache_changes()
             except Exception as e:
                 print(f'[-] Something went wrong when translating. Error - {e}')
 
@@ -48,18 +50,18 @@ class TranslateEngine:
 
         for article in self.landing._articles:
             try:
-                translated_landing.add_article(self.translate_article(article, workdir, target_abbreviation))
+                translated_landing.add_article(self.translate_article(article, translated_landing, target_abbreviation))
             except Exception as e:
                 print(f'[-] Something went wrong when translating article {article.title} - {e}')
 
         return translated_landing
 
-    def translate_article(self, article: Article, workdir: Path, target_abbreviation: str) -> Article:
+    def translate_article(self, article: Article, landing, target_abbreviation: str) -> Article:
         """
         Translate article title, summary and text into the target language,
         specified by `target_abbreviation` param.
         """
-        cloned_article = self.clone_article_for_translation(article, workdir)
+        cloned_article = self.clone_article_for_translation(article, landing)
 
         if not article.tracker.is_changed() and cloned_article.tracker.tracked_exists():
             tracked_data = cloned_article.tracker.get_tracked_data()
@@ -104,13 +106,13 @@ class TranslateEngine:
             self.landing.name,
             link_menu=self.landing.link_menu,
             search_config=self.landing.search_config,
-            workdir=workdir,
-            rootdir=self.landing.workdir
+            workdir=workdir
         )
 
-    def clone_article_for_translation(self, article, workdir: Path) -> Article:
+    def clone_article_for_translation(self, article, landing) -> Article:
         return Article(
             self.settings,
+            landing=landing,
             title=article.title,
             author_name=article.author_name,
             author_email=article.author_email,
@@ -123,7 +125,6 @@ class TranslateEngine:
             status=int(article.status),
             timestamp=article.timestamp,
             markdown=article.markdown,
-            workdir=workdir
         )
 
     def get_translation_workdir(self, folder_name: str) -> Path:

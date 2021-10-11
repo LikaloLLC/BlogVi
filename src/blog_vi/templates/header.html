@@ -9,7 +9,7 @@
     <div class="container max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-3">
 
         <div class="pl-4">
-            <a class="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl" href="/{{ blog.root_url }}">
+            <a class="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl" href="{{ blog.blog_path }}">
                 {{ settings.blog_name }}
             </a>
         </div>
@@ -35,7 +35,7 @@
                 {% endfor %}
                 <li class="mr-3">
                     <a class="inline-block py-2 px-4"
-                       href="/{{ blog.root_url }}/rss.xml"><i class="fas fa-rss" style="color: orangered"></i></a>
+                       href="{{ blog.blog_path }}/rss.xml"><i class="fas fa-rss" style="color: orangered"></i></a>
                 </li>
                 <li class="mr-3 relative">
                     <input type="search" placeholder="Search blog"
