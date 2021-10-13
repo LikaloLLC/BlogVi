@@ -15,8 +15,8 @@
 
     {% include 'favicon.html' %}
 
-    <link rel="manifest" href="/{{settings.blog_root}}/site.webmanifest">
-    <link rel="mask-icon" href="/{{settings.blog_root}}/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="manifest" href="{{settings.blog_root_path}}/site.webmanifest">
+    <link rel="mask-icon" href="{{settings.blog_root_path}}/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#00aba9">
     <meta name="theme-color" content="#3b7977">
 
@@ -72,7 +72,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <ul class="list-reset w-full flex flex-wrap flex-1 md:flex-none">
                 <li class="mr-2">
                     <a class="rounded bg-green-500 text-white px-1 uppercase text-xs whitespace-nowrap md:text-sm"
-                       href="/{{ blog.root_url }}">ALL</a>
+                       href="{{ blog.blog_path }}">ALL</a>
                 </li>
                 {% for category in categories %}
                     <li class="mr-2">
@@ -138,7 +138,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
 <script src="https://unpkg.com/tippy.js@4"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
-<script src="/{{ settings.blog_root }}/templates/assets/js/search.js"></script>
+<script src="{{ settings.blog_root_path }}/templates/assets/js/search.js"></script>
 
 <script>    /* Progress bar */
 //Source: https://alligator.io/js/progress-bar-javascript-css-variables/
@@ -241,7 +241,7 @@ tippy('.avatar')
 {% if settings.sharect.enabled %}
     <script src="https://unpkg.com/sharect@2.0.0/dist/sharect.js"></script>
     <script>window["sharectConfig"] = {{ settings.sharect|tojson|safe }}</script>
-    <script src="/{{ settings.blog_root }}/templates/assets/js/sharect.js"></script>
+    <script src="{{ settings.blog_root_path }}/templates/assets/js/sharect.js"></script>
 {% endif %}
 
 {% if settings.google_tag_manager.enabled %}

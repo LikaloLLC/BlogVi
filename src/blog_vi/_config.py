@@ -42,6 +42,7 @@ SETTINGS_DEFAULTS = {
     'deepl_translator': {},
     'translation_list': [],
     'translate_articles': None,
+    'show_language_picker': False,
     'source_language': {},
     'source_abbreviation': None,
     'favicons': []

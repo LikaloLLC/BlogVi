@@ -9,30 +9,30 @@
     {% include 'favicon.html' %}
 
   <!-- Primary Meta Tags -->
-  <title>{{ settings.blog_name }} - {{head_blog.title}}</title>
-  <meta name="author" content="{{ head_blog.author_name }}"/>
-  <meta name="title" content="{{ head_blog.title }}">
-  <meta name="description" content="{{ head_blog.summary }}"/>
-  <meta name="keywords" content="{{ head_blog.categories|join(',') }}"/>
+  <title>{{ settings.blog_name }} - {{article.title}}</title>
+  <meta name="author" content="{{ article.author_name }}"/>
+  <meta name="title" content="{{ article.title }}">
+  <meta name="description" content="{{ article.summary }}"/>
+  <meta name="keywords" content="{{ article.categories|join(',') }}"/>
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="{{ head_blog.url }}">
-  <meta property="og:title" content="{{ head_blog.title }}">
+  <meta property="og:url" content="{{ article.url }}">
+  <meta property="og:title" content="{{ article.title }}">
   <meta property="og:description"
-        content="{{ head_blog.summary }}">
-  <meta property="og:image" content="{{ head_blog.header_image }}">
+        content="{{ article.summary }}">
+  <meta property="og:image" content="{{ article.header_image }}">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="{{ head_blog.url }}">
-  <meta property="twitter:title" content="{{ head_blog.title }}">
+  <meta property="twitter:url" content="{{ article.url }}">
+  <meta property="twitter:title" content="{{ article.title }}">
   <meta property="twitter:description"
-        content="{{ head_blog.summary }}">
-  <meta property="twitter:image" content="{{ head_blog.header_image }}">
+        content="{{ article.summary }}">
+  <meta property="twitter:image" content="{{ article.header_image }}">
 
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/{{settings.blog_root}}/templates/assets/css/typography.min.css"/>
+  <link rel="stylesheet" href="{{settings.blog_root_path}}templates/assets/css/typography.min.css"/>
   <!--Replace with your tailwind.css once created-->
     {% if settings.google_tag_manager.enabled %}
     <!-- Google Tag Manager -->
@@ -110,16 +110,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div class="container max-w-4xl mx-auto mt-32 px-8 md:px-0">
   <div class="prose prose lg:prose-xl mx-auto mt-32">
     <!--Title-->
-    <h1 id="blog-title">{{head_blog.title}}</h1>
+    <h1 id="blog-title">{{article.title}}</h1>
     <!--Author-->
     <div class="flex items-center">
-      <img class="w-10 h-10 rounded-full mr-4" src="{{ head_blog.author_image }}" alt="Avatar of Author">
+      <img class="w-10 h-10 rounded-full mr-4" src="{{ article.author_image }}" alt="Avatar of Author">
       <div class="flex-1 px-2">
-        <div class="font-bold leading-none mb-2">{{ head_blog.author_name }}</div>
-        <div class="text-xs md:text-base">on {{ head_blog.publish_date }} · <span id="reading-time"
+        <div class="font-bold leading-none mb-2">{{ article.author_name }}</div>
+        <div class="text-xs md:text-base">on {{ article.publish_date }} · <span id="reading-time"
                 class="block md:inline mt-2 md:mt-0"></span> · filed under <span
           class="block md:inline mt-2 md:mt-0">
-						{% for category in head_blog.categories %}
+						{% for category in article.categories %}
             <span class="rounded bg-green-500 text-white px-1 uppercase text-xs whitespace-nowrap md:text-sm">{{ category }}</span>
 						{% endfor %}
 					</span>
@@ -131,7 +131,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <!--Post Content-->
     <!--Lead Para-->
     <div id="content">
-      {% include blog %}
+      {% include content %}
     </div>
   </div>
   <!--/ Post Content-->
@@ -143,11 +143,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <div class="font-sans flex justify-between content-center px-4 mb-4">
     <div class="text-left">
       <span class="text-xs md:text-sm font-normal text-gray-600">&lt; Previous Post</span><br>
-      <p><a href="{{ head_blog.previous.link }}" class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">{{ head_blog.previous.title }}</a></p>
+      <p><a href="{{ article.previous.link }}" class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">{{ article.previous.title }}</a></p>
     </div>
     <div class="text-right">
       <span class="text-xs md:text-sm font-normal text-gray-600">Next Post &gt;</span><br>
-      <p><a href="{{ head_blog.next.link }}" class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">{{ head_blog.next.title }}</a></p>
+      <p><a href="{{ article.next.link }}" class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">{{ article.next.title }}</a></p>
     </div>
   </div>
 
@@ -174,7 +174,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <div class="w-full mx-auto flex flex-wrap items-center">
       <div class="flex w-full md:w-1/2 justify-center md:justify-start text-white font-extrabold flex-col">
-        <a class="text-gray-900 no-underline hover:text-gray-900 hover:no-underline" href="/{{ settings.blog_root }}">
+        <a class="text-gray-900 no-underline hover:text-gray-900 hover:no-underline" href="{{ landing.blog_path }}">
           <span class="text-base text-gray-200">{{ settings.blog_name }}</span>
         </a>
         <a class="text-gray-900 no-underline hover:text-gray-900 hover:no-underline"
@@ -264,12 +264,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {% if settings.sharect.enabled %}
 <script src="https://unpkg.com/sharect@2.0.0/dist/sharect.js"></script>
 <script>window["sharectConfig"] = {{ settings.sharect|tojson|safe }}</script>
-<script src="/{{ settings.blog_root }}/templates/assets/js/sharect.js"></script>
+<script src="{{ settings.blog_root_path }}templates/assets/js/sharect.js"></script>
 {% endif %}
 
 
 <!--Reading time-->
-<script src="/{{ settings.blog_root }}/templates/assets/js/reading-time.min.js"></script>
+<script src="{{ settings.blog_root_path }}templates/assets/js/reading-time.min.js"></script>
 <script>
   const text = []
   let content = [...document.getElementById('content').getElementsByTagName('p')].forEach((elem) => {

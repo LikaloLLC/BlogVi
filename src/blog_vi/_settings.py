@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from typing import Optional
+from urllib.parse import urljoin
 
 import yaml
 
@@ -64,9 +65,12 @@ class Settings:
             self.__dict__.update({optional_name: settings.get(optional_name, optional_default)})
 
     @property
-    def blog_root(self):
-        root = Path(self.blog_root_url)
-        return root
+    def blog_root_path(self):
+        url = urljoin('/', self.blog_root_url)
+        if not url.endswith('/'):
+            url += '/'
+
+        return url
 
     def to_json(self):
         settings = {}
