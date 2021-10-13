@@ -50,7 +50,11 @@ class BaseLanding:
         if relative_path == '.':
             relative_path = ''
 
-        return urljoin(self.settings.blog_root_path, str(relative_path))
+        path = urljoin(self.settings.blog_root_path, str(relative_path))
+        if path.endswith('/'):
+            path = path[:-1]
+
+        return path
 
     @property
     def blog_path(self):
@@ -133,12 +137,13 @@ class Landing(BaseLanding):
         return self.path
 
     def generate_rss(self):
-        domain_url = self.settings.domain_url
+        domain = self.settings.domain_url
+        blog_path = self.settings.blog_root_path
         fg = FeedGenerator()
 
-        fg.id(f"{domain_url}/index.html")
+        fg.id(f"{domain}{blog_path}index.html")
         fg.title(self.name)
-        fg.link(href=f'{domain_url}/index.html', rel='self')
+        fg.link(href=f'{domain}{blog_path}index.html', rel='self')
         fg.subtitle(self.name)
         fg.language('en')
 
@@ -228,4 +233,8 @@ class CategoryLanding(BaseLanding):
         if blog_relative_path == '.':
             blog_relative_path = ''
 
-        return urljoin(self.settings.blog_root_path, str(blog_relative_path))
+        path = urljoin(self.settings.blog_root_path, str(blog_relative_path))
+        if path.endswith('/'):
+            path = path[:-1]
+
+        return path
