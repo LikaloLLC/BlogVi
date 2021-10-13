@@ -140,7 +140,7 @@ class Article:
         """
         Returns URL for the article. Takes domain url, blog directory from settings
         and concatenates it with relative article path."""
-        _url_bits = (self.settings.domain_url, self.settings.blog_root_url, self.path)
+        _url_bits = (self.settings.domain_url, self.path)
         url_bits = []
         for bit in _url_bits:
             if not bit.endswith('/'):
