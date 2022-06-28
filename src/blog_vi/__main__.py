@@ -29,8 +29,27 @@ def generate_blog(workdir: Path) -> None:
 
         article['Title'] = article.get('Title') or f'blog-{cnt}'
 
-        article_obj = Article.from_config(settings, index, article)
-        index.add_article(article_obj)
+        if article['Legacy Slugs'] != '':
+            article['Is Legacy'] = False
+            article_obj = Article.from_config(settings, index, article)
+            redirect_slug = article_obj.slug
+            index.add_article(article_obj)
+            legacy_slugs = article['Legacy Slugs'].split(';')
+            for slug in legacy_slugs:
+                article['Slug'] = slug
+                article['Is Legacy'] = True
+                article['Redirect Slug'] = redirect_slug
+                print(article)
+                print()
+                article_obj = Article.from_config(settings, index, article)
+                index.add_article(article_obj)
+
+        else:
+            article['Is Legacy'] = False
+            article_obj = Article.from_config(settings, index, article)
+            index.add_article(article_obj)
+            print(article_obj.__dict__['slug'])
+            print()
 
     index.generate()
 
