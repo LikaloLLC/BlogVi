@@ -49,8 +49,7 @@ class Article:
         self.next = next or {}
 
         # Misc
-        # self.slug = slugify(title)
-        self.slug = slugify(title) if slug == '' else slug
+        self.slug = slugify(title) if not slug else slug
 
         self.redirect_slug = redirect_slug
 
@@ -60,7 +59,7 @@ class Article:
 
         self.is_legacy = is_legacy
 
-        self.tracker = Tracker(self, ['title', 'markdown', 'summary', 'categories'], self._get_output_dir())
+        self.tracker = Tracker(self, ['title', 'markdown', 'summary', 'categories', 'is_legacy'], self._get_output_dir())
 
     @property
     def path(self):
@@ -71,8 +70,6 @@ class Article:
     @classmethod
     def from_config(cls, settings: 'Settings', landing, config: dict) -> 'Article':
         """Return a class instance from the given config."""
-        # print(config)
-        # print()
         return cls(
             settings,
             landing=landing,
@@ -87,7 +84,7 @@ class Article:
             categories=config['Categories'].split(", "),
             status=int(config['Status']),
             slug=config['Slug'],
-            is_legacy=config['Is Legacy'],
+            is_legacy=config.get('Is Legacy', False),
             redirect_slug=config.get('Redirect Slug'),
             timestamp=datetime.strptime(config['Timestamp'], '%m/%d/%Y %H:%M:%S').replace(tzinfo=timezone.utc),
             markdown=config['Markdown'],
