@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+import copy
 
 from blog_vi._config import SETTINGS_FILENAME
 from blog_vi._settings import Settings, get_settings
@@ -29,8 +30,22 @@ def generate_blog(workdir: Path) -> None:
 
         article['Title'] = article.get('Title') or f'blog-{cnt}'
 
-        article_obj = Article.from_config(settings, index, article)
-        index.add_article(article_obj)
+        if article['Legacy Slugs'] != '':
+            article_obj = Article.from_config(settings, index, article)
+            redirect_slug = article_obj.slug
+            index.add_article(article_obj)
+            legacy_slugs = article['Legacy Slugs'].split(';')
+            for slug in legacy_slugs:
+                legacy_article = copy.deepcopy(article)
+                legacy_article['Slug'] = slug
+                legacy_article['Is Legacy'] = True
+                legacy_article['Redirect Slug'] = redirect_slug
+                article_obj = Article.from_config(settings, index, legacy_article)
+                index.add_article(article_obj)
+
+        else:
+            article_obj = Article.from_config(settings, index, article)
+            index.add_article(article_obj)
 
     index.generate()
 

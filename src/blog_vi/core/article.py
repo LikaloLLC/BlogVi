@@ -17,8 +17,8 @@ class Article:
     base_template: str = 'article.html'
 
     def __init__(self, settings: 'Settings', title, timestamp, header_image, author_name, author_image, author_email,
-                 summary, categories, markdown, author_info, author_social, status, landing, previous=None, next=None,
-                 template=None):
+                 summary, categories, markdown, author_info, author_social, status, slug, landing, is_legacy=False,
+                 redirect_slug=None, previous=None, next=None, template=None):
         self.settings = settings
         self.landing = landing
 
@@ -49,13 +49,17 @@ class Article:
         self.next = next or {}
 
         # Misc
-        self.slug = slugify(title)
+        self.slug = slugify(title) if not slug else slug
+
+        self.redirect_slug = redirect_slug
 
         self.template = template or self.base_template
 
         self.url = self.prepare_url()
 
-        self.tracker = Tracker(self, ['title', 'markdown', 'summary', 'categories'], self._get_output_dir())
+        self.is_legacy = is_legacy
+
+        self.tracker = Tracker(self, ['title', 'markdown', 'summary', 'categories', 'is_legacy'], self._get_output_dir())
 
     @property
     def path(self):
@@ -79,6 +83,9 @@ class Article:
             summary=config['Excerpt/Short Summary'],
             categories=config['Categories'].split(", "),
             status=int(config['Status']),
+            slug=config['Slug'],
+            is_legacy=config.get('Is Legacy', False),
+            redirect_slug=config.get('Redirect Slug'),
             timestamp=datetime.strptime(config['Timestamp'], '%m/%d/%Y %H:%M:%S').replace(tzinfo=timezone.utc),
             markdown=config['Markdown'],
         )
