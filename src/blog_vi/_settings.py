@@ -1,3 +1,4 @@
+import os
 import json
 from pathlib import Path
 from typing import Optional
@@ -7,12 +8,6 @@ import yaml
 
 from ._config import SETTINGS_DEFAULTS, SETTINGS_FILENAME
 from .utils import flatten, unflatten
-
-from environs import Env
-import os
-
-env = Env()
-env.read_env()
 
 
 class SettingsError(Exception):
