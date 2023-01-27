@@ -6,8 +6,10 @@ from urllib.parse import urljoin
 import yaml
 
 from ._config import SETTINGS_DEFAULTS, SETTINGS_FILENAME
+from .utils import flatten, unflatten
 
 from environs import Env
+import os
 
 env = Env()
 env.read_env()
@@ -78,13 +80,11 @@ class Settings:
         self.fill_env_vars()
 
     def fill_env_vars(self):
-        from flatten_dict import flatten
-        from flatten_dict import unflatten
-
         data = flatten(self.__dict__)
         for key, value in self.env.items():
-            if not data[tuple(key.split('.'))]:
-                data[tuple(key.split('.'))] = env.str(value, '')
+            key_ = tuple(key.split('.'))
+            if not data[key_]:
+                data[key_] = os.getenv(value, '')
 
         data = unflatten(data)
         self.__dict__.update(data)
