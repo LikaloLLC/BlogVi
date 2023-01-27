@@ -7,5 +7,3 @@ python-slugify
 pyyaml
 click
 deepl
-environs
-flatten-dict
