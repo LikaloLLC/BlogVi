@@ -1,3 +1,4 @@
+import os
 import json
 from pathlib import Path
 from typing import Optional
@@ -6,6 +7,7 @@ from urllib.parse import urljoin
 import yaml
 
 from ._config import SETTINGS_DEFAULTS, SETTINGS_FILENAME
+from .utils import flatten, unflatten
 
 
 class SettingsError(Exception):
@@ -44,6 +46,11 @@ class MandatorySettingNotFoundError(SettingsError):
 class Settings:
     mandatory = ('blog_name', 'blog_root_url', 'blog_post_location_url', 'domain_url')
     optional = SETTINGS_DEFAULTS
+    env = {
+        'google_translator.api_key': 'GOOGLE_TRANSLATOR_API_KEY',
+        'deepl_translator.api_key': 'DEEPL_TRANSLATOR_API_KEY',
+        'comments.commentbox_project_id': 'COMMENT_BOX_PROJECT_ID'
+    }
 
     def __init__(self, workdir: Path, templates_dir: Path, **settings):
         self.workdir = workdir
@@ -64,6 +71,19 @@ class Settings:
         for optional_name, optional_default in self.optional.items():
             self.__dict__.update({optional_name: settings.get(optional_name, optional_default)})
 
+        # Set env settings.
+        self.fill_env_vars()
+
+    def fill_env_vars(self):
+        data = flatten(self.__dict__)
+        for key, value in self.env.items():
+            key_ = tuple(key.split('.'))
+            if not data[key_]:
+                data[key_] = os.getenv(value, '')
+
+        data = unflatten(data)
+        self.__dict__.update(data)
+
     @property
     def blog_root_path(self):
         url = urljoin('/', self.blog_root_url)
@@ -81,6 +101,7 @@ class Settings:
             settings[optional_name] = getattr(self, optional_name, optional_default)
 
         return json.dumps(settings)
+
 
 def get_settings(filename: str = SETTINGS_FILENAME) -> dict:
     """Return settings dictionary.

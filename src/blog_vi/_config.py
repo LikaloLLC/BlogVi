@@ -22,7 +22,7 @@ SETTINGS_DEFAULTS = {
         'enabled': False,
     },
     'google_tag_manager': {
-        'enabled' : False
+        'enabled': False
     },
     'subscribe': {
         'enabled': False
@@ -39,6 +39,7 @@ SETTINGS_DEFAULTS = {
         'author': ''
     },
     'translator': None,
+    'google_translator': {},
     'deepl_translator': {},
     'translation_list': [],
     'translate_articles': None,
