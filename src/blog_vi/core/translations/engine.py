@@ -125,6 +125,7 @@ class TranslateEngine:
             status=int(article.status),
             timestamp=article.timestamp,
             markdown=article.markdown,
+            slug=article.slug
         )
 
     def get_translation_workdir(self, folder_name: str) -> Path:
