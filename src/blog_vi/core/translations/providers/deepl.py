@@ -12,7 +12,10 @@ class DeeplTranslateProvider(BaseTranslateProvider):
     def translate(self, text: str, source_abbreviation: str, target_abbreviation: str) -> str:
         provider = self.get_provider()
         result = provider.translate_text(text, source_lang=source_abbreviation, target_lang=target_abbreviation)
-        return result.text
+        text = result.text
+        text = text.replace('] (', '](')
+
+        return text
 
     def get_provider(self):
         return deepl.Translator(auth_key=self.__api_key)
