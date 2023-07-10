@@ -72,30 +72,38 @@ class TranslateEngine:
 
             return cloned_article
 
-        cloned_article.title = self.translator.translate(
-            text=cloned_article.title,
-            source_abbreviation=self.source_abbreviation,
-            target_abbreviation=target_abbreviation
-        )
-        cloned_article.summary = self.translator.translate(
-            text=cloned_article.summary,
-            source_abbreviation=self.source_abbreviation,
-            target_abbreviation=target_abbreviation
-        )
-
-        cloned_article.markdown = self.translator.translate(
-            text=cloned_article.markdown,
-            source_abbreviation=self.source_abbreviation,
-            target_abbreviation=target_abbreviation
-        )
+        title = cloned_article.title
+        summary = cloned_article.summary
+        markdown = cloned_article.markdown
+        if title:
+            cloned_article.title = self.translator.translate(
+                text=title,
+                source_abbreviation=self.source_abbreviation,
+                target_abbreviation=target_abbreviation
+            )
+        if summary:
+            cloned_article.summary = self.translator.translate(
+                text=summary,
+                source_abbreviation=self.source_abbreviation,
+                target_abbreviation=target_abbreviation
+            )
+        if markdown:
+            cloned_article.markdown = self.translator.translate(
+                text=markdown,
+                source_abbreviation=self.source_abbreviation,
+                target_abbreviation=target_abbreviation
+            )
 
         translated_categories = []
         for category in cloned_article.categories:
-            translated_categories.append(self.translator.translate(
-                text=category,
-                source_abbreviation=self.source_abbreviation,
-                target_abbreviation=target_abbreviation
-            ))
+            if category:
+                category = self.translator.translate(
+                    text=category,
+                    source_abbreviation=self.source_abbreviation,
+                    target_abbreviation=target_abbreviation
+                )
+            translated_categories.append(category)
+            
         cloned_article.categories = translated_categories
 
         return cloned_article
