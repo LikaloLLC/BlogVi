@@ -196,7 +196,8 @@ class Landing(BaseLanding):
             for category in article.categories:
                 workdir = Path(self.workdir, slugify(category))
                 workdir.mkdir(exist_ok=True)
-
+                if not category:
+                    continue
                 category_landing = category_landings.get(category,
                                                          CategoryLanding.from_settings(self.settings,
                                                                                        workdir=workdir,
