@@ -1,4 +1,4 @@
-# BlogVi - Tailwind Static Blog with Search (No backend)
+# BlogVi - Tailwind Static Blog with Search (Backendless)
  by [Docsie](https://www.docsie.io)
  
 # 👋 Reason for this Project
