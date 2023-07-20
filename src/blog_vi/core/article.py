@@ -4,12 +4,13 @@ from pathlib import Path
 from urllib.parse import urljoin
 
 import markdown
+from markdown.extensions.tables import TableExtension
 from jinja2 import FileSystemLoader, Environment
 from slugify import slugify
 
 from .tracker import Tracker
 
-from .utils import get_md_file, ImgExtExtension, H1H2Extension, MarkdownTableExtension
+from .utils import get_md_file, ImgExtExtension, H1H2Extension
 
 
 class Article:
@@ -114,7 +115,7 @@ class Article:
 
     def _md_to_html(self) -> Path:
         """Convert markdown content to the html one and return the path to resulting file."""
-        md = markdown.Markdown(extensions=[ImgExtExtension(), H1H2Extension(), MarkdownTableExtension()])
+        md = markdown.Markdown(extensions=[ImgExtExtension(), H1H2Extension(), TableExtension()])
         source = self.workdir.joinpath(f'{self.slug}.md')
 
         output_dir = self._get_output_dir()

@@ -7,8 +7,6 @@ from pathlib import Path
 import requests
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
-from markdown.blockprocessors import BlockProcessor
-from markdown.util import etree
 
 
 class ImgExtractor(Treeprocessor):
@@ -40,34 +38,6 @@ class H1H2Extension(Extension):
     def extendMarkdown(self, md):
         h1h2_ext = NameDescriptionExtractor(md)
         md.treeprocessors.add('h1h2ext', h1h2_ext, '>inline')
-
-
-class TableProcessor(BlockProcessor):
-    """Converts Markdown tables to HTML tables"""
-
-    def run(self, parent, blocks):
-        """Converts the table block to an HTML table"""
-        block = blocks.pop(0).strip()
-        table = etree.SubElement(parent, 'table')
-        thead = etree.SubElement(table, 'thead')
-        tbody = etree.SubElement(table, 'tbody')
-        rows = block.split('\n')
-        headers = rows.pop(0).strip('|').split('|')
-        for header in headers:
-            etree.SubElement(thead, 'th').text = header.strip()
-        for row in rows:
-            cells = row.strip('|').split('|')
-            tr = etree.SubElement(tbody, 'tr')
-            for cell in cells:
-                etree.SubElement(tr, 'td').text = cell.strip()
-
-
-class MarkdownTableExtension(Extension):
-    """A Markdown extension that converts tables to HTML"""
-
-    def extendMarkdown(self, md):
-        """Adds the TableProcessor to the Markdown instance"""
-        md.parser.blockprocessors.register(TableProcessor(md.parser), 'table', 175)
 
 
 def make_json(file: str) -> list:
