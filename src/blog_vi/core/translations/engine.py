@@ -8,6 +8,7 @@ from .exceptions import (
     TranslateEngineNotFound
 )
 from .registry import translation_provider_registry
+from src.blog_vi.core.utils import get_logger
 
 
 class TranslateEngine:
@@ -61,6 +62,7 @@ class TranslateEngine:
         Translate article title, summary and text into the target language,
         specified by `target_abbreviation` param.
         """
+        logger = get_logger()
         cloned_article = self.clone_article_for_translation(article, landing)
 
         if not article.tracker.is_changed() and cloned_article.tracker.tracked_exists():
@@ -69,7 +71,7 @@ class TranslateEngine:
             cloned_article.title = tracked_data['title']['content']
             cloned_article.summary = tracked_data['summary']['content']
             cloned_article.markdown = tracked_data['markdown']['content']
-
+            logger.info("Article from cache %r", cloned_article.title)
             return cloned_article
 
         title = cloned_article.title
@@ -81,18 +83,24 @@ class TranslateEngine:
                 source_abbreviation=self.source_abbreviation,
                 target_abbreviation=target_abbreviation
             )
+            logger.info("Article %r. Translate Article title from %r to %r", cloned_article.title,
+                        self.source_abbreviation, target_abbreviation)
         if summary:
             cloned_article.summary = self.translator.translate(
                 text=summary,
                 source_abbreviation=self.source_abbreviation,
                 target_abbreviation=target_abbreviation
             )
+            logger.info("Article %r. Translate Article summary from %r to %r", cloned_article.title,
+                        self.source_abbreviation, target_abbreviation)
         if markdown:
             cloned_article.markdown = self.translator.translate(
                 text=markdown,
                 source_abbreviation=self.source_abbreviation,
                 target_abbreviation=target_abbreviation
             )
+            logger.info("Article %r. Translate Article markdown from %r to %r", cloned_article.title,
+                        self.source_abbreviation, target_abbreviation)
 
         translated_categories = []
         for category in cloned_article.categories:
@@ -102,8 +110,11 @@ class TranslateEngine:
                     source_abbreviation=self.source_abbreviation,
                     target_abbreviation=target_abbreviation
                 )
+                logger.info("Category %r. Translate Article markdown from %r to %r", category,
+                            self.source_abbreviation, target_abbreviation)
+
             translated_categories.append(category)
-            
+
         cloned_article.categories = translated_categories
 
         return cloned_article
