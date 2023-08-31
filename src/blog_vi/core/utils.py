@@ -1,5 +1,6 @@
 import csv
 import hashlib
+import logging
 import os
 import shutil
 from pathlib import Path
@@ -97,3 +98,15 @@ def prepare_workdir(workdir: Path):
 
 def get_md5_hash(text: str) -> str:
     return hashlib.md5(str(text).encode()).hexdigest()
+
+
+def get_logger():
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(levelname)s:%(asctime)s:%(message)s',
+        handlers=[
+            logging.FileHandler('blogvi.log'),  # Write logs to a file
+            logging.StreamHandler()  # Display logs on the console
+        ]
+    )
+    return logging
