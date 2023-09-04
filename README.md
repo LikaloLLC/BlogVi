@@ -152,5 +152,3 @@ You need to provide `google_tag_manager_projectid`, which you can get [by follow
 
 ***landing_meta***  
     Meta info for the blog.
-
-
