@@ -8,7 +8,7 @@ from .exceptions import (
     TranslateEngineNotFound
 )
 from .registry import translation_provider_registry
-from src.blog_vi.core.utils import get_logger
+from blog_vi.core.utils import get_logger
 
 
 class TranslateEngine:
