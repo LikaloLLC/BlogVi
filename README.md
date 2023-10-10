@@ -1,5 +1,8 @@
 # BlogVi - Tailwind Static Blog with Search (Backendless)
  by [Docsie](https://www.docsie.io)
+
+ See our blog
+ https://www.docsie.io/blog/
  
 # 👋 Reason for this Project
 
