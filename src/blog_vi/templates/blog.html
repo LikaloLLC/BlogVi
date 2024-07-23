@@ -74,7 +74,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <a class="rounded bg-green-500 text-white px-1 uppercase text-xs whitespace-nowrap md:text-sm"
                        href="{{ blog.blog_path }}">ALL</a>
                 </li>
-                {% for category in categories %}
+                {% for category in (categories|list)[:10] %}
                     <li class="mr-2">
                         <a class="rounded bg-green-500 text-white px-1 uppercase text-xs whitespace-nowrap md:text-sm"
                            href="{{ category.1 }}">{{ category.0 }}</a>
@@ -124,9 +124,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     </div>
 
-    <!--Subscribe-->
-    {% include 'subscription_form.html' %}
+   <!--Subscribe-->
+    {% if settings.subscribe.enabled %}
+      {% include 'subscription_form.html' %}
+    {% endif %}
     <!-- /Subscribe-->
+
+    <!--Categories-->
+    <ul class="list-reset w-full flex flex-wrap flex-1 md:flex-none">
+        {% for category in (categories|list)[10:] %}
+        <li class="mr-2">
+            <a class="rounded bg-green-500 text-white px-1 uppercase text-xs whitespace-nowrap md:text-sm"
+               href="{{ category.1 }}">{{ category.0 }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <!-- /Categories-->
 
 </div>
 
