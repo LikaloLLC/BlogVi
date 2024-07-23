@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             var blog = searchResult[i];
             ulBar.innerHTML = ulBar.innerHTML +
               '<li class="block cursor-pointer px-4 py-2 text-sm text-gray-700 border-b hover:bg-gray-100">' +
-              '<a href="blogs/' + blog.item.detail_url + '">' +
+              '<a href="articles/' + blog.item.slug + '">' +
               '<p class="mb-1 font-semibold">' +
               findAndReplaceString(blog.item.title, searchValue) +
               ' </p>' +
