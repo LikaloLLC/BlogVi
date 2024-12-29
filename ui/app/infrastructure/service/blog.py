@@ -1,7 +1,8 @@
 import csv
 from io import StringIO
-from typing import List, Optional
-from datetime import datetime
+from typing import List, Optional, Dict, Tuple
+import streamlit as st
+import pandas as pd
 
 from repositories.blog import IBlogRepository
 
@@ -10,51 +11,104 @@ class BlogService:
     def __init__(self, blog_repo: IBlogRepository):
         self._blog_repo = blog_repo
 
-    def import_from_csv(self, csv_content: str) -> tuple[List[dict], List[dict]]:
-        """Import posts from CSV content. Returns (successful_imports, failed_imports)"""
-        reader = csv.DictReader(StringIO(csv_content))
-        successful = []
-        failed = []
+    def _get_or_create_author(self, author_data: dict) -> str:
+        """Get existing author or create a new one. Returns author ID."""
+        # Try to find existing author by email
+        existing_author = self._blog_repo.get_author_by_email(author_data['email'])
+        if existing_author:
+            return existing_author['id']
+        
+        # Create new author if not found
+        new_author = self._blog_repo.create_author({
+            'name': author_data['name'],
+            'email': author_data['email'],
+            'avatar_url': author_data.get('avatar_url', ''),
+            'bio': author_data.get('bio', ''),
+            'social_urls': author_data.get('social_urls', [])
+        })
+        return new_author['id']
 
-        for row in reader:
-            try:
-                post_data = {
-                    'title': row['Title'],
-                    'content': row['Markdown'],
-                    'status': row['Status'],
-                    'author': {
-                        'name': row['Author Name'],
-                        'email': row['Author email'],
-                        'avatar_url': row['Author Avatar Image URL'],
-                        'bio': row['About the Author'],
-                        'social_urls': row['Social URLs'].split(',') if row['Social URLs'] else []
-                    },
-                    'excerpt': row['Excerpt/Short Summary'],
-                    'categories': row['Categories'].split(',') if row['Categories'] else [],
-                    'hero_image': row['Hero Image (Used for RSS)'],
-                    'header_image': row['Header Image (will be used in RSS feed)'],
-                    'slug': row['Slug'] if row['Slug'] else None,
-                    'legacy_slugs': row['Legacy Slugs'].split(',') if row['Legacy Slugs'] else [],
-                    'metadata': {
-                        'timestamp': row['Timestamp'],
-                        'author_image': row['Author Image'],
+    def import_from_csv(self, csv_content: str) -> Tuple[List[dict], List[dict]]:
+        """Import posts from CSV content"""
+        try:
+            # Get current user info from session
+            if 'user_info' not in st.session_state:
+                raise ValueError("User not authenticated")
+            user_info = st.session_state.user_info
+            if not user_info:
+                raise ValueError("User not authenticated")
+            
+            # Read CSV content
+            df = pd.read_csv(StringIO(csv_content))
+            successful_imports = []
+            failed_imports = []
+            
+            # Process each row
+            posts_to_create = []
+            for _, row in df.iterrows():
+                try:
+                    # Convert row to dict and clean up data
+                    post_data = row.to_dict()
+                    post_data = {k: v for k, v in post_data.items() if pd.notna(v)}
+                    
+                    # Extract author data
+                    author_data = {
+                        'name': post_data.pop('Author Name', None),
+                        'email': post_data.pop('Author email', None),
+                        'avatar_url': post_data.pop('Author image', None),
+                        'bio': post_data.pop('About the Author', None),
+                        'social_urls': [url.strip() for url in post_data.pop('Social URLs', '').split(',') if url.strip()]
                     }
-                }
-                successful.append(post_data)
-            except Exception as e:
-                failed.append({
-                    'row': row,
-                    'error': str(e)
-                })
-
-        if successful:
-            self._blog_repo.bulk_create_posts(successful)
-
-        return successful, failed
+                    
+                    # Map CSV fields to post fields
+                    post = {
+                        'title': post_data.get('Title'),
+                        'content': post_data.get('Markdown'),
+                        'excerpt': post_data.get('Excerpt/Short Summary'),
+                        'status': 'published' if post_data.get('Status', '1') == '1' else 'draft',
+                        'categories': [cat.strip() for cat in post_data.get('Categories', '').split(',') if cat.strip()],
+                        'header_image': post_data.get('Header Image'),
+                        'slug': post_data.get('Slug'),
+                        'metadata': {
+                            'timestamp': post_data.get('Timestamp'),
+                            'author_image': post_data.get('Author image', '')
+                        },
+                        'author': author_data
+                    }
+                    
+                    posts_to_create.append(post)
+                    successful_imports.append(row)
+                except Exception as e:
+                    failed_imports.append({'row': row, 'error': str(e)})
+            
+            # Bulk create all posts
+            if posts_to_create:
+                self._blog_repo.bulk_create_posts(posts_to_create, created_by_id=user_info.id)
+            
+            return successful_imports, failed_imports
+        except Exception as e:
+            raise ValueError(f"Failed to import CSV: {str(e)}")
 
     def create_post(self, data: dict) -> dict:
         """Create a new post"""
-        return self._blog_repo.create_post(data)
+        if 'user_info' not in st.session_state:
+            raise ValueError("User not authenticated")
+            
+        user_info = st.session_state.user_info
+        if not user_info:
+            raise ValueError("User not authenticated")
+
+        # Handle author creation/lookup if author info is provided
+        if 'author' in data:
+            author_id = self._get_or_create_author(data['author'])
+            data['author_id'] = author_id
+            del data['author']
+
+        return self._blog_repo.create_post(
+            data,
+            organization_id=None,  # Make organization optional
+            created_by_id=user_info.id
+        )
 
     def get_post(self, post_id: str) -> dict:
         """Get a post by ID"""
@@ -62,6 +116,19 @@ class BlogService:
 
     def list_posts(self, filters: Optional[dict] = None) -> List[dict]:
         """List posts with optional filters"""
+        # Get current user info from session
+        if 'user_info' not in st.session_state:
+            raise ValueError("User not authenticated")
+        user_info = st.session_state.user_info
+        if not user_info:
+            raise ValueError("User not authenticated")
+        
+        if not filters:
+            filters = {}
+        
+        # Add user filter
+        filters['created_by_id'] = user_info.id
+        
         return self._blog_repo.list_posts(filters)
 
     def update_post(self, post_id: str, data: dict) -> dict:

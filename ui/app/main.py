@@ -37,6 +37,7 @@ def check_token_on_user_interaction(
 def set_user_if_token_exists(
     token_service: ITokenService = Provide['token_service'],
     idp_user_service: IIdpUserService = Provide['idp_user_service'],
+    idp_organization_service: IIdpOrganizationService = Provide['idp_organization_service'],
 ):
     if cookie.get_all():
         try:
@@ -45,9 +46,15 @@ def set_user_if_token_exists(
                 id_token = token_service.decode_id_token(token['id_token'])
                 user_in_idp = idp_user_service.get_by_id(UserId(id_token.sub))
                 st.session_state.user_info = user_in_idp
+                
+                # Load user organizations
+                user_organizations = idp_organization_service.organizations_of_user(user_in_idp.id)
+                st.session_state.user_organizations = user_organizations
+                
                 st.rerun()
         except Exception:
             st.session_state.user_info = {}
+            st.session_state.user_organizations = []
             cookie.delete(LOGTO_TOKEN_COOKIE)
 
 @inject
