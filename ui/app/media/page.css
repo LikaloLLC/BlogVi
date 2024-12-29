@@ -1,0 +1,30 @@
+/* Page-specific styles */
+.stApp {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Content area styles */
+.main .block-container {
+    padding: 2rem;
+    max-width: 100%;
+}
+
+/* Sidebar styles */
+.sidebar .sidebar-content {
+    background-color: #ffffff;
+    padding: 1rem;
+}
+
+/* Form styles */
+.stTextInput > div > div > input {
+    border-radius: 0.3rem;
+}
+
+.stTextArea > div > div > textarea {
+    border-radius: 0.3rem;
+}
+
+.stSelectbox > div > div > select {
+    border-radius: 0.3rem;
+} 

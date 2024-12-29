@@ -1,0 +1,21 @@
+/* Base styles */
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #262730;
+}
+
+/* Button styles */
+.button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #0d9373;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.3rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0b7b60;
+} 

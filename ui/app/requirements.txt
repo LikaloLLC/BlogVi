@@ -1,0 +1,11 @@
+streamlit>=1.28.0
+streamlit-oauth>=0.1.2
+extra-streamlit-components>=0.1.60
+dependency-injector>=4.41.0
+supabase>=2.0.3
+pydantic>=2.5.2
+pydantic-extra-types>=2.1.0
+requests>=2.31.0
+PyJWT>=2.8.0
+python-slugify>=8.0.1
+phonenumbers>=8.13.26 
