@@ -5,9 +5,19 @@ from setuptools import find_packages, setup
 
 here = path.abspath(path.dirname(__file__))
 
+# Function to parse requirements.txt
+def parse_requirements(filename):
+    """Load requirements from a pip requirements file."""
+    with open(path.join(here, filename), encoding="utf-8") as f:
+        lineiter = (line.strip() for line in f)
+        return [line for line in lineiter if line and not line.startswith("#")]
+
 # Get the long description from the README file
 with open(path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
+
+# Get requirements from requirements.txt
+install_reqs = parse_requirements("requirements.txt")
 
 setup(
     name="blog-vi",
@@ -34,19 +44,7 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     python_requires=">=3.5, <4",
-    install_requires=[
-        "Markdown>=3.0.0,<3.2.2",
-        "click>=7.0,<8.0",
-        "watchdog>=1.0.0,<2.0.0",
-        "requests>=2.0.0,<2.22.0",
-        "Jinja2>=2.0.0,<2.22.0",
-        "jinja_markdown>=1.200000,<=1.200630",
-        "feedgen>=0.6.0,<1.0.0",
-        "python-slugify>=4.0.0,<4.0.1",
-        "PyYAML>=5.0.0,<5.3.1",
-        "deepl>=1.0.1,<2",
-        "MarkupSafe==2.0.1"
-    ],
+    install_requires=install_reqs,
     entry_points={
         "console_scripts": [
             "blogvi=blog_vi._cli:_cli"

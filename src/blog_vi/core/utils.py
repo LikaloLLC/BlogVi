@@ -1,4 +1,5 @@
 import csv
+import io
 import hashlib
 import logging
 import os
@@ -41,23 +42,33 @@ class H1H2Extension(Extension):
         md.treeprocessors.add('h1h2ext', h1h2_ext, '>inline')
 
 
-def make_json(file: str) -> list:
+def make_json(csv_content: str) -> list:
     data = []
-    # read records from data.csv file and convert it list
-    with open(file, encoding='utf-8') as f:
+    try:
+        f = io.StringIO(csv_content)
         csvReader = csv.DictReader(f)
         for rows in csvReader:
             data.append(rows)
+    except Exception as e:
+        print(f"[ERROR] Failed to parse CSV content: {e}")
     return data
 
 
 def get_articles_from_csv(url: str) -> list:
-    response = requests.get(url=url)
-    # write records to data.csv file
-    with open('data.csv', 'wb') as f:
-        f.write(response.content)
-
-    return make_json('data.csv')
+    try:
+        response = requests.get(url=url)
+        response.raise_for_status()
+        csv_text = response.text
+        if not csv_text:
+            print("[WARNING] Fetched empty content from CSV URL.")
+            return []
+        return make_json(csv_text)
+    except requests.exceptions.RequestException as e:
+        print(f"[ERROR] Failed to fetch CSV from URL {url}: {e}")
+        return []
+    except Exception as e:
+        print(f"[ERROR] An unexpected error occurred in get_articles_from_csv: {e}")
+        return []
 
 
 def get_md_file(text: str, file_name: str) -> str:

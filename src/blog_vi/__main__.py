@@ -21,8 +21,10 @@ def generate_blog(workdir: Path) -> None:
 
     url = settings.blog_post_location_url
     articles = get_articles_from_csv(url)
+    print(f"[DEBUG] Fetched {len(articles)} articles from CSV.")
 
     index = Landing.from_settings(settings)
+    articles_added = 0
 
     for cnt, article in enumerate(articles):
         if article['Status'] != '1':
@@ -46,8 +48,12 @@ def generate_blog(workdir: Path) -> None:
         else:
             article_obj = Article.from_config(settings, index, article)
             index.add_article(article_obj)
+        articles_added += 1
 
+    print(f"[DEBUG] Added {articles_added} articles with Status '1' to index.")
+    print(f"[DEBUG] Calling index.generate() to write output...")
     index.generate()
+    print(f"[DEBUG] index.generate() finished.")
 
     if settings.translate_articles:
         try:

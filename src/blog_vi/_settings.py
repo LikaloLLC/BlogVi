@@ -78,8 +78,16 @@ class Settings:
         data = flatten(self.__dict__)
         for key, value in self.env.items():
             key_ = tuple(key.split('.'))
-            if not data[key_]:
-                data[key_] = os.getenv(value, '')
+            # Check if key exists AND if its value is falsy before trying to overwrite from env
+            if key_ in data and not data[key_]:
+                # Preserve original value if env var is not set
+                data[key_] = os.getenv(value, data[key_]) 
+            elif key_ not in data:
+                # If key doesn't exist in data (e.g., no default), 
+                # set it ONLY if the environment variable is explicitly set.
+                env_value = os.getenv(value)
+                if env_value is not None:
+                    data[key_] = env_value
 
         data = unflatten(data)
         self.__dict__.update(data)

@@ -19,7 +19,7 @@ class Article:
 
     def __init__(self, settings: 'Settings', title, timestamp, header_image, author_name, author_image, author_email,
                  summary, categories, markdown, author_info, author_social, status, slug, landing, is_legacy=False,
-                 redirect_slug=None, previous=None, next=None, template=None):
+                 redirect_slug=None, previous=None, next=None, template=None, modified_timestamp=None):
         self.settings = settings
         self.landing = landing
 
@@ -34,6 +34,11 @@ class Article:
         self.status = status
         self.timestamp = timestamp
         self.publish_date = self._get_publish_date()
+        self.modified_timestamp = modified_timestamp or timestamp # Default to timestamp if None
+
+        # Calculated fields
+        self.wordCount = 0
+        self.readingTime = 0 # In minutes
 
         # Source markdown file url
         self.markdown = markdown
@@ -71,6 +76,19 @@ class Article:
     @classmethod
     def from_config(cls, settings: 'Settings', landing, config: dict) -> 'Article':
         """Return a class instance from the given config."""
+        timestamp = datetime.strptime(config['Timestamp'], '%m/%d/%Y %H:%M:%S').replace(tzinfo=timezone.utc)
+
+        # Handle optional modified timestamp
+        modified_timestamp_str = config.get('Modified Timestamp')
+        modified_timestamp = None
+        if modified_timestamp_str:
+            try:
+                modified_timestamp = datetime.strptime(modified_timestamp_str, '%m/%d/%Y %H:%M:%S').replace(tzinfo=timezone.utc)
+            except ValueError:
+                # Handle potential parsing errors, e.g., log a warning or ignore
+                print(f"Warning: Invalid 'Modified Timestamp' format for article '{config.get('Title')}'. Using original timestamp.")
+                pass # Keep modified_timestamp as None, will default later
+
         return cls(
             settings,
             landing=landing,
@@ -87,7 +105,8 @@ class Article:
             slug=config['Slug'],
             is_legacy=config.get('Is Legacy', False),
             redirect_slug=config.get('Redirect Slug'),
-            timestamp=datetime.strptime(config['Timestamp'], '%m/%d/%Y %H:%M:%S').replace(tzinfo=timezone.utc),
+            timestamp=timestamp,
+            modified_timestamp=modified_timestamp,
             markdown=config['Markdown'],
         )
 
@@ -122,6 +141,17 @@ class Article:
         output = output_dir.joinpath('index.html')
 
         md_file = get_md_file(self.markdown, str(source))
+
+        # Calculate word count and reading time from the fetched markdown file
+        try:
+            with open(md_file, 'r', encoding='utf-8') as f: # Specify encoding
+                content = f.read()
+            self.wordCount = len(content.split())
+            self.readingTime = max(1, round(self.wordCount / 200)) # Min 1 minute reading time
+        except Exception as e:
+            print(f"Warning: Could not calculate word count/reading time for {self.slug}: {e}")
+            # Keep defaults (0)
+
         md.convertFile(md_file, str(output))
 
         source.unlink()
@@ -160,4 +190,3 @@ class Article:
             url_bits.append(bit)
 
         return reduce(urljoin, url_bits)
-
