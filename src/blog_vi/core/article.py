@@ -5,6 +5,7 @@ from urllib.parse import urljoin
 
 import markdown
 from markdown.extensions.tables import TableExtension
+from markdown.extensions.toc import TocExtension
 from jinja2 import FileSystemLoader, Environment
 from slugify import slugify
 
@@ -64,6 +65,8 @@ class Article:
         self.url = self.prepare_url()
 
         self.is_legacy = is_legacy
+
+        self.toc_html = ""
 
         self.tracker = Tracker(self, ['title', 'markdown', 'summary', 'categories', 'is_legacy'], self._get_output_dir())
 
@@ -134,7 +137,14 @@ class Article:
 
     def _md_to_html(self) -> Path:
         """Convert markdown content to the html one and return the path to resulting file."""
-        md = markdown.Markdown(extensions=[ImgExtExtension(), H1H2Extension(), TableExtension()])
+        md = markdown.Markdown(extensions=[
+            'markdown.extensions.extra',
+            # Revert permalink to True, will style with CSS
+            TocExtension(permalink=True, toc_depth='2-2'),
+            ImgExtExtension(),
+            H1H2Extension(),
+            TableExtension()
+        ])
         source = self.workdir.joinpath(f'{self.slug}.md')
 
         output_dir = self._get_output_dir()
@@ -152,7 +162,12 @@ class Article:
             print(f"Warning: Could not calculate word count/reading time for {self.slug}: {e}")
             # Keep defaults (0)
 
-        md.convertFile(md_file, str(output))
+        html_content = md.convert(content) # Convert content string instead of file to get TOC
+        self.toc_html = md.toc # Store the generated TOC
+
+        # Write the HTML content to the output file
+        with open(output, 'w', encoding='utf-8') as f:
+            f.write(html_content)
 
         source.unlink()
 

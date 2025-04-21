@@ -58,7 +58,8 @@ def get_articles_from_csv(url: str) -> list:
     try:
         response = requests.get(url=url)
         response.raise_for_status()
-        csv_text = response.text
+        # Explicitly decode using UTF-8
+        csv_text = response.content.decode('utf-8')
         if not csv_text:
             print("[WARNING] Fetched empty content from CSV URL.")
             return []

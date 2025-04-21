@@ -1,0 +1,638 @@
+<!-- Base template of the article page. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  {% if article.is_legacy == True %}
+    <meta HTTP-equiv="refresh" content="0; url=../{{ article.redirect_slug }}">
+  {% endif %}
+
+    {% include 'favicon.html' %}
+
+  <!-- Primary Meta Tags -->
+  <title>{{ settings.blog_name }} - {{article.title}}</title>
+  <meta name="author" content="{{ article.author_name }}"/>
+  <meta name="title" content="{{ article.title }}">
+  <meta name="description" content="{{ article.summary }}"/>
+  <meta name="keywords" content="{{ article.categories|join(',') }}"/>
+  <link rel="canonical" href="{{ article.url }}">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ article.url }}">
+  <meta property="og:title" content="{{ article.title }}">
+  <meta property="og:description"
+        content="{{ article.summary }}">
+  <meta property="og:image" content="{{ article.header_image if article.header_image else settings.landing_meta.image }}">
+  <meta property="og:image:alt" content="{{ article.title }}">
+  <meta property="article:published_time" content="{{ article.timestamp.isoformat() }}">
+  <meta property="article:modified_time" content="{{ article.modified_timestamp.isoformat() }}">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{{ article.url }}">
+  <meta property="twitter:title" content="{{ article.title }}">
+  <meta property="twitter:description"
+        content="{{ article.summary }}">
+  <meta property="twitter:image" content="{{ article.header_image }}">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "{{ settings.domain_url }}{{ settings.blog_root_path }}#website",
+        "url": "{{ settings.domain_url }}{{ settings.blog_root_path }}",
+        "name": "{{ settings.blog_name | escape }}"
+        {# Add SearchAction if search is configured #}
+        {% if settings.search_config -%}
+        ,"potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+             "@type": "EntryPoint",
+             "urlTemplate": "{{ settings.domain_url }}{{ settings.blog_root_path }}?s={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+        {%- endif %}
+      },
+      {
+        "@type": "BlogPosting",
+        "@id": "{{ article.url }}#blogposting",
+        "isPartOf": { "@id": "{{ settings.domain_url }}{{ settings.blog_root_path }}#website" },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "{{ article.url }}"
+        },
+        "headline": "{{ article.title | escape }}",
+        "description": "{{ article.summary | escape }}",
+        "image": "{{ article.header_image if article.header_image else settings.landing_meta.image }}",
+        "author": {
+          "@type": "Person",
+          "name": "{{ article.author_name | escape }}"
+          {% if article.author_image -%}
+          ,"image": "{{ article.author_image }}"
+          {%- endif %}
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "{{ settings.blog_name | escape }}"
+          {% if settings.landing_meta.image -%}
+          ,"logo": {
+            "@type": "ImageObject",
+            "url": "{{ settings.landing_meta.image }}"
+          }
+          {%- endif %}
+        },
+        "datePublished": "{{ article.timestamp.isoformat() }}",
+        "dateModified": "{{ article.modified_timestamp.isoformat() }}",
+        "wordCount": {{ article.wordCount if article.wordCount > 0 else 'null' }},
+        "articleSection": "{{ article.categories|join(', ') if article.categories else '' }}"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "{{ settings.domain_url }}"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "{{ settings.blog_name }}",
+            "item": "{{ settings.domain_url }}{{ settings.blog_root_path }}"
+          },
+          {% if article.categories -%}
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "{{ article.categories[0] }}"
+            {# No item URL for category #}
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": "{{ article.title }}"
+            {# No item URL for current page #}
+          }
+          {%- else -%}
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "{{ article.title }}"
+            {# No item URL for current page #}
+          }
+          {%- endif %}
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "brand": "{{ settings.blog_name | escape }}",
+    "name": "{{ article.title | escape }}",
+    "description": "{{ article.summary | escape }}",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "worstRating": "1",
+      "bestRating": "5",
+      "ratingValue": "4.7",
+      "ratingCount": "252"
+    }
+  }
+  </script>
+
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{settings.blog_root_path}}templates/assets/css/typography.min.css"/>
+  <!--Replace with your tailwind.css once created-->
+    {% if settings.google_tag_manager.enabled %}
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','{{ settings.google_tag_manager.google_tag_manager_projectid }}');</script>
+<!-- End Google Tag Manager -->
+  {% endif %}
+
+  <style>
+    .toc ul {
+      list-style-type: none;
+      padding-left: 0.5rem; /* Adjust as needed */
+    }
+    .toc li {
+      margin-bottom: 0.25rem;
+    }
+    .toc a {
+      text-decoration: none;
+      color: #4a5568; /* gray-700 */
+      font-size: 0.875rem; /* text-sm */
+    }
+    .toc a:hover {
+      color: #2f855a; /* green-600 */
+      text-decoration: underline;
+    }
+    .toc ul ul {
+        padding-left: 1rem; /* Indent sub-levels */
+    }
+    /* Style for the permalink anchor generated by toc extension */
+    a.toclink {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        margin-left: 0.25em;
+        vertical-align: middle;
+        opacity: 0.5;
+        text-decoration: none;
+    }
+    a.toclink:hover {
+        opacity: 1;
+    }
+  </style>
+
+  <style>
+    /* Style the permalink anchor generated by the markdown TocExtension */
+    .headerlink {
+        /* Hide the default text (¶ symbol) */
+        font-size: 0;
+        color: transparent;
+
+        /* Display the SVG icon as a background */
+        display: inline-block;
+        width: 16px; /* Icon size */
+        height: 16px; /* Icon size */
+        margin-left: 8px; /* Space between heading and icon */
+        vertical-align: middle; /* Align icon with text */
+        /* URL-encoded SVG */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' width='16' height='16'%3E%3Cpath fill='none' stroke='%236b7280' stroke-width='1.5' d='M10.6 12.4l-3 3c-.8.8-1.7.8-2.4 0l-.7-.6c-.7-.7-.7-1.6 0-2.3l3.1-3.1M9.3 7.4l3.1-3.1c.7-.7 1.6-.7 2.3 0l.7.7c.7.7.7 1.6 0 2.3l-3 3M8 11.9l4-4'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+
+        /* Subtle appearance, more visible on hover */
+        opacity: 0.3;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    /* Make icon more visible on hover over the link or heading */
+    h1:hover .headerlink,
+    h2:hover .headerlink,
+    h3:hover .headerlink,
+    h4:hover .headerlink,
+    h5:hover .headerlink,
+    h6:hover .headerlink,
+    .headerlink:hover {
+        opacity: 0.8;
+    }
+  </style>
+
+  <style>
+    /* Style for the active TOC link */
+    .active-toc-link {
+        font-weight: 600; /* Make it bolder */
+        color: #1d4ed8; /* Example: Tailwind blue-700 */
+    }
+  </style>
+
+</head>
+
+
+<body class="font-sans leading-normal tracking-normal">
+
+<nav id="header" class="fixed w-full z-10 top-0 bg-white shadow"> 
+
+  <div id="progress" class="h-1 z-20 top-0"
+       style="background:linear-gradient(to right, #4dc0b5 var(--scroll), transparent 0);"></div>
+
+  <div class="container max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
+
+    <div class="pl-4">
+      <a class="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl" href="../../">
+          {{ settings.blog_name }}
+      </a>
+    </div>
+
+    <div class="block lg:hidden pr-4">
+      <button id="nav-toggle"
+              class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-green-500 appearance-none focus:outline-none">
+        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <title>Menu</title>
+          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-white lg:bg-transparent text-black p-4 lg:p-0 z-20" id="nav-content">
+      <ul class="list-reset lg:flex justify-end flex-1 items-center">
+        {% for link in settings.link_menu %}
+        <li>
+          <a class="inline-block text-gray-600 hover:text-gray-900 hover:underline py-2 px-4"
+             href="{{ link.link }}">{{ link.text }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</nav>
+
+<!--Container-->
+<div class="container mx-auto mt-32 px-8 md:px-0">
+
+  <!-- Breadcrumbs -->
+  <nav aria-label="breadcrumb" class="text-sm font-medium text-gray-600 mb-6">
+    <ol class="list-none p-0 inline-flex">
+      <li class="flex items-center">
+        <a href="{{ settings.domain_url }}" class="hover:text-blue-700 hover:underline">Home</a>
+        <span class="mx-2 text-gray-500">/</span>
+      </li>
+      <li class="flex items-center">
+        <a href="{{ settings.domain_url }}{{ settings.blog_root_path }}" class="hover:text-blue-700 hover:underline">{{ settings.blog_name }}</a>
+        <span class="mx-2 text-gray-500">/</span>
+      </li>
+      {% if article.categories %}
+      <li class="flex items-center">
+        {# No link for category for now #}
+        <span class="text-gray-800">{{ article.categories[0] }}</span>
+        <span class="mx-2 text-gray-500">/</span>
+      </li>
+      {% endif %}
+      <li class="flex items-center">
+        <span class="text-gray-800 font-semibold">{{ article.title }}</span>
+      </li>
+    </ol>
+  </nav>
+  <!-- End Breadcrumbs -->
+
+  <!-- Main Content Grid -->
+  <div class="xl:grid xl:grid-cols-4 xl:gap-8">
+
+    <!-- Left Sticky Sidebar (Hidden on <xl screens) -->
+    <div class="hidden xl:block xl:col-span-1 bg-white">
+      <div class="sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto"> 
+        <!-- Table of Contents -->
+        {% if article.toc_html %}
+        <div class="toc mb-6"> 
+            <p class="font-semibold text-base mb-2 text-gray-800">Table of Contents</p>
+            {{ article.toc_html|safe }}
+        </div>
+        {% endif %}
+        <!-- End Table of Contents -->
+
+        <!-- CTA Placeholder -->
+        <div class="cta mt-6 p-3 border border-gray-200 rounded-lg">
+          <p class="font-medium text-gray-800">Call to Action</p>
+          <p class="text-sm text-gray-600 mt-1">Replace this with your actual CTA content and link.</p>
+          <a href="#" class="mt-3 inline-block bg-green-600 text-white text-sm font-medium py-2 px-4 rounded hover:bg-green-700">Learn More</a>
+        </div>
+        <!-- End CTA Placeholder -->
+      </div>
+    </div>
+    <!-- End Left Sticky Sidebar -->
+
+    <!-- Right Content Area -->
+    <div class="xl:col-span-3">
+
+      <div class="prose prose lg:prose-xl"> 
+        <!--Title-->
+        <h1 id="blog-title">{{article.title}}</h1>
+        <!--Author-->
+        <div class="flex items-center">
+          <img class="w-10 h-10 rounded-full mr-4" src="{{ article.author_image }}" alt="Avatar of Author">
+          <div class="flex-1 px-2">
+            <div class="font-bold leading-none mb-2">{{ article.author_name }}</div>
+            <div class="text-xs md:text-base">on {{ article.publish_date }} · <span id="reading-time"
+                class="block md:inline mt-2 md:mt-0"></span> · filed under <span
+          class="block md:inline mt-2 md:mt-0">
+						{% for category in article.categories %}
+            <span class="rounded bg-green-500 text-white px-1 uppercase text-xs whitespace-nowrap md:text-sm">{{ category }}</span>
+						{% endfor %}
+					</span>
+        </div>
+      </div>
+      <!-- Author Bio -->
+      {% if article.author_info %}
+      <div class="mt-4 border-t pt-4 text-sm text-gray-700">
+          <p>{{ article.author_info }}</p>
+      </div>
+      {% endif %}
+      <!-- End Author Bio -->
+      <!-- Social Share Icons -->
+      <div class="flex justify-start space-x-4 my-4">
+        <a
+          class="inline-block text-gray-500 hover:text-green-500 hover:underline text-center h-10 p-2 md:h-auto md:p-4 avatar"
+          data-tippy-content="@twitter_handle" href="https://twitter.com/intent/tweet?url={{ article.canonical_url | urlencode }}"
+          id="twitter" target="_blank" rel="noopener noreferrer">
+          <svg class="fill-current h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <path
+              d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"></path>
+          </svg>
+        </a>
+        <a
+          class="inline-block text-gray-500 hover:text-green-500 hover:underline text-center h-10 p-2 md:h-auto md:p-4 avatar"
+          data-tippy-content="#facebook_id" href="https://www.facebook.com/sharer.php?u={{ article.canonical_url | urlencode }}"
+          id="facebook" target="_blank" rel="noopener noreferrer">
+          <svg class="fill-current h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"></path>
+          </svg>
+        </a>
+      </div>
+      <!-- Author Social Links -->
+      {% if article.author_social %}
+      <div class="mt-2 flex space-x-3">
+          {% set social_links = article.author_social.split() %}
+          {# Assume first is LinkedIn, second is GitHub #}
+          {% if social_links|length >= 1 and 'linkedin.com' in social_links[0] %}
+          <a href="{{ social_links[0] }}" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-blue-700">
+              <span class="sr-only">LinkedIn</span>
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+          </a>
+          {% endif %}
+          {% if social_links|length >= 2 and 'github.com' in social_links[1] %}
+          <a href="{{ social_links[1] }}" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-900">
+              <span class="sr-only">GitHub</span>
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                 <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.5.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.546 1.379.201 2.398.098 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.308.678.92.678 1.852 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+              </svg>
+          </a>
+          {% endif %}
+      </div>
+      {% endif %}
+      <!-- End Author Social Links -->
+    </div>
+    <!-- End Author -->
+
+    <!--Post Content-->
+    <div id="content">
+      {% include content %}
+    </div>
+    <!--/ Post Content-->
+  </div> <!-- End Prose -->
+
+</div>
+<!-- End Right Content Area -->
+
+  </div>
+  <!-- End Main Content Grid -->
+
+  <!--Divider-->
+  <hr class="border-b-1 border-gray-400 mt-12 mb-8 mx-4">
+
+  <!--Next & Prev Links-->
+  <div class="font-sans flex justify-between content-center px-4 mb-4">
+    <div class="text-left">
+      <span class="text-xs md:text-sm font-normal text-gray-600">&lt; Previous Post</span><br>
+      <p><a href="{{ article.previous.link }}" class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">{{ article.previous.title }}</a></p>
+    </div>
+    <div class="text-right">
+      <span class="text-xs md:text-sm font-normal text-gray-600">Next Post &gt;</span><br>
+      <p><a href="{{ article.next.link }}" class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">{{ article.next.title }}</a></p>
+    </div>
+  </div>
+
+
+  <!--/Next & Prev Links-->
+
+  {% if settings.comments.enabled %}
+    <div class="commentbox"></div>
+
+    <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+    <script>commentBox("{{ settings.comments.commentbox_project_id }}")</script>
+  {% endif %}
+
+  <!--Subscribe-->
+  {% if settings.subscribe.enabled %}
+    {% include 'subscription_form.html' %}
+  {% endif %}
+  <!-- /Subscribe-->
+</div>
+<!--/container-->
+
+<footer class="bg-gray-900">
+  <div class="container max-w-6xl mx-auto flex items-center px-2 py-8">
+
+    <div class="w-full mx-auto flex flex-wrap items-center">
+      <div class="flex w-full md:w-1/2 justify-center md:justify-start text-white font-extrabold flex-col">
+        <a class="text-gray-900 no-underline hover:text-gray-900 hover:no-underline" href="{{ landing.blog_path }}">
+          <span class="text-base text-gray-200">{{ settings.blog_name }}</span>
+        </a>
+        <a class="text-gray-900 no-underline hover:text-gray-900 hover:no-underline"
+           href="https://github.com/LikaloLLC/BlogVi" target="_blank">
+          <span class="text-xs text-gray-200">Made with BlogVI</span>
+        </a>
+      </div>
+      <div class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
+        <ul class="list-reset flex justify-center flex-1 md:flex-none items-center">
+          {% for link in settings.link_menu %}
+            <li>
+              <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-3"
+                 href="{{ link.link }}">{{ link.text }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+</footer>
+
+<script>
+  /* Progress bar */
+  //Source: https://alligator.io/js/progress-bar-javascript-css-variables/
+  var h = document.documentElement,
+    b = document.body,
+    st = 'scrollTop',
+    sh = 'scrollHeight',
+    progress = document.querySelector('#progress'),
+    scroll;
+  var scrollpos = window.scrollY;
+  var header = document.getElementById("header");
+  var navcontent = document.getElementById("nav-content");
+
+  document.addEventListener('scroll', function () {
+
+    /*Refresh scroll % width*/
+    scroll = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
+    progress.style.setProperty('--scroll', scroll + '%');
+
+    /*Apply classes for slide in bar*/
+    scrollpos = window.scrollY;
+
+    if (scrollpos > 10) {
+    } else {
+    }
+
+  });
+
+
+  //Javascript to toggle the menu
+  document.getElementById('nav-toggle').onclick = function () {
+    document.getElementById("nav-content").classList.toggle("hidden");
+  }
+</script>
+<script>
+  /*
+    Twitter
+    https://twitter.com/share?url=[post-url]&text=[post-title]
+
+    Facebook
+    https://www.facebook.com/sharer.php?u=[post-url]
+
+  */
+  let twitterURI = document.getElementById('twitter');
+  let facebookURI = document.getElementById('facebook');
+
+  let postURI = encodeURI(document.location.href);
+  let postTitle = encodeURI(document.getElementById('blog-title').innerText + ":\n")
+
+  facebookURI.setAttribute('href', `https://www.facebook.com/sharer.php?u=${postURI}`);
+  twitterURI.setAttribute('href', `https://twitter.com/share?url=${postURI}&text=${postTitle}`);
+</script>
+
+<!--Sharect-->
+{% if settings.sharect.enabled %}
+<script src="https://unpkg.com/sharect@2.0.0/dist/sharect.js"></script>
+<script>window["sharectConfig"] = {{ settings.sharect|tojson|safe }}</script>
+<script src="{{ settings.blog_root_path }}templates/assets/js/sharect.js"></script>
+{% endif %}
+
+
+<!--Reading time-->
+<script src="{{ settings.blog_root_path }}templates/assets/js/reading-time.min.js"></script>
+<script>
+  const text = []
+  let content = [...document.getElementById('content').getElementsByTagName('p')].forEach((elem) => {
+    text.push(elem.textContent)
+  });
+  const stats = readingTime(text.join(" "));
+
+  document.getElementById('reading-time').innerHTML = stats.text;
+</script>
+
+
+  {% if settings.google_tag_manager.enabled %}
+      <!-- Google Tag Manager (noscript) -->
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ settings.google_tag_manager.google_tag_manager_projectid }}"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  {% endif %}
+
+  <script>
+    // Scrollspy functionality for TOC
+    window.addEventListener('DOMContentLoaded', () => {
+
+        const tocContainer = document.querySelector('.toc'); // Assuming TOC is within a .toc classed div
+        if (!tocContainer) return; // Exit if no TOC
+
+        const tocLinks = Array.from(tocContainer.querySelectorAll('a'));
+        const mainContent = document.querySelector('article'); // Assuming main content is in <article>
+        if (!mainContent || tocLinks.length === 0) return; // Exit if no content or links
+
+        // Get headings targeted by TOC links
+        const headings = tocLinks.map(link => {
+            const targetId = link.getAttribute('href').substring(1); // Get ID from href='#...'
+            return mainContent.querySelector(`h2[id="${targetId}"]`);
+        }).filter(h => h); // Filter out nulls if a heading wasn't found
+
+        if (headings.length === 0) return; // Exit if no target headings found
+
+        const offset = 150; // Offset pixels from top, adjust as needed
+
+        function highlightTocLink() {
+            let currentActiveFound = false;
+            let scrollY = window.scrollY;
+
+            headings.forEach((heading, index) => {
+                const headingTop = heading.offsetTop;
+                const nextHeadingTop = (index + 1 < headings.length) ? headings[index + 1].offsetTop : mainContent.offsetHeight + mainContent.offsetTop;
+
+                if (scrollY + offset >= headingTop && scrollY + offset < nextHeadingTop) {
+                    tocLinks.forEach(link => link.classList.remove('active-toc-link'));
+                    if(tocLinks[index]) {
+                        tocLinks[index].classList.add('active-toc-link');
+                    }
+                    currentActiveFound = true;
+                }
+            });
+
+            // If scrolled past the last heading, keep the last one active
+            if (!currentActiveFound && scrollY + window.innerHeight >= mainContent.offsetHeight + mainContent.offsetTop) {
+                 tocLinks.forEach(link => link.classList.remove('active-toc-link'));
+                 if(tocLinks.length > 0 && tocLinks[tocLinks.length - 1]) {
+                     tocLinks[tocLinks.length - 1].classList.add('active-toc-link');
+                     currentActiveFound = true;
+                 }
+            }
+
+            // If no heading is active (e.g., scrolled above the first one), remove all highlights
+            if (!currentActiveFound) {
+                tocLinks.forEach(link => link.classList.remove('active-toc-link'));
+            }
+        }
+
+        // Initial highlight check
+        highlightTocLink();
+
+        // Re-check on scroll
+        window.addEventListener('scroll', highlightTocLink);
+    });
+</script>
+
+</body>
+
+</html>
