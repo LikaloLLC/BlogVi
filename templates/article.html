@@ -575,19 +575,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script>
     // Scrollspy functionality for TOC
     window.addEventListener('DOMContentLoaded', () => {
+        console.log('Scrollspy TOC script initialized.'); // Debug: Log initialization
 
         const tocContainer = document.querySelector('.toc'); // Assuming TOC is within a .toc classed div
-        if (!tocContainer) return; // Exit if no TOC
+        if (!tocContainer) {
+            console.log('Scrollspy Debug: TOC container (.toc) not found.');
+            return; // Exit if no TOC
+        }
 
         const tocLinks = Array.from(tocContainer.querySelectorAll('a'));
-        const mainContent = document.querySelector('article'); // Assuming main content is in <article>
-        if (!mainContent || tocLinks.length === 0) return; // Exit if no content or links
+        // Corrected selector for the main content area
+        const mainContent = document.querySelector('.prose'); 
+        if (!mainContent || tocLinks.length === 0) {
+            console.log('Scrollspy Debug: Main content (.prose) or TOC links not found.', { mainContent, tocLinksLength: tocLinks.length });
+            return; // Exit if no content or links
+        }
 
         // Get headings targeted by TOC links
         const headings = tocLinks.map(link => {
-            const targetId = link.getAttribute('href').substring(1); // Get ID from href='#...'
-            return mainContent.querySelector(`h2[id="${targetId}"]`);
+            const href = link.getAttribute('href');
+            if (!href || !href.startsWith('#')) return null; // Skip if no valid href
+            const targetId = href.substring(1); // Get ID from href='#...'
+            if (!targetId) return null;
+            try {
+                 return mainContent.querySelector(`h2[id="${targetId}"]`);
+            } catch (e) {
+                console.error(`Scrollspy Debug: Error selecting heading with ID: ${targetId}`, e);
+                return null;
+            }
         }).filter(h => h); // Filter out nulls if a heading wasn't found
+
+        console.log(`Scrollspy Debug: Found ${tocLinks.length} TOC links and ${headings.length} corresponding H2 headings.`); // Debug: Log counts
 
         if (headings.length === 0) return; // Exit if no target headings found
 
@@ -595,32 +613,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         function highlightTocLink() {
             let currentActiveFound = false;
+            let activeIndex = -1;
             let scrollY = window.scrollY;
 
             headings.forEach((heading, index) => {
                 const headingTop = heading.offsetTop;
-                const nextHeadingTop = (index + 1 < headings.length) ? headings[index + 1].offsetTop : mainContent.offsetHeight + mainContent.offsetTop;
+                // Use documentElement.scrollHeight for a more reliable bottom boundary
+                const nextHeadingTop = (index + 1 < headings.length) ? headings[index + 1].offsetTop : document.documentElement.scrollHeight;
 
                 if (scrollY + offset >= headingTop && scrollY + offset < nextHeadingTop) {
-                    tocLinks.forEach(link => link.classList.remove('active-toc-link'));
-                    if(tocLinks[index]) {
-                        tocLinks[index].classList.add('active-toc-link');
-                    }
+                    activeIndex = index;
                     currentActiveFound = true;
                 }
             });
 
-            // If scrolled past the last heading, keep the last one active
-            if (!currentActiveFound && scrollY + window.innerHeight >= mainContent.offsetHeight + mainContent.offsetTop) {
-                 tocLinks.forEach(link => link.classList.remove('active-toc-link'));
-                 if(tocLinks.length > 0 && tocLinks[tocLinks.length - 1]) {
-                     tocLinks[tocLinks.length - 1].classList.add('active-toc-link');
-                     currentActiveFound = true;
-                 }
+            // If scrolled past the last heading, keep the last one active (check needed for single heading case)
+            if (!currentActiveFound && headings.length > 0 && scrollY + window.innerHeight >= headings[headings.length - 1].offsetTop + offset) {
+                activeIndex = headings.length - 1;
+                currentActiveFound = true;
             }
 
-            // If no heading is active (e.g., scrolled above the first one), remove all highlights
-            if (!currentActiveFound) {
+            // Apply active class
+            tocLinks.forEach((link, index) => {
+                if (index === activeIndex) {
+                    if (!link.classList.contains('active-toc-link')) {
+                       console.log(`Scrollspy Debug: Activating TOC link for: ${headings[activeIndex]?.id}`); // Debug: Log activation
+                       link.classList.add('active-toc-link');
+                    }
+                } else {
+                    link.classList.remove('active-toc-link');
+                }
+            });
+
+             // If no heading is active (e.g., scrolled above the first one), remove all highlights
+             if (!currentActiveFound && activeIndex === -1) {
                 tocLinks.forEach(link => link.classList.remove('active-toc-link'));
             }
         }
@@ -628,11 +654,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         // Initial highlight check
         highlightTocLink();
 
-        // Re-check on scroll
-        window.addEventListener('scroll', highlightTocLink);
+        // Re-check on scroll - Debounce for performance
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(highlightTocLink, 50); // Adjust delay as needed (e.g., 50-100ms)
+        });
     });
 </script>
 
 </body>
-
 </html>
