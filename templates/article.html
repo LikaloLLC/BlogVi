@@ -248,7 +248,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 
 
-<body class="font-sans leading-normal tracking-normal">
+<body class="font-sans leading-normal tracking-normal" {% if settings.sharect.enabled %}data-sharect-settings='{{ settings.sharect|tojson|safe }}'{% endif %}>
 
 <nav id="header" class="fixed w-full z-10 top-0 bg-white shadow"> 
 
@@ -331,11 +331,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <!-- End Table of Contents -->
 
         <!-- CTA Placeholder -->
-        <div class="cta mt-6 p-3 border border-gray-200 rounded-lg">
-          <p class="font-medium text-gray-800">Call to Action</p>
-          <p class="text-sm text-gray-600 mt-1">Replace this with your actual CTA content and link.</p>
-          <a href="#" class="mt-3 inline-block bg-green-600 text-white text-sm font-medium py-2 px-4 rounded hover:bg-green-700">Learn More</a>
-        </div>
+        {% if settings.call_to_action.enabled %}
+          {# Determine language code: 1. Check settings, 2. Derive from workdir, 3. Default 'en' #}
+          {% set lang_code = settings.current_language | default(none) %}
+          {% if lang_code == none and article.landing.workdir %}
+            {# Assumes workdir structure like .../output_base/en or .../output_base/fr #}
+            {% set lang_code = article.landing.workdir.parent.name | default('en') %}
+          {% endif %}
+          {% set lang_code = lang_code | default('en') %}
+          {# Use language code (or default 'en') to get translations #}
+          {% set cta_content = settings.call_to_action.translations[lang_code] | default(settings.call_to_action.translations['en']) %}
+
+          <div class="cta mt-6 p-4 border border-gray-200 rounded-lg bg-gray-50 shadow-sm">
+            <p class="font-semibold text-gray-800 text-lg">{{ cta_content.title }}</p>
+            <p class="text-sm text-gray-600 mt-2">{{ cta_content.text }}</p>
+            <a href="{{ settings.call_to_action.button_url }}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-block bg-green-600 text-white text-sm font-medium py-2 px-4 rounded hover:bg-green-700 transition duration-150 ease-in-out">{{ cta_content.button_text }}</a>
+          </div>
+        {% endif %}
         <!-- End CTA Placeholder -->
       </div>
     </div>
@@ -356,20 +368,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 class="block md:inline mt-2 md:mt-0"></span> · filed under <span
           class="block md:inline mt-2 md:mt-0">
 						{% for category in article.categories %}
-            <span class="rounded bg-green-500 text-white px-1 uppercase text-xs whitespace-nowrap md:text-sm">{{ category }}</span>
+            {% if category and category|trim %}
+              <span class="rounded bg-green-500 text-white px-1 uppercase text-xs whitespace-nowrap md:text-sm">{{ category|trim }}</span>
+            {% endif %}
 						{% endfor %}
 					</span>
         </div>
       </div>
-      <!-- Author Bio -->
-      {% if article.author_info %}
-      <div class="mt-4 border-t pt-4 text-sm text-gray-700">
-          <p>{{ article.author_info }}</p>
-      </div>
-      {% endif %}
-      <!-- End Author Bio -->
-      <!-- Social Share Icons -->
-      <div class="flex justify-start space-x-4 my-4">
+        <!-- Social Share Icons -->
+        <div class="flex justify-start space-x-2 my-4">
         <a
           class="inline-block text-gray-500 hover:text-green-500 hover:underline text-center h-10 p-2 md:h-auto md:p-4 avatar"
           data-tippy-content="@twitter_handle" href="https://twitter.com/intent/tweet?url={{ article.canonical_url | urlencode }}"
@@ -384,34 +391,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           data-tippy-content="#facebook_id" href="https://www.facebook.com/sharer.php?u={{ article.canonical_url | urlencode }}"
           id="facebook" target="_blank" rel="noopener noreferrer">
           <svg class="fill-current h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-            <path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"></path>
+            <path
+              d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"></path>
           </svg>
         </a>
       </div>
-      <!-- Author Social Links -->
-      {% if article.author_social %}
-      <div class="mt-2 flex space-x-3">
-          {% set social_links = article.author_social.split() %}
-          {# Assume first is LinkedIn, second is GitHub #}
-          {% if social_links|length >= 1 and 'linkedin.com' in social_links[0] %}
-          <a href="{{ social_links[0] }}" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-blue-700">
-              <span class="sr-only">LinkedIn</span>
-              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-              </svg>
-          </a>
-          {% endif %}
-          {% if social_links|length >= 2 and 'github.com' in social_links[1] %}
-          <a href="{{ social_links[1] }}" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-900">
-              <span class="sr-only">GitHub</span>
-              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                 <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.5.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.546 1.379.201 2.398.098 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.308.678.92.678 1.852 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
-              </svg>
-          </a>
-          {% endif %}
-      </div>
-      {% endif %}
-      <!-- End Author Social Links -->
     </div>
     <!-- End Author -->
 
@@ -421,6 +405,43 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
     <!--/ Post Content-->
   </div> <!-- End Prose -->
+
+  <!-- NEW AUTHOR SECTION START -->
+  <div class="mt-12 pt-8 border-t border-gray-300">
+    <!-- Author Bio -->
+    {% if article.author_info %}
+    <div class="text-sm text-gray-700">
+        <p>{{ article.author_info }}</p>
+    </div>
+    {% endif %}
+    <!-- End Author Bio -->
+
+    <!-- Author Social Links -->
+    {% if article.author_social %}
+    <div class="mt-4 flex space-x-2"> <!-- Added mt-4 for spacing between bio and links -->
+        {% set social_links = article.author_social.split() %}
+        {# Assume first is LinkedIn, second is GitHub #}
+        {% if social_links|length >= 1 and 'linkedin.com' in social_links[0] %}
+        <a href="{{ social_links[0] }}" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-blue-700">
+            <span class="sr-only">LinkedIn</span>
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+        </a>
+        {% endif %}
+        {% if social_links|length >= 2 and 'github.com' in social_links[1] %}
+        <a href="{{ social_links[1] }}" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-900">
+            <span class="sr-only">GitHub</span>
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+               <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.5.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.546 1.379.201 2.398.098 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.308.678.92.678 1.852 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+            </svg>
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+    <!-- End Author Social Links -->
+  </div>
+  <!-- NEW AUTHOR SECTION END -->
 
 </div>
 <!-- End Right Content Area -->
@@ -546,7 +567,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!--Sharect-->
 {% if settings.sharect.enabled %}
 <script src="https://unpkg.com/sharect@2.0.0/dist/sharect.js"></script>
-<script>window["sharectConfig"] = {{ settings.sharect|tojson|safe }}</script>
+<script>
+  try {
+    const settingsData = document.body.getAttribute('data-sharect-settings');
+    if (settingsData) {
+      window["sharectConfig"] = JSON.parse(settingsData);
+    } else {
+      console.warn('Sharect settings data attribute not found.');
+      window["sharectConfig"] = {}; // Provide empty object as fallback
+    }
+  } catch (e) {
+    console.error('Error parsing Sharect settings:', e);
+    window["sharectConfig"] = {}; // Provide empty object on error
+  }
+</script>
 <script src="{{ settings.blog_root_path }}templates/assets/js/sharect.js"></script>
 {% endif %}
 

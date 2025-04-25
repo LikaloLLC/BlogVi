@@ -41,10 +41,19 @@ SETTINGS_DEFAULTS = {
     'translator': None,
     'google_translator': {},
     'deepl_translator': {},
+    'claude_translation_settings': {}, 
     'translation_list': [],
     'translate_articles': None,
     'show_language_picker': False,
     'source_language': {},
     'source_abbreviation': None,
-    'favicons': []
+    'favicons': [],
+    # Default Call to Action settings
+    'call_to_action': {
+        'enabled': False, # Disabled by default
+        'title': 'Default CTA Title',
+        'text': 'Default CTA description text.',
+        'button_text': 'Learn More',
+        'button_url': '#'
+    }
 }

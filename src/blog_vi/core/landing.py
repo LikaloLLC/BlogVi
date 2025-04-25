@@ -104,7 +104,8 @@ class BaseLanding:
 
         template = env.get_template(self.template)
 
-        categories = {(category, f'{slugify(category)}/') for category in self._categories.keys()}
+        # Apply max_length to slugify here as well for consistency
+        categories = {(category, f'{slugify(category, max_length=100)}/') for category in self._categories.keys()}
         head_article = self._articles[0] if self._articles else None
 
         return template.render(
@@ -194,7 +195,9 @@ class Landing(BaseLanding):
 
         for article in self._articles:
             for category in article.categories:
-                workdir = Path(self.workdir, slugify(category))
+                # Apply max_length to slugify to prevent OS errors
+                category_slug = slugify(category, max_length=100)
+                workdir = Path(self.workdir, category_slug)
                 workdir.mkdir(exist_ok=True)
                 if not category:
                     continue
