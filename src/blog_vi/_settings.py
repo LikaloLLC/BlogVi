@@ -49,6 +49,7 @@ class Settings:
     env = {
         'google_translator.api_key': 'GOOGLE_TRANSLATOR_API_KEY',
         'deepl_translator.api_key': 'DEEPL_TRANSLATOR_API_KEY',
+        'claude_translator.api_key': 'CLAUDE_API_KEY',
         'comments.commentbox_project_id': 'COMMENT_BOX_PROJECT_ID'
     }
 

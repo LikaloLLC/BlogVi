@@ -41,7 +41,7 @@ SETTINGS_DEFAULTS = {
     'translator': None,
     'google_translator': {},
     'deepl_translator': {},
-    'claude_translation_settings': {}, 
+    'claude_translator': {},
     'translation_list': [],
     'translate_articles': None,
     'show_language_picker': False,

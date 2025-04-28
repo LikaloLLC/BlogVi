@@ -64,6 +64,10 @@ google_translator:
 deepl_translator:
   api_key: <api key>
 
+claude_translator:
+  api_key: <api key>
+  model: "claude-3-opus-20240229"  # Optional, defaults to claude-3-opus-20240229
+
 translation_list:
   -
     abbreviation: de
@@ -77,7 +81,7 @@ source_language:
   label: English
 
 
-translator: deepl # or google
+translator: deepl # or google or claude
 # User should select an available translator or get warned if `translate_articles` is set to true, but translator is not.
 
 favicons:

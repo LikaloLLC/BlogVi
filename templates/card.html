@@ -1,0 +1,35 @@
+<!-- Base template of the article card on the blog page. -->
+<style>
+    .legacy {
+        display: none;
+    }
+</style>
+
+<div class="w-full md:w-1/3 p-6 flex flex-col flex-shrink {% if article.is_legacy == True %}legacy{% endif %}">
+    <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden ">
+        <a href="{{ article.path }}" class="flex flex-wrap no-underline hover:no-underline">
+            <img data-src="{{ article.header_image }}" class="h-64 w-full rounded-t pb-6 object-cover mb-1">
+            <p class="w-full text-gray-600 text-xs md:text-sm px-6">{{ article.categories[0] }}</p>
+            <div class="w-full font-bold text-xl text-gray-900 px-6">{{ article.title }}</div>
+            <p class="text-gray-800 font-serif text-base px-6 mb-5">
+                {{ article.summary }}
+            </p>
+        </a>
+    </div>
+    <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden  p-6">
+        <div class="flex items-center justify-between">
+            <img class="w-8 h-8 rounded-full mr-4 avatar"
+                 data-tippy-content="{{ article.author_name }}"
+                 data-src="{{ article.author_image }}" alt="{{ article.author_name }}">
+
+            <p class="text-gray-600 text-xs md:text-sm">
+                by {{ article.author_name }} on {{ article.publish_date }} in
+
+                {% for category in article.categories %}
+                    <!-- TODO: category item styling -->
+                    {{ category }}
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+</div>
